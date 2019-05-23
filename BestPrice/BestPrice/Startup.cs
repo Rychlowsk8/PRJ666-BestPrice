@@ -12,7 +12,6 @@ using BestPrice.Data;
 using BestPrice.Models;
 using BestPrice.Services;
 using Microsoft.AspNetCore.HttpOverrides;
-using MySql.Data.EntityFrameworkCore;
 
 
 
@@ -31,7 +30,7 @@ namespace BestPrice
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySQL(Configuration.GetConnectionString("BestPriceDatabase")));
+                options.UseMySql(Configuration.GetConnectionString("BestPriceDatabase")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -41,7 +40,7 @@ namespace BestPrice
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
-            services.AddDbContext<prj666_192a03Context>(options => options.UseMySQL(Configuration.GetConnectionString("BestPriceDatabase")));
+            services.AddDbContext<prj666_192a03Context>(options => options.UseMySql(Configuration.GetConnectionString("BestPriceDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
