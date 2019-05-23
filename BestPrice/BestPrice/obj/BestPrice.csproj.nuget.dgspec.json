@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\PRJ666\\BestPrice\\BestPrice\\BestPrice\\BestPrice.csproj": {}
+    "F:\\PRJ666\\FinalProject\\BestPrice\\BestPrice\\BestPrice.csproj": {}
   },
   "projects": {
-    "F:\\PRJ666\\BestPrice\\BestPrice\\BestPrice\\BestPrice.csproj": {
+    "F:\\PRJ666\\FinalProject\\BestPrice\\BestPrice\\BestPrice.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\PRJ666\\BestPrice\\BestPrice\\BestPrice\\BestPrice.csproj",
+        "projectUniqueName": "F:\\PRJ666\\FinalProject\\BestPrice\\BestPrice\\BestPrice.csproj",
         "projectName": "BestPrice",
-        "projectPath": "F:\\PRJ666\\BestPrice\\BestPrice\\BestPrice\\BestPrice.csproj",
+        "projectPath": "F:\\PRJ666\\FinalProject\\BestPrice\\BestPrice\\BestPrice.csproj",
         "packagesPath": "C:\\Users\\Vincent\\.nuget\\packages\\",
-        "outputPath": "F:\\PRJ666\\BestPrice\\BestPrice\\BestPrice\\obj\\",
+        "outputPath": "F:\\PRJ666\\FinalProject\\BestPrice\\BestPrice\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
