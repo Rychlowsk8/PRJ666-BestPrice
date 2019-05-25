@@ -43,13 +43,11 @@ namespace BestPrice
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
-<<<<<<< HEAD
+
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySQL(Configuration.GetConnectionString("BestPriceDatabase")));
 
             services.Configure<AuthMessageSenderOptions>(Configuration);
-=======
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySql(Configuration.GetConnectionString("BestPriceDatabase")));
->>>>>>> 7a13d2284f2abce921115ec51a49ba46a0e6036a
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
