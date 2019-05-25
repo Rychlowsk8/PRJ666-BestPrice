@@ -8,5 +8,6 @@ namespace BestPrice.Services
     public interface IEmailSender
     {
         Task SendEmailAsync(string email, string subject, string message);
+        //Task SendEmailAsync(string email, string subject, string message, string temp_id, string link, string button_text);
     }
 }

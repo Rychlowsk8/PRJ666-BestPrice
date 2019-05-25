@@ -2,7 +2,20 @@
 @{
     ViewData["Title"] = "Create your account";
 }
-
+@*
+<head>
+    <script type="text/javascript">
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
+        {
+            <text>
+            $(document).ready(function() {
+                alert('@ViewData.ModelState["Error"].Errors.First().ErrorMessage');
+            });
+            </text>
+        }
+    </script>
+</head>
+*@
 <div class="row">
     <div class="col-md-4">
     </div>

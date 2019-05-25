@@ -59,6 +59,18 @@ namespace BestPrice.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                // Require the user to have a confirmed email before they can log on.
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    if (!await _userManager.IsEmailConfirmedAsync(user))
+                    {
+                        ModelState.AddModelError(string.Empty,
+                        "You need to confirm your email before logging in.");
+                        return View(model);
+                    }
+                }
+
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
@@ -230,9 +242,15 @@ namespace BestPrice.Controllers
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+
+                    // return RedirectToLocal(returnUrl);
+                    //ModelState.AddModelError("Error", "Check ID");
+                    //return View(model);
+                    //return RedirectToAction(nameof(Login));
+
+                    return RedirectToAction(nameof(SendConfirmationEmailConf));
                 }
                 AddErrors(result);
             }
@@ -371,9 +389,12 @@ namespace BestPrice.Controllers
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
-                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+                await _emailSender.SendEmailAsync(model.Email, "TechPG - Reset Password", $"<h1>Thanks for joining TechPG!</h1> <br/>" +
+                   $"Please reset your password by clicking here: <a href='{callbackUrl}'> Reset Password link</a>");
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
+
+                //await _emailSender.SendEmailAsync(model.Email, "TechPG - Reset Password", $"<h1>Thanks for joining TechPG!</h1> <br/>" +
+                //   $"Please reset your password by clicking here: <a href='{callbackUrl}'> Reset Password link</a>", "d-a28026d84f5a47ab8036059db963af00", callbackUrl, "Change password sir");
             }
 
             // If we got this far, something failed, redisplay form
@@ -386,6 +407,53 @@ namespace BestPrice.Controllers
         {
             return View();
         }
+
+        //start 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult SendConfirmationEmail()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendConfirmationEmail(SendConfirmationEmail model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null || (await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    // Don't reveal that the user does not exist or is not confirmed
+                    return RedirectToAction(nameof(SendConfirmationEmailConf));
+                }
+
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                return RedirectToAction(nameof(SendConfirmationEmailConf));
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult SendConfirmationEmailConf()
+        {
+            return View();
+        }
+        //end
 
         [HttpGet]
         [AllowAnonymous]

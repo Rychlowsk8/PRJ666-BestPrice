@@ -1,23 +1,7 @@
-﻿@model ForgotPasswordViewModel
+﻿@model SendConfirmationEmail
 @{
-    ViewData["Title"] = "Forgot your password?";
+    ViewData["Title"] = "Email confirmation";
 }
-
-@*
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="ForgotPassword" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-    </div>
-</div>
-*@
 
 <div class="container">
     <div class="row">
@@ -25,12 +9,12 @@
             <div class="panel panel-default" style="margin-top:50px;">
                 <div class="panel-body">
                     <div class="text-center">
-                        <span class='glyphicon glyphicon-lock' style="font-size: 75px;"></span>
+                        <span class='glyphicon glyphicon-log-in' style="font-size: 75px;"></span>
                         <h2 class="text-center">@ViewData["Title"]</h2>
-                        <p>You can reset your password here.</p>
+                        <p>You can send email verification here.</p>
                         <div class="panel-body">
-                            <form asp-action="ForgotPassword" method="post">
-                               @* <div asp-validation-summary="All" class="text-danger"></div> *@
+                            <form asp-action="SendConfirmationEmail" method="post">
+                                @* <div asp-validation-summary="All" class="text-danger"></div> *@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
@@ -51,7 +35,7 @@
         </div>
     </div>
 </div>
-
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
+

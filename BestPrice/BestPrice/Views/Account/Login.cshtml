@@ -9,6 +9,20 @@
     ViewData["Title"] = "Log in to your account";
 }
 
+@*
+<head>
+    <script type="text/javascript">
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
+        {
+            <text>
+            $(document).ready(function() {
+                alert('@ViewData.ModelState["Error"].Errors.First().ErrorMessage');
+            });
+            </text>
+        }
+    </script>
+</head>
+*@
 <div class="row">
     <div class="col-md-4">
     </div>
@@ -20,7 +34,7 @@
                     <hr />
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="Email"></label>
+                        <label class="pull-left" asp-for="Email"></label> <a class="pull-right" asp-action="SendConfirmationEmail">Verify email?</a>
                         <input asp-for="Email" class="form-control" placeholder="Email Address" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
