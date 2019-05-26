@@ -1,8 +1,107 @@
-﻿@model object
+﻿@model IEnumerable<BestPrice.Models.Faqs>
 
 @{
     ViewBag.Title = "Help Centre";
     Layout = "_Layout";
 }
 
-<h2>Help Centre</h2>
+<head>
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
+    
+    <script>
+        $(document).ready(function() {
+            $("#product_search").click(function() {
+                $.get('@Url.Action("HelpProductSearch","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
+            $("#notifications").click(function() {
+                $.get('@Url.Action("HelpNotifications","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
+            $("#wishlist").click(function() {
+                $.get('@Url.Action("HelpWishlist","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
+            $("#create_account").click(function() {
+                $.get('@Url.Action("HelpCreateAccount","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
+            $("#delete_account").click(function() {
+                $.get('@Url.Action("HelpDeleteAccount","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
+            $("#change_email").click(function() {
+                $.get('@Url.Action("HelpChangeEmail","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
+            $("#add-item").click(function() {
+                $.get('@Url.Action("HelpAddItem","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
+            $("#remove_item").click(function() {
+                $.get('@Url.Action("HelpRemoveItem","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
+        }); 
+    </script>
+</head>
+<h1>What can we help you with?</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <h2 class="text-info">Navigating TechPG</h2>
+        <ul>
+            <li id="product_search">Product search</li>
+            <li id="notifications">Notifications</li>
+            <li id="wishlist">Wishlist</li>
+        </ul>
+    </div>
+
+    <div class="col-md-4">
+        <h2 class="text-info">Manage Account</h2>
+        <ul>
+            <li id="create_account">Create Account</li>
+            <li id="delete_account">Delete Account</li>
+            <li id="change_email">Change Email</li>
+        </ul>
+    </div>
+
+    <div class="col-md-4">
+        <h2 class="text-info">Manage Wishlist</h2>
+        <ul>
+            <li id="add-item">Add Item</li>
+            <li id="remove_item">Remove Item</li>
+        </ul>
+    </div>
+</div>
+
+<hr />
+
+<div id="display"></div>
+
+<hr />
+
+<h2 class="text-warning">Frequently Asked Questions</h2>
+
+<br />
+
+@{ int numberOfFaqs = 0; }
+@foreach (var faq in Model)
+{
+    numberOfFaqs++;
+    <h4>@numberOfFaqs. &nbsp &nbsp Q: @Html.DisplayFor(modelItem => faq.Question)</h4>
+    <h4>&nbsp &nbsp &nbsp &nbsp A: @Html.DisplayFor(modelItem => faq.Answer)</h4>
+    <br />
+}
+
+
