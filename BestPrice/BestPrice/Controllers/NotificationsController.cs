@@ -49,7 +49,7 @@ namespace BestPrice.Controllers
         public IActionResult Create()
         {
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email");
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email");
             return View();
         }
 
@@ -67,7 +67,7 @@ namespace BestPrice.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", notifications.ProductId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", notifications.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", notifications.UserId);
             return View(notifications);
         }
 
@@ -85,7 +85,7 @@ namespace BestPrice.Controllers
                 return NotFound();
             }
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", notifications.ProductId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", notifications.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", notifications.UserId);
             return View(notifications);
         }
 
@@ -122,7 +122,7 @@ namespace BestPrice.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", notifications.ProductId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", notifications.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", notifications.UserId);
             return View(notifications);
         }
 

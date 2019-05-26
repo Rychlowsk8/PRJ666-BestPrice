@@ -8,9 +8,9 @@ namespace BestPrice.Models
         public int Id { get; set; }
         public DateTimeOffset TimeStamp { get; set; }
         public int ProductId { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         public virtual Products Product { get; set; }
-        public virtual Users User { get; set; }
+        public virtual AspNetUsers User { get; set; }
     }
 }

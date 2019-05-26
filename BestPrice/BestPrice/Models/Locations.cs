@@ -7,13 +7,13 @@ namespace BestPrice.Models
     {
         public Locations()
         {
-            Users = new HashSet<Users>();
+            AspNetUsers = new HashSet<AspNetUsers>();
         }
 
         public int Id { get; set; }
         public string Address { get; set; }
         public string Province { get; set; }
 
-        public virtual ICollection<Users> Users { get; set; }
+        public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }
     }
 }

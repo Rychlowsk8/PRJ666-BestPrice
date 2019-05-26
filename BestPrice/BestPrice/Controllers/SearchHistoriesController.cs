@@ -47,7 +47,7 @@ namespace BestPrice.Controllers
         // GET: SearchHistories/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email");
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email");
             return View();
         }
 
@@ -64,7 +64,7 @@ namespace BestPrice.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", searchHistories.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", searchHistories.UserId);
             return View(searchHistories);
         }
 
@@ -81,7 +81,7 @@ namespace BestPrice.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", searchHistories.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", searchHistories.UserId);
             return View(searchHistories);
         }
 
@@ -117,7 +117,7 @@ namespace BestPrice.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", searchHistories.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", searchHistories.UserId);
             return View(searchHistories);
         }
 

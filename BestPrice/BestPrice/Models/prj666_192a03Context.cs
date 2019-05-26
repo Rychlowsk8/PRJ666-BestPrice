@@ -15,6 +15,13 @@ namespace BestPrice.Models
         {
         }
 
+        public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
+        public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Faqs> Faqs { get; set; }
         public virtual DbSet<Locations> Locations { get; set; }
         public virtual DbSet<Notifications> Notifications { get; set; }
@@ -22,7 +29,6 @@ namespace BestPrice.Models
         public virtual DbSet<Reviews> Reviews { get; set; }
         public virtual DbSet<SearchHistories> SearchHistories { get; set; }
         public virtual DbSet<Sellers> Sellers { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<WishlistProduct> WishlistProduct { get; set; }
         public virtual DbSet<Wishlists> Wishlists { get; set; }
 
@@ -38,6 +44,202 @@ namespace BestPrice.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
+
+            modelBuilder.Entity<AspNetRoleClaims>(entity =>
+            {
+                entity.ToTable("AspNetRoleClaims", "prj666_192a03");
+
+                entity.HasIndex(e => e.RoleId);
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.ClaimType).IsUnicode(false);
+
+                entity.Property(e => e.ClaimValue).IsUnicode(false);
+
+                entity.Property(e => e.RoleId)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetRoleClaims)
+                    .HasForeignKey(d => d.RoleId);
+            });
+
+            modelBuilder.Entity<AspNetRoles>(entity =>
+            {
+                entity.ToTable("AspNetRoles", "prj666_192a03");
+
+                entity.HasIndex(e => e.NormalizedName)
+                    .HasName("RoleNameIndex")
+                    .IsUnique();
+
+                entity.Property(e => e.Id)
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.ConcurrencyStamp).IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(256)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NormalizedName)
+                    .HasMaxLength(256)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<AspNetUserClaims>(entity =>
+            {
+                entity.ToTable("AspNetUserClaims", "prj666_192a03");
+
+                entity.HasIndex(e => e.UserId);
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.ClaimType).IsUnicode(false);
+
+                entity.Property(e => e.ClaimValue).IsUnicode(false);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserClaims)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserLogins>(entity =>
+            {
+                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+
+                entity.ToTable("AspNetUserLogins", "prj666_192a03");
+
+                entity.HasIndex(e => e.UserId);
+
+                entity.Property(e => e.LoginProvider).IsUnicode(false);
+
+                entity.Property(e => e.ProviderKey).IsUnicode(false);
+
+                entity.Property(e => e.ProviderDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserLogins)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserRoles>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
+
+                entity.ToTable("AspNetUserRoles", "prj666_192a03");
+
+                entity.HasIndex(e => e.RoleId);
+
+                entity.Property(e => e.UserId).IsUnicode(false);
+
+                entity.Property(e => e.RoleId).IsUnicode(false);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.RoleId);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserTokens>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
+
+                entity.ToTable("AspNetUserTokens", "prj666_192a03");
+
+                entity.Property(e => e.UserId).IsUnicode(false);
+
+                entity.Property(e => e.LoginProvider).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.Value).IsUnicode(false);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserTokens)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUsers>(entity =>
+            {
+                entity.ToTable("AspNetUsers", "prj666_192a03");
+
+                entity.HasIndex(e => e.LocationId)
+                    .HasName("LocationId");
+
+                entity.HasIndex(e => e.NormalizedEmail)
+                    .HasName("EmailIndex");
+
+                entity.HasIndex(e => e.NormalizedUserName)
+                    .HasName("UserNameIndex")
+                    .IsUnique();
+
+                entity.Property(e => e.Id)
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.AccessFailedCount).HasColumnType("int(11)");
+
+                entity.Property(e => e.ConcurrencyStamp).IsUnicode(false);
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(256)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.EmailConfirmed).HasColumnType("bit(1)");
+
+                entity.Property(e => e.IsRegistered)
+                    .HasColumnType("bit(1)")
+                    .HasDefaultValueSql("b'0'");
+
+                entity.Property(e => e.LocationId).HasColumnType("int(10)");
+
+                entity.Property(e => e.LockoutEnabled).HasColumnType("bit(1)");
+
+                entity.Property(e => e.NormalizedEmail)
+                    .HasMaxLength(256)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NormalizedUserName)
+                    .HasMaxLength(256)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PasswordHash).IsUnicode(false);
+
+                entity.Property(e => e.PhoneNumber).IsUnicode(false);
+
+                entity.Property(e => e.PhoneNumberConfirmed).HasColumnType("bit(1)");
+
+                entity.Property(e => e.SecurityStamp).IsUnicode(false);
+
+                entity.Property(e => e.TwoFactorEnabled).HasColumnType("bit(1)");
+
+                entity.Property(e => e.UserName)
+                    .HasMaxLength(256)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Location)
+                    .WithMany(p => p.AspNetUsers)
+                    .HasForeignKey(d => d.LocationId)
+                    .HasConstraintName("User_LocationId_FK");
+            });
 
             modelBuilder.Entity<Faqs>(entity =>
             {
@@ -85,11 +287,11 @@ namespace BestPrice.Models
             {
                 entity.ToTable("Notifications", "prj666_192a03");
 
-                entity.HasIndex(e => e.UserId)
-                    .HasName("Notification_UserId_FK");
-
-                entity.HasIndex(e => new { e.ProductId, e.UserId })
+                entity.HasIndex(e => e.ProductId)
                     .HasName("ProductId");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("UserId");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(10)")
@@ -99,7 +301,9 @@ namespace BestPrice.Models
 
                 entity.Property(e => e.TimeStamp).HasDefaultValueSql("1970-01-01 00:00:01");
 
-                entity.Property(e => e.UserId).HasColumnType("int(10)");
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Notifications)
@@ -180,7 +384,7 @@ namespace BestPrice.Models
                 entity.ToTable("SearchHistories", "prj666_192a03");
 
                 entity.HasIndex(e => e.UserId)
-                    .HasName("UserId");
+                    .HasName("UserId_2");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(10)")
@@ -191,7 +395,9 @@ namespace BestPrice.Models
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
-                entity.Property(e => e.UserId).HasColumnType("int(10)");
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.SearchHistories)
@@ -221,39 +427,6 @@ namespace BestPrice.Models
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Users>(entity =>
-            {
-                entity.ToTable("Users", "prj666_192a03");
-
-                entity.HasIndex(e => e.Email)
-                    .HasName("Email")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.LocationId)
-                    .HasName("NotificationId");
-
-                entity.Property(e => e.Id)
-                    .HasColumnType("int(10)")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasMaxLength(75)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LocationId).HasColumnType("int(10)");
-
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Location)
-                    .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("User_LocationId_FK");
             });
 
             modelBuilder.Entity<WishlistProduct>(entity =>
@@ -296,7 +469,9 @@ namespace BestPrice.Models
                     .HasColumnType("int(10)")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.UserId).HasColumnType("int(10)");
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Wishlists)
