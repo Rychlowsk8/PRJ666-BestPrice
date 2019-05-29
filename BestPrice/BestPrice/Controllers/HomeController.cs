@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BestPrice.Models;
+using BestPrice.Services;
+using MailKit.Security;
 using Microsoft.EntityFrameworkCore;
 
 namespace BestPrice.Controllers
@@ -12,10 +15,12 @@ namespace BestPrice.Controllers
     public class HomeController : Controller
     {
         private readonly prj666_192a03Context _context;
+        private readonly IEmailSender _emailSender;
 
-        public HomeController(prj666_192a03Context context)
+        public HomeController(prj666_192a03Context context, IEmailSender emailSender)
         {
             _context = context;
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -34,6 +39,24 @@ namespace BestPrice.Controllers
         }
 
         public IActionResult ReportIssue()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ReportIssue([Bind("Subject, Description")] Problem problem)
+        {
+            if (ModelState.IsValid)
+            {
+                await _emailSender.SendEmailByMailKitAsync("prj666_group03@yahoo.com", problem.Subject, problem.Description);
+                return RedirectToAction(nameof(ReportIssueSuccessful));
+            }
+
+            return View();
+        }
+
+        public IActionResult ReportIssueSuccessful()
         {
             return View();
         }

@@ -2,9 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Options;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using MimeKit;
+
+
+
 namespace BestPrice.Services
 {
     // This class is used by the application to send email for account confirmation and password reset.
@@ -36,6 +43,34 @@ namespace BestPrice.Services
             //msg.AddSubstitution("--verifyURL--", link);
             //msg.AddSubstitution("--Button--", button_text);
             return client.SendEmailAsync(msg);
+        }
+
+        public async Task SendEmailByMailKitAsync(string email, string subject, string body)
+        {
+            try
+            {
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("Problem Reporting", "prj666group03@gmail.com"));
+                message.To.Add(new MailboxAddress("TechPG Developer", email));
+                message.Subject = subject;
+                message.Body = new TextPart("plain")
+                {
+                    Text = body
+                };
+
+                using (var client = new SmtpClient())
+                {
+                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+                    client.Authenticate("prj666group03@gmail.com", "Group03...");
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
