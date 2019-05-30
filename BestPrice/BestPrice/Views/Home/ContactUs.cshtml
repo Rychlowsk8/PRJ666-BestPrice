@@ -1,8 +1,66 @@
-﻿@model object
+﻿@model BestPrice.Models.ContactForm
 
 @{
     ViewBag.Title = "Contact Us";
     Layout = "_Layout";
 }
 
-    <h2>Contact Us</h2>
+<h1>Contact Us</h1>
+
+<hr/>
+
+<div class="row">
+    <div class="col-md-8">
+        <h2>Please fill out this contact form</h2>
+        <div class="col-md-12 well" style="background: white">
+            <form asp-action="ContactUs">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Full name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" placeholder="Email address">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Subject" class="control-label"></label>
+                    <input asp-for="Subject" class="form-control" placeholder="Type a subject">
+                    <span asp-validation-for="Subject" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Message" class="control-label"></label>
+                    <textarea asp-for="Message" class="form-control" placeholder="Describe your needs" rows="4" cols="50" style="resize: none"></textarea>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+                <div class="form-group text-center">
+                    <input type="submit" value="Submit" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <h2>Contact Emails:</h2>
+        <hr/>
+        <div class="row">
+            <div class="col-md-5">
+                <p>Brandon Rychlowski:</p>
+                <p>Jatin Kumar:</p>
+                <p>Thanh Nguyen:</p>
+                <p>Kwangsoo Jin:</p>
+            </div>
+            
+            <div class="col-md-7">
+                <p><a href="mailto:brychlowski@myseneca.ca">brychlowski@myseneca.ca</a></p>
+                <p><a href="mailto:jkumar15@myseneca.ca">jkumar15@myseneca.ca</a></p>
+                <p><a href="mailto:tnguyen-cong@myseneca.ca">tnguyen-cong@myseneca.ca</a></p>
+                <p><a href="mailto:kjin3@myseneca.ca">kjin3@myseneca.ca</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

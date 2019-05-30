@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using BestPrice.Models;
 using BestPrice.Services;
 using MailKit.Security;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace BestPrice.Controllers
@@ -38,6 +39,26 @@ namespace BestPrice.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ContactUs([Bind("Subject, Name, Email, Message")] ContactForm contactForm)
+        {
+            if (ModelState.IsValid)
+            {
+                var messageBody = $"From: {contactForm.Name}\n Email: {contactForm.Email}\n\n {contactForm.Message}";
+                await _emailSender.SendEmailByMailKitAsync("prj666_group03@yahoo.com", contactForm.Subject, messageBody, "Contact Us");
+                return RedirectToAction(nameof(ContactUsSuccessful));
+            }
+
+            return View();
+        }
+
+        public IActionResult ContactUsSuccessful()
+        {
+            return View();
+        }
+
+
         public IActionResult ReportIssue()
         {
             return View();
@@ -49,7 +70,7 @@ namespace BestPrice.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _emailSender.SendEmailByMailKitAsync("prj666_group03@yahoo.com", problem.Subject, problem.Description);
+                await _emailSender.SendEmailByMailKitAsync("prj666_group03@yahoo.com", problem.Subject, problem.Description, "Problem Report");
                 return RedirectToAction(nameof(ReportIssueSuccessful));
             }
 

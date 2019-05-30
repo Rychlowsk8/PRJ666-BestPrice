@@ -45,12 +45,12 @@ namespace BestPrice.Services
             return client.SendEmailAsync(msg);
         }
 
-        public async Task SendEmailByMailKitAsync(string email, string subject, string body)
+        public async Task SendEmailByMailKitAsync(string email, string subject, string body, string typeOfEmail)
         {
             try
             {
                 var message = new MimeMessage();
-                message.From.Add(new MailboxAddress("Problem Reporting", "prj666group03@gmail.com"));
+                message.From.Add(new MailboxAddress(typeOfEmail, "prj666group03@gmail.com"));
                 message.To.Add(new MailboxAddress("TechPG Developer", email));
                 message.Subject = subject;
                 message.Body = new TextPart("plain")
