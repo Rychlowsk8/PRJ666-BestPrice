@@ -25,7 +25,7 @@ namespace BestPrice.Services
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            return Execute(Options.SendGridKey, subject, message, email);
+            return Execute("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", subject, message, email);
         }
         public Task Execute(string apiKey, string subject, string message, string email)
         {
