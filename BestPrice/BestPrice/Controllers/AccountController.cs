@@ -389,8 +389,11 @@ namespace BestPrice.Controllers
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
-                await _emailSender.SendEmailAsync(model.Email, "TechPG - Reset Password", $"<h1>Thanks for joining TechPG!</h1> <br/>" +
-                   $"Please reset your password by clicking here: <a href='{callbackUrl}'> Reset Password link</a>");
+                //await _emailSender.SendEmailAsync(model.Email, "TechPG - Reset Password", $"<h1>Thanks for joining TechPG!</h1> <br/>" +
+                //   $"Please reset your password by clicking here: <a href='{callbackUrl}'> Reset Password link</a>");
+                await _emailSender.SendEmailByMailKitAsync2(model.Email, "TechPG - Reset Password", "<img src='https://i.ibb.co/QQYMWZQ/logo.jpg' style='width:200px;height:150px' alt='TechPG logo' >" +
+                       $"<h1>Thanks for joining TechPG!</h1> <br/>" +
+                       $"Please reset your password by clicking here: <a href='{callbackUrl}'> Reset Password link</a>");
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
 
                 //await _emailSender.SendEmailAsync(model.Email, "TechPG - Reset Password", $"<h1>Thanks for joining TechPG!</h1> <br/>" +
