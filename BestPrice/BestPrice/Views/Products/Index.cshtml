@@ -1,53 +1,54 @@
 ﻿@model IEnumerable<BestPrice.Models.Products>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Results";
 }
-
-<h2>Index</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
+<div class="row">
+    <div class="col-sm">
+        <div class="input-group" style="margin-left:300px;margin-right:300px;margin-top:15px">
+            <input type="text" class="form-control" id="textAutocomplete" placeholder="Search For Products..." />
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Search</button>
+            </span>
+        </div><!-- /input-group -->
+    </div>
+</div>
+<div class="dropdown" style="float:left; position:absolute; margin-top:10px">
+    <button class="dropdown-toggle btn" type="button" data-toggle="dropdown">Sort by</button>
+    <ul class="dropdown-menu">
+        <li>Price</li>
+        <li>Name</li>
+        <li>Reviews</li>
+        <li>Price range<input type="text" size="1" placeholder="$" /> - <input type="text" size="1" placeholder="$" /></li>
+        <li><input type="text" placeholder="Seller" /></li>
+    </ul>
+</div>
+@foreach (var item in Model)
+{
+    <table class="table table-bordered" style="width:75%; margin:auto; margin-top:10px">
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CurrentPrice)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.BeforePrice)
-                </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Seller)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
+            <td class="col-md-11" colspan="2">
+                <b>@Html.DisplayFor(modelItem => item.Name)</b>
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BeforePrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seller.Link)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <td class="col-md-1">
+                <b style="text-align:center">$@Html.DisplayFor(modelItem => item.CurrentPrice)</b>
             </td>
         </tr>
+        <tr>
+            <td class="col-md-2">
+                <img alt="Image not available" />
+            </td>
+            <td class="col-md-10" colspan="3">
+                This area will contain the product description detailing the product specs and other important details.
+                <br /><br />
+                Sold by: @Html.DisplayFor(modelItem => item.Seller.Name)
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-12" colspan="3">
+                <a asp-controller="Wishlists" asp-action="Create"><b style="color:#0094ff">Add to Wishlist</b></a>
+                <b style="color:#0094ff">  |  </b>
+                <a asp-controller="Reviews" asp-action="Index"><b style="color:#0094ff">Visit Reviews</b></a>
+            </td>
+        </tr>
+    </table>
 }
-    </tbody>
-</table>

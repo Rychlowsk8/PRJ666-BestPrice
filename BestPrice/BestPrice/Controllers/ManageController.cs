@@ -57,9 +57,8 @@ namespace BestPrice.Controllers
 
             var model = new IndexViewModel
             {
-                Username = user.UserName,
                 Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
+                Location = user.Location,
                 IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage
             };
@@ -92,16 +91,13 @@ namespace BestPrice.Controllers
                 }
             }
 
-            var phoneNumber = user.PhoneNumber;
-            if (model.PhoneNumber != phoneNumber)
+            if (model.Location != user.Location)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
-                }
+                user.Location = model.Location;
             }
 
+            await _userManager.UpdateAsync(user);
+            await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));
         }
@@ -224,6 +220,50 @@ namespace BestPrice.Controllers
             StatusMessage = "Your password has been set.";
 
             return RedirectToAction(nameof(SetPassword));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Settings()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Settings(SettingsViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var getNotified = user.getNotified;
+            if (model.getNotified != getNotified)
+            {
+                user.getNotified = model.getNotified;
+            }
+
+            if (model.saveSearches != user.saveSearches)
+            {
+                user.saveSearches = model.saveSearches;
+            }
+
+            await _userManager.UpdateAsync(user);
+            await _signInManager.RefreshSignInAsync(user);
+            StatusMessage = "Your profile has been updated";
+            return RedirectToAction(nameof(Settings));
         }
 
         [HttpGet]
