@@ -17,9 +17,10 @@
     <div class="row">
         <div class="col-sm">
             <div class="input-group" style="margin-left:300px;margin-right:300px">
-                <input type="text" class="form-control" id="textAutocomplete" placeholder="Search For Products..." />
+                <input type="text" class="form-control" id="textAutocomplete" placeholder="Search For Products..."/>
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Search</button>
+                    @* <button onclick="location.href='@Url.Action("Search", "ebay", new { keyword = "iphone" }) })'" class="btn btn-default" type="submit">Search</button> *@
+                       <button id="button" class="btn btn-default" type="submit">Search</button>
                 </span>
             </div><!-- /input-group -->
         </div>
@@ -35,6 +36,7 @@
             <a class="btn btn-primary" asp-controller="SearchHistories" asp-action="Index">Search Histories</a>
             <a class="btn btn-primary" asp-controller="Faqs" asp-action="Index">Faqs</a>
             <a class="btn btn-primary" asp-controller="Notifications" asp-action="Index">Notifications</a>
+            <a class="btn btn-primary" asp-controller="ebay" asp-action="Index">Ebay list</a>
         </div>
     </div>
     
@@ -57,4 +59,46 @@
             })
         }
     });
+
+    $(function () {
+        $('#button').click(function () {
+            var url = '@Url.Action("Search", "ebay")';
+            var textValue = $('#textAutocomplete').val();
+             window.location.href = url + '/' + textValue;
+        });
+    });
+
+    $(document).ready(function () {
+
+        if ($("#textAutocomplete").val().length  == 0) {
+            $("#button").prop('disabled', true);
+        } 
+
+        $('#textAutocomplete').change(function () {
+            if ($("#textAutocomplete").val().length) {
+                $("#button").prop('disabled', false);
+            } else {
+                $("#button").prop('disabled', true);
+            }
+        });
+    });
+        
+
+    @*
+    $(document).ready(function () {
+        if ($("#textAutocomplete").val().length == 0) {
+            $("#button").prop('disabled', true);
+        }
+
+        $('#textAutocomplete').keyup(function () {
+            $('#textAutocomplete').change(function () {
+                if ($("#textAutocomplete").val().length) {
+                    $("#button").prop('disabled', false);
+                } else {
+                    $("#button").prop('disabled', true);
+                }
+            });
+        });
+    });
+        *@
 </script>
