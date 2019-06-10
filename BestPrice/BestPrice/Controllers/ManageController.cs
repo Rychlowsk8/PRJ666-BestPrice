@@ -85,9 +85,15 @@ namespace BestPrice.Controllers
             if (model.Email != email)
             {
                 var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
+                var setUserNameResult = await _userManager.SetUserNameAsync(user, model.Email);
                 if (!setEmailResult.Succeeded)
                 {
                     throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
+                }
+
+                if (!setUserNameResult.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting username for user with ID '{user.Id}'.");
                 }
             }
 
