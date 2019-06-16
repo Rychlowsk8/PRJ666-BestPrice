@@ -10,6 +10,7 @@ using BestPrice.Services;
 using MailKit.Security;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace BestPrice.Controllers
 {
