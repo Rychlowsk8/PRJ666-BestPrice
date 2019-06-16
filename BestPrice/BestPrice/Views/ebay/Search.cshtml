@@ -1,10 +1,27 @@
 ﻿@model IEnumerable<BestPrice.Models.ebay.EbayItem>
 
 @{
-    ViewData["Title"] = "list";
+    ViewData["Title"] = "Search list";
+
+    string CurrentURL = ViewBag.keyword;
 }
 
-<h1>List fetched from ebay live</h1>
+<head>
+    <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css'>
+</head>
+
+<h1>Results for "@CurrentURL"</h1>
+
+<div class="row">
+    <div class="col-sm">
+        <div class="input-group" style="margin-left:300px;margin-right:300px">
+            <input type="text" class="form-control" id="textAutocomplete" value="@ViewBag.keyword" placeholder="Search For Products..." />
+            <span class="input-group-btn">
+                <button id="button" class="btn btn-default" type="submit">Search</button>
+            </span>
+        </div><!-- /input-group -->
+    </div>
+</div>
 
 <div class="dropdown" style="float:left; position:absolute; margin-top:10px">
     <button class="dropdown-toggle btn" type="button" data-toggle="dropdown">Sort by</button>
@@ -50,3 +67,44 @@
         </tr>
     </table>
 }
+
+    <script>
+
+    $("#textAutocomplete").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                type: "GET",
+                url: "/Products/GetSuggestion",
+                data: { text: request.term },
+                success: function(data) {
+                    response($.map(data, function(item) {
+                        return {label: item, value: item}
+                    }))
+                }
+            })
+        }
+    });
+
+    $(function () {
+        $('#button').click(function () {
+            var url = '@Url.Action("Search", "ebay", new { keyword = "" })';
+            var textValue = $('#textAutocomplete').val();
+            window.location.href = url + '/' + textValue;
+        });
+    });
+
+    $(document).ready(function () {
+        //$('#button').attr('disabled', true);
+
+        var valid_check = $('#textAutocomplete');
+        valid_check.keyup(function () {
+            if ($('#textAutocomplete').val().length != 0) {
+                $('#button').prop('disabled', false);
+            }
+            else {
+                $('#button').prop('disabled', true);
+            }
+        })
+        });
+
+    </script>

@@ -12,7 +12,7 @@
         <div class="col">
             <img src="~/images/facebook_cover_photo_1.png" height="200" style="margin-top:30px;margin-bottom:30px;" />
         </div>
-        <p>The place where you can find the best price for your smartphones and laptops.</p>
+        <p style="font-family:'Comic Sans MS', cursive, sans-serif">The place where you can find the best price for your smartphones and laptops.</p>
     </div>
     <div class="row">
         <div class="col-sm">
@@ -70,36 +70,17 @@
     });
 
     $(document).ready(function () {
+        $('#button').attr('disabled', true);
 
-        if ($("#textAutocomplete").val().length  == 0) {
-            $("#button").prop('disabled', true);
-        } 
-
-        $('#textAutocomplete').change(function () {
-            if ($("#textAutocomplete").val().length) {
-                $("#button").prop('disabled', false);
-            } else {
-                $("#button").prop('disabled', true);
+        var valid_check = $('#textAutocomplete');
+        valid_check.keyup(function () {
+            if ($('#textAutocomplete').val().length != 0) {
+                $('#button').prop('disabled', false);
             }
-        });
+            else {
+                $('#button').prop('disabled', true);
+            }
+        })
     });
-        
 
-    @*
-    $(document).ready(function () {
-        if ($("#textAutocomplete").val().length == 0) {
-            $("#button").prop('disabled', true);
-        }
-
-        $('#textAutocomplete').keyup(function () {
-            $('#textAutocomplete').change(function () {
-                if ($("#textAutocomplete").val().length) {
-                    $("#button").prop('disabled', false);
-                } else {
-                    $("#button").prop('disabled', true);
-                }
-            });
-        });
-    });
-        *@
 </script>

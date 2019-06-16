@@ -55,6 +55,7 @@ namespace BestPrice.Controllers
         [Route("[action]/{keyword}")]
         public async Task<IActionResult> Search(string keyword)
         {
+            ViewBag.keyword = keyword;
             List<EbayItem> items = new List<EbayItem>();
 
             /*
@@ -87,13 +88,16 @@ namespace BestPrice.Controllers
             JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
             JObject ebayParser = JObject.Parse(ebayResponse);
             JToken jEbay = ebayParser.First.First.First["searchResult"][0];
- 
+            int count = jEbay["@count"].ToObject<int>();
+  
+            if (count > 0)
+            {
                 foreach (JToken i in jEbay["item"])
                 {
                     EbayItem eItem = new EbayItem(i);
                     items.Add(eItem);
                 }
-
+            }
             return View(items);
         }
 
