@@ -11,7 +11,7 @@ namespace BestPrice.Models.ebay
         public int Id { get; set; }
         public long ItemId { get; set; }
         public string Title { get; set; }
-        //public string subtitle { get; set; }
+        public string subtitle { get; set; }
         public string GalleryURL { get; set; }
         public string ViewItemURL { get; set; }
         public string postalCode { get; set; }
@@ -30,18 +30,80 @@ namespace BestPrice.Models.ebay
         {
             //JToken jUser = jToken["item"][0];
             ItemId = (long)jToken["itemId"][0];
-            Title = (string)jToken["title"][0];
-            //subtitle = (string)jToken["subtitle"][0];
-            GalleryURL = (string)jToken["galleryURL"][0];
-            ViewItemURL = (string)jToken["viewItemURL"][0];
-            // postalCode = (string)jToken["postalCode"][0];
-            //Location = (string)jToken["location"][0];
-            //Country = (string)jToken["country"][0];
+            if (jToken["title"] != null)
+            {
+                Title = (string)jToken["title"][0];
+            }
+            else
+            {
+                Title = "Unknown";
+            }
+            
+            if(jToken["subtitle"] != null)
+            {
+                subtitle = (string)jToken["subtitle"][0];
+            }
+            else
+            {
+                subtitle = "Unknown";
+            }
+            if (jToken["galleryURL"] != null)
+            {
+                GalleryURL = (string)jToken["galleryURL"][0];
+            }
+            else
+            {
+                GalleryURL = "Unknown";
+            }
+            if (jToken["viewItemURL"] != null)
+            {
+                ViewItemURL = (string)jToken["viewItemURL"][0];
+            }
+            else
+            {
+                ViewItemURL = "Unknown";
+            }
+
+            /*
+            if (jToken["postalCode"] != null)
+            {
+                postalCode = (string)jToken["postalCode"][0];
+            }
+            else
+            {
+                postalCode = "Unknown";
+            }
+
+            if (jToken["location"] != null)
+            {
+                Location = (string)jToken["location"][0];
+            }
+            else
+            {
+                Location = "Unknown";
+            }
+            if (jToken["country"] != null)
+            {
+                Country = (string)jToken["country"][0];
+            }
+            else
+            {
+                Country = "Unknown";
+            }
+            */
             //ShippingServiceCost = (float)jToken["shippingInfo"][0]["shippingServiceCost"][0]["__value__"];
             CurrentPrice = (int)((float)(jToken["sellingStatus"][0]["currentPrice"][0]["__value__"]));
             TimeLeft = (string)jToken["sellingStatus"][0]["timeLeft"][0];
-            ConditionId = (int)jToken["condition"][0]["conditionId"][0];
-            ConditionDisplayName = (string)jToken["condition"][0]["conditionDisplayName"][0];
+            if (jToken["condition"] != null)
+            {
+                ConditionId = (int)jToken["condition"][0]["conditionId"][0];
+                ConditionDisplayName = (string)jToken["condition"][0]["conditionDisplayName"][0];
+            }
+            else
+            {
+                ConditionId = 0;
+                ConditionDisplayName = "Unknown";
+            }
         }
     }
 }
