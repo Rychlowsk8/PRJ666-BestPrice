@@ -221,6 +221,10 @@ namespace BestPrice.Models
                     .HasMaxLength(256)
                     .IsUnicode(false);
 
+                entity.Property(e => e.PendingEmailChange)
+                    .HasMaxLength(256)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.PasswordHash).IsUnicode(false);
 
                 entity.Property(e => e.PhoneNumber).IsUnicode(false);

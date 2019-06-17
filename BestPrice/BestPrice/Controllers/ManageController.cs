@@ -25,6 +25,7 @@ namespace BestPrice.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
+        private readonly prj666_192a03Context _context;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -34,13 +35,15 @@ namespace BestPrice.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          prj666_192a03Context context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _context = context;
         }
 
         [TempData]
@@ -59,7 +62,7 @@ namespace BestPrice.Controllers
             {
                 Email = user.Email,
                 Location = user.Location,
-                IsEmailConfirmed = user.EmailConfirmed,
+                PendingEmail = _context.AspNetUsers.Find(user.Id).PendingEmailChange,
                 StatusMessage = StatusMessage
             };
 
@@ -81,19 +84,16 @@ namespace BestPrice.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var email = user.Email;
-            if (model.Email != email)
-            {
-                var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
-                var setUserNameResult = await _userManager.SetUserNameAsync(user, model.Email);
-                if (!setEmailResult.Succeeded)
-                {
-                    throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
-                }
+            int emailCount = 0;
 
-                if (!setUserNameResult.Succeeded)
+            if (!string.IsNullOrWhiteSpace(model.PendingEmail))
+            {
+                emailCount = _context.AspNetUsers.Where(u => u.Email.ToLower().Contains(model.PendingEmail)).ToList().Count;
+
+                if (model.PendingEmail != user.Email && emailCount == 0)
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting username for user with ID '{user.Id}'.");
+                    _context.AspNetUsers.Find(user.Id).PendingEmailChange = model.PendingEmail;
+                    await _context.SaveChangesAsync();
                 }
             }
 
@@ -104,7 +104,24 @@ namespace BestPrice.Controllers
 
             await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+
+            if (model.PendingEmail == user.Email)
+            {
+                StatusMessage = "The new email is the same, please enter another!";
+            }
+            else if (emailCount != 0)
+            {
+                StatusMessage = "Email already existed, please enter another!";
+            }
+            else if (string.IsNullOrWhiteSpace(model.PendingEmail))
+            {
+
+            }
+            else
+            {
+                StatusMessage = "Your profile has been updated";
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -125,7 +142,7 @@ namespace BestPrice.Controllers
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-            var email = user.Email;
+            var email = model.PendingEmail;
             await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 
             StatusMessage = "Verification email sent. Please check your email.";

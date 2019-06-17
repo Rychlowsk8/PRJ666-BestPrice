@@ -24,17 +24,20 @@ namespace BestPrice.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly prj666_192a03Context _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            prj666_192a03Context context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _context = context;
         }
 
         [TempData]
@@ -361,6 +364,19 @@ namespace BestPrice.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{userId}'.");
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+            {
+                var userWithPendingEmailChange = _context.AspNetUsers.Find(user.Id);
+                if (!string.IsNullOrWhiteSpace(userWithPendingEmailChange.PendingEmailChange))
+                {
+                    userWithPendingEmailChange.Email = userWithPendingEmailChange.PendingEmailChange;
+                    userWithPendingEmailChange.NormalizedEmail = userWithPendingEmailChange.PendingEmailChange.ToUpper();
+                    userWithPendingEmailChange.UserName = userWithPendingEmailChange.PendingEmailChange;
+                    userWithPendingEmailChange.NormalizedUserName = userWithPendingEmailChange.PendingEmailChange.ToUpper();
+                    userWithPendingEmailChange.PendingEmailChange = " ";
+                    _context.SaveChanges();
+                }
+            }
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 

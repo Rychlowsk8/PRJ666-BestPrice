@@ -21,6 +21,9 @@ namespace BestPrice.Models
         public string ConcurrencyStamp { get; set; }
         public string Email { get; set; }
         public short EmailConfirmed { get; set; }
+      
+      
+        public string PendingEmailChange { get; set; }
         public short LockoutEnabled { get; set; }
         public DateTimeOffset? LockoutEnd { get; set; }
         public string NormalizedEmail { get; set; }
