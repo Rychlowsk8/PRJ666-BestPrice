@@ -141,7 +141,7 @@ namespace BestPrice.Controllers
             }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, "https");
             var email = model.PendingEmail;
             await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 

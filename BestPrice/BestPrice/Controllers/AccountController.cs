@@ -242,7 +242,7 @@ namespace BestPrice.Controllers
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, "https");
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);
@@ -404,7 +404,7 @@ namespace BestPrice.Controllers
                 // For more information on how to enable account confirmation and password reset please
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
+                var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, "https");
                 //await _emailSender.SendEmailAsync(model.Email, "TechPG - Reset Password", $"<h1>Thanks for joining TechPG!</h1> <br/>" +
                 //   $"Please reset your password by clicking here: <a href='{callbackUrl}'> Reset Password link</a>");
                 await _emailSender.SendEmailByMailKitAsync2(model.Email, "TechPG - Reset Password", "<img src='https://i.ibb.co/QQYMWZQ/logo.jpg' style='width:200px;height:150px' alt='TechPG logo' >" +
@@ -455,7 +455,7 @@ namespace BestPrice.Controllers
                 }
 
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                var callbackUrl = Url.EmailConfirmationLink(user.Id, code, "https");
                 await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                 return RedirectToAction(nameof(SendConfirmationEmailConf));
