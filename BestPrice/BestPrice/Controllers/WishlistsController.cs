@@ -21,6 +21,11 @@ namespace BestPrice.Controllers
         // GET: Wishlists
         public async Task<IActionResult> Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var prj666_192a03Context = _context.Wishlists.Include(w => w.User);
             return View(await prj666_192a03Context.ToListAsync());
         }

@@ -9,7 +9,19 @@
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                <a asp-area="" asp-controller="Wishlists" asp-action="Index">
+                    <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp; Wishlist
+                </a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="Notifications" asp-action="Index">
+                    <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>&nbsp;&nbsp; Notifications
+                </a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp; @UserManager.GetUserName(User)!
+                </a>
             </li>
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>

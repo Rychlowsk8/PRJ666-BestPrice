@@ -72,5 +72,36 @@ namespace BestPrice.Services
                 throw ex;
             }
         }
+
+        public async Task SendEmailByMailKitAsync2(string email, string subject, string body)
+        {
+            try
+            {
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("TechPG", "prj666group03@gmail.com"));
+                message.To.Add(new MailboxAddress(email));
+                message.Subject = subject;
+
+                var builder = new BodyBuilder();
+
+                builder.HtmlBody = body;
+
+                message.Body = builder.ToMessageBody();
+
+                using (var client = new SmtpClient())
+                {
+                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+                    client.Authenticate("prj666group03@gmail.com", "Group03...");
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

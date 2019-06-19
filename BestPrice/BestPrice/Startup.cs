@@ -12,8 +12,7 @@ using BestPrice.Data;
 using BestPrice.Models;
 using BestPrice.Services;
 using Microsoft.AspNetCore.HttpOverrides;
-
-
+using Microsoft.AspNetCore.Http;
 
 namespace BestPrice
 {
@@ -53,6 +52,7 @@ namespace BestPrice
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -63,6 +63,27 @@ namespace BestPrice
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            // Abstract code for core 1.1 to handle any exception from the browser
+            /*app.Use(async (context, next) =>
+            {
+                await next.Invoke();
+
+                //After going down the pipeline check if we 404'd. 
+                if (context.Response.StatusCode == StatusCodes.Status404NotFound)
+                {
+                    await context.Response.WriteAsync("Woops! We 404'd");
+                }
+            });*/
+
+            //app.UseExceptionHandler("/Home/Error");
+
+            
+            //For Core 2.0
+            //app.UseStatusCodePagesWithRedirects("/Home/Error/404");
+
+            //For core 2.2
+            //app.UseExceptionHandler("/Home/Error");
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {

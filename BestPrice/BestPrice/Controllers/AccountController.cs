@@ -24,17 +24,20 @@ namespace BestPrice.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly prj666_192a03Context _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            prj666_192a03Context context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _context = context;
         }
 
         [TempData]
@@ -239,7 +242,7 @@ namespace BestPrice.Controllers
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, "https");
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);
@@ -361,6 +364,19 @@ namespace BestPrice.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{userId}'.");
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+            {
+                var userWithPendingEmailChange = _context.AspNetUsers.Find(user.Id);
+                if (!string.IsNullOrWhiteSpace(userWithPendingEmailChange.PendingEmailChange))
+                {
+                    userWithPendingEmailChange.Email = userWithPendingEmailChange.PendingEmailChange;
+                    userWithPendingEmailChange.NormalizedEmail = userWithPendingEmailChange.PendingEmailChange.ToUpper();
+                    userWithPendingEmailChange.UserName = userWithPendingEmailChange.PendingEmailChange;
+                    userWithPendingEmailChange.NormalizedUserName = userWithPendingEmailChange.PendingEmailChange.ToUpper();
+                    userWithPendingEmailChange.PendingEmailChange = " ";
+                    _context.SaveChanges();
+                }
+            }
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
@@ -388,9 +404,12 @@ namespace BestPrice.Controllers
                 // For more information on how to enable account confirmation and password reset please
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
-                await _emailSender.SendEmailAsync(model.Email, "TechPG - Reset Password", $"<h1>Thanks for joining TechPG!</h1> <br/>" +
-                   $"Please reset your password by clicking here: <a href='{callbackUrl}'> Reset Password link</a>");
+                var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, "https");
+                //await _emailSender.SendEmailAsync(model.Email, "TechPG - Reset Password", $"<h1>Thanks for joining TechPG!</h1> <br/>" +
+                //   $"Please reset your password by clicking here: <a href='{callbackUrl}'> Reset Password link</a>");
+                await _emailSender.SendEmailByMailKitAsync2(model.Email, "TechPG - Reset Password", "<img src='https://i.ibb.co/QQYMWZQ/logo.jpg' style='width:200px;height:150px' alt='TechPG logo' >" +
+                       $"<h1>Thanks for joining TechPG!</h1> <br/>" +
+                       $"Please reset your password by clicking here: <a href='{callbackUrl}'> Reset Password link</a>");
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
 
                 //await _emailSender.SendEmailAsync(model.Email, "TechPG - Reset Password", $"<h1>Thanks for joining TechPG!</h1> <br/>" +
@@ -436,7 +455,7 @@ namespace BestPrice.Controllers
                 }
 
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                var callbackUrl = Url.EmailConfirmationLink(user.Id, code, "https");
                 await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                 return RedirectToAction(nameof(SendConfirmationEmailConf));

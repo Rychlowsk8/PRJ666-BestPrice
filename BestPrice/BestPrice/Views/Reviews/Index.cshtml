@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<BestPrice.Models.Reviews>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Reviews";
 }
 
+@*
 <h2>Index</h2>
 
 <p>
@@ -51,3 +52,20 @@
 }
     </tbody>
 </table>
+*@
+
+<div class="container" style="margin-top:150px">
+    <div class="row align-items-center">
+        <div class="col text-center">
+            <div class="content">
+                <h1>Coming Soon</h1>
+                <h3>We are working very hard on this feature. Meantime use other functionalities of the TechPG app.</h3>
+                <h2>Stay Tuned!</h2>
+                <a class="btn  btn-outline-success" asp-area="" asp-controller="Home" asp-action="Index">
+                    Go to Home
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>

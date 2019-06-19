@@ -21,6 +21,9 @@ namespace BestPrice.Controllers
         // GET: Notifications
         public async Task<IActionResult> Index()
         {
+            if (!User.Identity.IsAuthenticated) { 
+                return RedirectToAction("Login", "Account");
+            }
             var prj666_192a03Context = _context.Notifications.Include(n => n.Product).Include(n => n.User);
             return View(await prj666_192a03Context.ToListAsync());
         }

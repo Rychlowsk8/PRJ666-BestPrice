@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using BestPrice.Models;
 using BestPrice.Models.ManageViewModels;
 using BestPrice.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace BestPrice.Controllers
 {
@@ -25,6 +26,7 @@ namespace BestPrice.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
+        private readonly prj666_192a03Context _context;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -34,13 +36,15 @@ namespace BestPrice.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          prj666_192a03Context context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _context = context;
         }
 
         [TempData]
@@ -57,10 +61,9 @@ namespace BestPrice.Controllers
 
             var model = new IndexViewModel
             {
-                Username = user.UserName,
                 Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                IsEmailConfirmed = user.EmailConfirmed,
+                Location = user.Location,
+                PendingEmail = _context.AspNetUsers.Find(user.Id).PendingEmailChange,
                 StatusMessage = StatusMessage
             };
 
@@ -82,27 +85,44 @@ namespace BestPrice.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var email = user.Email;
-            if (model.Email != email)
+            int emailCount = 0;
+
+            if (!string.IsNullOrWhiteSpace(model.PendingEmail))
             {
-                var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
-                if (!setEmailResult.Succeeded)
+                emailCount = _context.AspNetUsers.Where(u => u.Email.ToLower().Contains(model.PendingEmail)).ToList().Count;
+
+                if (model.PendingEmail != user.Email && emailCount == 0)
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
+                    _context.AspNetUsers.Find(user.Id).PendingEmailChange = model.PendingEmail;
+                    await _context.SaveChangesAsync();
                 }
             }
 
-            var phoneNumber = user.PhoneNumber;
-            if (model.PhoneNumber != phoneNumber)
+            if (model.Location != user.Location)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
-                }
+                user.Location = model.Location;
             }
 
-            StatusMessage = "Your profile has been updated";
+            await _userManager.UpdateAsync(user);
+            await _signInManager.RefreshSignInAsync(user);
+
+            if (model.PendingEmail == user.Email)
+            {
+                StatusMessage = "The new email is the same, please enter another!";
+            }
+            else if (emailCount != 0)
+            {
+                StatusMessage = "Email already existed, please enter another!";
+            }
+            else if (string.IsNullOrWhiteSpace(model.PendingEmail))
+            {
+
+            }
+            else
+            {
+                StatusMessage = "Your profile has been updated";
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -122,8 +142,8 @@ namespace BestPrice.Controllers
             }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-            var email = user.Email;
+            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, "https");
+            var email = model.PendingEmail;
             await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 
             StatusMessage = "Verification email sent. Please check your email.";
@@ -224,6 +244,111 @@ namespace BestPrice.Controllers
             StatusMessage = "Your password has been set.";
 
             return RedirectToAction(nameof(SetPassword));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Settings()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Settings(SettingsViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var getNotified = user.getNotified;
+            if (model.getNotified != getNotified)
+            {
+                user.getNotified = model.getNotified;
+            }
+
+            if (model.saveSearches != user.saveSearches)
+            {
+                user.saveSearches = model.saveSearches;
+            }
+
+            await _userManager.UpdateAsync(user);
+            await _signInManager.RefreshSignInAsync(user);
+            StatusMessage = "Your profile has been updated";
+            return RedirectToAction(nameof(Settings));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> History()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            var prj666_192a03Context = _context.SearchHistories.Include(s => s.User)
+                .Where(x => x.UserId == user.Id);
+            return View(await prj666_192a03Context.ToListAsync());
+        }
+
+        public async Task<IActionResult> HistoryDelete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var searchHistories = await _context.SearchHistories
+                .Include(s => s.User)
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (searchHistories == null)
+            {
+                return NotFound();
+            }
+
+            return View(searchHistories);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> HistoryDeleteConfirmed(int id)
+        {
+            var searchHistories = await _context.SearchHistories.SingleOrDefaultAsync(m => m.Id == id);
+            _context.SearchHistories.Remove(searchHistories);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("History");
+        }
+
+        public IActionResult HistoryDeleteAll()
+        {
+            return View();
+        }
+
+        [HttpPost, ActionName("Delete All")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> HistoryDeleteAllConfirmed()
+        {
+            var searchHistories = _context.SearchHistories;
+            foreach (var item in searchHistories)
+            {
+                if (item != null)
+                    _context.SearchHistories.Remove(item);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("History");
         }
 
         [HttpGet]
