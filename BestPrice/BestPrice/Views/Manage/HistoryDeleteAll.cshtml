@@ -1,0 +1,12 @@
+﻿@model BestPrice.Models.SearchHistories
+@{
+    ViewData["Title"] = "Delete All";
+    ViewData.AddActivePage(ManageNavPages.History);
+}
+<h3>Are you sure you want to delete your entire history?</h3>
+<div>
+    <form asp-action="Delete All">
+        <input type="submit" value="Delete All" class="btn btn-default" /> |
+        <a asp-action="History">Back to History</a>
+    </form>
+</div>

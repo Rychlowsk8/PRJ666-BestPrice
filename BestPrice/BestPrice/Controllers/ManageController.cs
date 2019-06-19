@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using BestPrice.Models;
 using BestPrice.Models.ManageViewModels;
 using BestPrice.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace BestPrice.Controllers
 {
@@ -287,6 +288,67 @@ namespace BestPrice.Controllers
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Settings));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> History()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            var prj666_192a03Context = _context.SearchHistories.Include(s => s.User)
+                .Where(x => x.UserId == user.Id);
+            return View(await prj666_192a03Context.ToListAsync());
+        }
+
+        public async Task<IActionResult> HistoryDelete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var searchHistories = await _context.SearchHistories
+                .Include(s => s.User)
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (searchHistories == null)
+            {
+                return NotFound();
+            }
+
+            return View(searchHistories);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> HistoryDeleteConfirmed(int id)
+        {
+            var searchHistories = await _context.SearchHistories.SingleOrDefaultAsync(m => m.Id == id);
+            _context.SearchHistories.Remove(searchHistories);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("History");
+        }
+
+        public IActionResult HistoryDeleteAll()
+        {
+            return View();
+        }
+
+        [HttpPost, ActionName("Delete All")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> HistoryDeleteAllConfirmed()
+        {
+            var searchHistories = _context.SearchHistories;
+            foreach (var item in searchHistories)
+            {
+                if (item != null)
+                    _context.SearchHistories.Remove(item);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("History");
         }
 
         [HttpGet]

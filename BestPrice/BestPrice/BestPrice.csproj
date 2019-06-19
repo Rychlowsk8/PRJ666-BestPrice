@@ -7,6 +7,11 @@
     <DebugType>portable</DebugType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20190618220848_ApiModel.cs" />
+    <Compile Remove="Migrations\20190618220848_ApiModel.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="2.1.5.1" />

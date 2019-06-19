@@ -63,7 +63,7 @@
 
     $(function () {
         $('#button').click(function () {
-            var url = '@Url.Action("Search", "ebay")';
+            var url = '@Url.Action("Search", "api")';
             var textValue = $('#textAutocomplete').val();
              window.location.href = url + '/' + textValue;
         });
