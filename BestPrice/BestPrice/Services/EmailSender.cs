@@ -50,7 +50,7 @@ namespace BestPrice.Services
             try
             {
                 var message = new MimeMessage();
-                message.From.Add(new MailboxAddress(typeOfEmail, "prj666group03@gmail.com"));
+                message.From.Add(new MailboxAddress(typeOfEmail, "prj666_192a03@myseneca.ca"));
                 message.To.Add(new MailboxAddress("TechPG Developer", email));
                 message.Subject = subject;
                 message.Body = new TextPart("plain")
@@ -61,8 +61,8 @@ namespace BestPrice.Services
                 using (var client = new SmtpClient())
                 {
                     client.ServerCertificateValidationCallback = (s, c, h, e) => true;
-                    client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                    client.Authenticate("prj666group03@gmail.com", "Group03...");
+                    client.Connect("smtp.office365.com", 587, SecureSocketOptions.StartTls);
+                    client.Authenticate("prj666_192a03@myseneca.ca", "NE@JB485dkwn");
                     client.Send(message);
                     client.Disconnect(true);
                 }
@@ -78,7 +78,7 @@ namespace BestPrice.Services
             try
             {
                 var message = new MimeMessage();
-                message.From.Add(new MailboxAddress("TechPG", "prj666group03@gmail.com"));
+                message.From.Add(new MailboxAddress("TechPG", "prj666_192a03@myseneca.ca"));
                 message.To.Add(new MailboxAddress(email));
                 message.Subject = subject;
 
@@ -91,8 +91,8 @@ namespace BestPrice.Services
                 using (var client = new SmtpClient())
                 {
                     client.ServerCertificateValidationCallback = (s, c, h, e) => true;
-                    client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                    client.Authenticate("prj666group03@gmail.com", "Group03...");
+                    client.Connect("smtp.office365.com", 587, SecureSocketOptions.StartTls);
+                    client.Authenticate("prj666_192a03@myseneca.ca", "NE@JB485dkwn");
                     client.Send(message);
                     client.Disconnect(true);
                 }
