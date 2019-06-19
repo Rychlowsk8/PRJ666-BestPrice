@@ -53,7 +53,7 @@ namespace BestPrice
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             
-            if (env.IsDevelopment())
+            /*if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
@@ -65,7 +65,7 @@ namespace BestPrice
             }
 
             // Abstract code for core 1.1 to handle any exception from the browser
-            /*app.Use(async (context, next) =>
+            app.Use(async (context, next) =>
             {
                 await next.Invoke();
 
@@ -80,10 +80,10 @@ namespace BestPrice
 
             
             //For Core 2.0
-            //app.UseStatusCodePagesWithRedirects("/Home/Error/404");
+            app.UseStatusCodePagesWithRedirects("/Home/Error/404");
 
             //For core 2.2
-            //app.UseExceptionHandler("/Home/Error");
+            app.UseExceptionHandler("/Home/Error");
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
