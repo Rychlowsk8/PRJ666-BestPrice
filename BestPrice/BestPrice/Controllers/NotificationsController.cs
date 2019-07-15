@@ -22,12 +22,6 @@ namespace BestPrice.Controllers
 
         }
 
-        public NotificationsController(prj666_192a03Context context)
-        {
-            _context = context;
-        }
-
-
         // GET: Notifications
         public async Task<IActionResult> Index()
         {
