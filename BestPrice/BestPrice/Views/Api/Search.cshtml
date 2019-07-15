@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BestPrice.Models.Api.Item>
+﻿@model BestPrice.Services.PaginatedList<BestPrice.Models.Api.Item>
 
 @{
     ViewData["Title"] = "Search list";
@@ -24,15 +24,55 @@
 </div>
 
 @*<div class="dropdown" style="float:left; position:absolute; margin-top:10px">
-    <button class="dropdown-toggle btn" type="button" data-toggle="dropdown">Sort by</button>
-    <ul class="dropdown-menu">
-        <li>Price</li>
-        <li>Name</li>
-        <li>Reviews</li>
-        <li>Price range<input type="text" size="1" placeholder="$" /> - <input type="text" size="1" placeholder="$" /></li>
-        <li><input type="text" placeholder="Seller" /></li>
+        <button class="dropdown-toggle btn" type="button" data-toggle="dropdown">Sort by</button>
+        <ul class="dropdown-menu">
+            <li>Price</li>
+            <li>Name</li>
+            <li>Reviews</li>
+            <li>Price range<input type="text" size="1" placeholder="$" /> - <input type="text" size="1" placeholder="$" /></li>
+            <li><input type="text" placeholder="Seller" /></li>
+        </ul>
+    </div>*@
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<hr />
+
+<nav aria-label="Page navigation example" class="text-center">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a asp-action="Search"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               class="btn btn-default @prevDisabled">
+                Previous
+            </a>
+        </li>
+        @if (Model.TotalPages <= 20)
+        {
+            @for (var i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+            }
+        }
+        else
+        {
+            @for (var i = 1; i <= 20; i++)
+            {
+                <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+            }
+        }
+        <li class="page-item">
+            <a asp-action="Search"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               class="btn btn-default @nextDisabled">
+                Next
+            </a>
+        </li>
     </ul>
-</div>*@
+</nav>
 
 @foreach (var item in Model)
 {
@@ -71,6 +111,39 @@
         </tr>
     </table>
 }
+
+<nav aria-label="Page navigation example" class="text-center">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a asp-action="Search"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               class="btn btn-default @prevDisabled">
+                Previous
+            </a>
+        </li>
+        @if (Model.TotalPages <= 20)
+        {
+            @for (var i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+            }
+        }
+        else
+        {
+            @for (var i = 1; i <= 20; i++)
+            {
+                <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+            }
+        }
+        <li class="page-item">
+            <a asp-action="Search"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               class="btn btn-default @nextDisabled">
+                Next
+            </a>
+        </li>
+    </ul>
+</nav>
 
 <hr />
 <br />
