@@ -39,9 +39,9 @@
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
-<hr />
+<hr style="margin-bottom:0px"/>
 
-<nav aria-label="Page navigation example" class="text-center">
+<nav style="margin-top:0px; margin-bottom: 0px" aria-label="Page navigation example" class="text-center">
     <ul class="pagination justify-content-center">
         <li class="page-item">
             <a asp-action="Search"
@@ -54,14 +54,28 @@
         {
             @for (var i = 1; i <= Model.TotalPages; i++)
             {
-                <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                @if (i == Model.PageIndex)
+                {
+                    <li class="page-item active"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                }
             }
         }
         else
         {
             @for (var i = 1; i <= 20; i++)
             {
-                <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                @if (i == Model.PageIndex)
+                {
+                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                }
             }
         }
         <li class="page-item">
@@ -76,7 +90,7 @@
 
 @foreach (var item in Model)
 {
-    <table class="table table-bordered" style="width:75%; margin:auto; margin-top:10px">
+    <table class="table table-bordered" style="width:75%; margin:auto; margin-top:0px; margin-bottom: 10px">
         <tr>
             <td class="col-md-11" colspan="2">
                 <b>@Html.DisplayFor(modelItem => item.Title)</b>
@@ -112,7 +126,7 @@
     </table>
 }
 
-<nav aria-label="Page navigation example" class="text-center">
+<nav aria-label="Page navigation example" class="text-center" style="margin-top:0px">
     <ul class="pagination justify-content-center">
         <li class="page-item">
             <a asp-action="Search"
@@ -125,14 +139,28 @@
         {
             @for (var i = 1; i <= Model.TotalPages; i++)
             {
-                <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                @if (i == Model.PageIndex)
+                {
+                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                }
             }
         }
         else
         {
             @for (var i = 1; i <= 20; i++)
             {
-                <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                @if (i == Model.PageIndex)
+                {
+                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                }
             }
         }
         <li class="page-item">
@@ -186,5 +214,4 @@
             }
         })
         });
-
 </script>
