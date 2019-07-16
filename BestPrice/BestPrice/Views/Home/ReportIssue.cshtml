@@ -1,8 +1,35 @@
-﻿@model object
+﻿@model BestPrice.Models.Problem
 
 @{
     ViewBag.Title = "Report Issue";
     Layout = "_Layout";
 }
 
-<h2>Report Issue</h2>
+<h1 class="text-center">Have a problem? Tell us, we'll look into it!</h1>
+
+<hr />
+
+<br />
+
+<h3 class="text-center">Please fill out this form to report problems</h3>
+
+<br />
+
+<div class="col-md-6 col-md-offset-3 well" style="background: white">
+    <form asp-action="ReportIssue">
+        <div class="form-group">
+            <label asp-for="Subject" class="control-label"></label>
+            <input asp-for="Subject" class="form-control" placeholder="What are you reporting?">
+            <span asp-validation-for="Subject" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" class="form-control" placeholder="Please give us the details" rows="4" cols="50" style="resize: none"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group text-center">
+            <input type="submit" value="Send" class="btn btn-primary"/>
+        </div>
+    </form>
+</div>
+

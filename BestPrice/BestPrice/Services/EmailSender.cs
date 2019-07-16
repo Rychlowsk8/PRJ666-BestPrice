@@ -2,9 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Options;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using MimeKit;
+
+
+
 namespace BestPrice.Services
 {
     // This class is used by the application to send email for account confirmation and password reset.
@@ -18,7 +25,7 @@ namespace BestPrice.Services
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            return Execute(Options.SendGridKey, subject, message, email);
+            return Execute("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", subject, message, email);
         }
         public Task Execute(string apiKey, string subject, string message, string email)
         {
@@ -37,5 +44,64 @@ namespace BestPrice.Services
             //msg.AddSubstitution("--Button--", button_text);
             return client.SendEmailAsync(msg);
         }
+
+        public async Task SendEmailByMailKitAsync(string email, string subject, string body, string typeOfEmail)
+        {
+            try
+            {
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress(typeOfEmail, "prj666_192a03@myseneca.ca"));
+                message.To.Add(new MailboxAddress("TechPG Developer", email));
+                message.Subject = subject;
+                message.Body = new TextPart("plain")
+                {
+                    Text = body
+                };
+
+                using (var client = new SmtpClient())
+                {
+                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    client.Connect("smtp.office365.com", 587, SecureSocketOptions.StartTls);
+                    client.Authenticate("prj666_192a03@myseneca.ca", "NE@JB485dkwn");
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task SendEmailByMailKitAsync2(string email, string subject, string body)
+        {
+            try
+            {
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("TechPG", "prj666_192a03@myseneca.ca"));
+                message.To.Add(new MailboxAddress(email));
+                message.Subject = subject;
+
+                var builder = new BodyBuilder();
+
+                builder.HtmlBody = body;
+
+                message.Body = builder.ToMessageBody();
+
+                using (var client = new SmtpClient())
+                {
+                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    client.Connect("smtp.office365.com", 587, SecureSocketOptions.StartTls);
+                    client.Authenticate("prj666_192a03@myseneca.ca", "NE@JB485dkwn");
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

@@ -51,6 +51,14 @@ namespace BestPrice.Controllers
             return View();
         }
 
+        [HttpGet]
+        public JsonResult GetSuggestion(string text)
+        {
+            var productList = _context.Products.Where(p => p.Name.ToLower().Contains(text.ToLower()))
+                .Select(p => p.Name).Distinct().OrderBy(name => name).ToList();
+            return Json(productList);
+        }
+
         // POST: Products/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.

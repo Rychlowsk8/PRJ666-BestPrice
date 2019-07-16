@@ -6,25 +6,40 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BestPrice.Models;
+using BestPrice.Services;
 
 namespace BestPrice.Controllers
 {
     public class NotificationsController : Controller
     {
         private readonly prj666_192a03Context _context;
+        private readonly IEmailSender _emailSender;
 
-        public NotificationsController(prj666_192a03Context context)
+        public NotificationsController(prj666_192a03Context context, IEmailSender emailSender)
         {
             _context = context;
+            _emailSender = emailSender;
+
         }
 
         // GET: Notifications
         public async Task<IActionResult> Index()
         {
+            if (!User.Identity.IsAuthenticated) { 
+                return RedirectToAction("Login", "Account");
+            }
+
             var prj666_192a03Context = _context.Notifications.Include(n => n.Product).Include(n => n.User);
             return View(await prj666_192a03Context.ToListAsync());
         }
 
+        public async Task<IActionResult> SendEmailForNotifications()
+        {
+            await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Testing Hnagfire", "<img src='https://i.ibb.co/QQYMWZQ/logo.jpg' style='width:200px;height:150px' alt='TechPG logo' >" +
+                   $"<h1>Thanks for joining TechPG!</h1> <br/>" +
+                   $"Testinggggggggggggggg: helooooooooooooo");
+            return Ok();
+        }
         // GET: Notifications/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -162,4 +177,6 @@ namespace BestPrice.Controllers
             return _context.Notifications.Any(e => e.Id == id);
         }
     }
+
+    
 }

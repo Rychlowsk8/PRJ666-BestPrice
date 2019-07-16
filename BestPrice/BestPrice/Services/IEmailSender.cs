@@ -9,5 +9,9 @@ namespace BestPrice.Services
     {
         Task SendEmailAsync(string email, string subject, string message);
         //Task SendEmailAsync(string email, string subject, string message, string temp_id, string link, string button_text);
+        Task SendEmailByMailKitAsync(string email, string subject, string message, string typeOfEmail);
+
+        Task SendEmailByMailKitAsync2(string email, string subject, string message);
+
     }
 }
