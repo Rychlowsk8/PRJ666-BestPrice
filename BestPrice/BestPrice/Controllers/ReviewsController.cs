@@ -43,10 +43,15 @@ namespace BestPrice.Controllers
         }
 
         // GET: Reviews/Create
-        public IActionResult Create()
+        public IActionResult Create(string productName, string sellerName, string picture)
         {
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
+            ViewBag.productName = productName;
+            ViewBag.sellerName = sellerName;
+            ViewBag.picture = picture;
             return View();
         }
+
 
         // POST: Reviews/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 

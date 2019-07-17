@@ -2,13 +2,18 @@
 
 @{
     ViewData["Title"] = "Create";
-    Layout = "~/Views/Manage/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Create</h2>
 
 <h4>Reviews</h4>
 <hr />
+
+<h3>Product Name: @ViewBag.productName</h3>
+<h3>Seller: @ViewBag.sellerName</h3>
+<p>Picture: <img src="@ViewBag.picture" alt="Image not available" height="150" width="150" /></p>
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -49,6 +54,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
