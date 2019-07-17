@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Manage/_Layout.cshtml";
 }
 
 <h2>Details</h2>
@@ -17,6 +18,12 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.SellerName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SellerName)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Date)
         </dt>
         <dd>
@@ -26,7 +33,7 @@
             @Html.DisplayNameFor(model => model.User)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.User.Email)
+            @Html.DisplayFor(model => model.User.Id)
         </dd>
     </dl>
 </div>

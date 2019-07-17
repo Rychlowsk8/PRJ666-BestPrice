@@ -25,11 +25,12 @@ namespace BestPrice.Controllers
         // GET: Notifications
         public async Task<IActionResult> Index()
         {
-            if (!User.Identity.IsAuthenticated) { 
+            if (!User.Identity.IsAuthenticated)
+            {
                 return RedirectToAction("Login", "Account");
             }
 
-            var prj666_192a03Context = _context.Notifications.Include(n => n.Product).Include(n => n.User);
+            var prj666_192a03Context = _context.Notifications.Include(n => n.User);
             return View(await prj666_192a03Context.ToListAsync());
         }
 
@@ -40,6 +41,7 @@ namespace BestPrice.Controllers
                    $"Testinggggggggggggggg: helooooooooooooo");
             return Ok();
         }
+
         // GET: Notifications/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -49,7 +51,6 @@ namespace BestPrice.Controllers
             }
 
             var notifications = await _context.Notifications
-                .Include(n => n.Product)
                 .Include(n => n.User)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (notifications == null)
@@ -63,8 +64,7 @@ namespace BestPrice.Controllers
         // GET: Notifications/Create
         public IActionResult Create()
         {
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email");
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
             return View();
         }
 
@@ -73,7 +73,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TimeStamp,ProductId,UserId")] Notifications notifications)
+        public async Task<IActionResult> Create([Bind("Id,UserId,ProductName,Seller,BeforePrice,CurrentPrice,PriceStatus,LastModified")] Notifications notifications)
         {
             if (ModelState.IsValid)
             {
@@ -81,8 +81,7 @@ namespace BestPrice.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", notifications.ProductId);
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", notifications.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", notifications.UserId);
             return View(notifications);
         }
 
@@ -99,8 +98,7 @@ namespace BestPrice.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", notifications.ProductId);
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", notifications.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", notifications.UserId);
             return View(notifications);
         }
 
@@ -109,7 +107,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TimeStamp,ProductId,UserId")] Notifications notifications)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ProductName,Seller,BeforePrice,CurrentPrice,PriceStatus,LastModified")] Notifications notifications)
         {
             if (id != notifications.Id)
             {
@@ -136,8 +134,7 @@ namespace BestPrice.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", notifications.ProductId);
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", notifications.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", notifications.UserId);
             return View(notifications);
         }
 
@@ -150,7 +147,6 @@ namespace BestPrice.Controllers
             }
 
             var notifications = await _context.Notifications
-                .Include(n => n.Product)
                 .Include(n => n.User)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (notifications == null)
@@ -177,6 +173,4 @@ namespace BestPrice.Controllers
             return _context.Notifications.Any(e => e.Id == id);
         }
     }
-
-    
 }

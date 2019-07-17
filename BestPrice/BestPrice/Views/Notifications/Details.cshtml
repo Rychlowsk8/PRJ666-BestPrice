@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Manage/_Layout.cshtml";
 }
 
 <h2>Details</h2>
@@ -11,22 +12,46 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.TimeStamp)
+            @Html.DisplayNameFor(model => model.ProductName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.TimeStamp)
+            @Html.DisplayFor(model => model.ProductName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Product)
+            @Html.DisplayNameFor(model => model.Seller)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Product.Name)
+            @Html.DisplayFor(model => model.Seller)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BeforePrice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BeforePrice)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentPrice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CurrentPrice)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PriceStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PriceStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModified)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastModified)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.User)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.User.Email)
+            @Html.DisplayFor(model => model.User.Id)
         </dd>
     </dl>
 </div>

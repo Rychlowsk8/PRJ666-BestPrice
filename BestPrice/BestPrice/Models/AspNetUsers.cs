@@ -21,8 +21,6 @@ namespace BestPrice.Models
         public string ConcurrencyStamp { get; set; }
         public string Email { get; set; }
         public short EmailConfirmed { get; set; }
-      
-      
         public string PendingEmailChange { get; set; }
         public short LockoutEnabled { get; set; }
         public DateTimeOffset? LockoutEnd { get; set; }
@@ -36,8 +34,11 @@ namespace BestPrice.Models
         public string UserName { get; set; }
         public int? LocationId { get; set; }
         public short IsRegistered { get; set; }
+        public string Location { get; set; }
+        public short GetNotified { get; set; }
+        public short SaveSearches { get; set; }
 
-        public virtual Locations Location { get; set; }
+        public virtual Locations LocationNavigation { get; set; }
         public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }

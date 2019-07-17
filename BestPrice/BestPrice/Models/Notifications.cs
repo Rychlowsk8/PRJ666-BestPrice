@@ -6,11 +6,14 @@ namespace BestPrice.Models
     public partial class Notifications
     {
         public int Id { get; set; }
-        public DateTimeOffset TimeStamp { get; set; }
-        public int ProductId { get; set; }
         public string UserId { get; set; }
+        public string ProductName { get; set; }
+        public string Seller { get; set; }
+        public decimal BeforePrice { get; set; }
+        public decimal CurrentPrice { get; set; }
+        public string PriceStatus { get; set; }
+        public DateTime LastModified { get; set; }
 
-        public virtual Products Product { get; set; }
         public virtual AspNetUsers User { get; set; }
     }
 }
