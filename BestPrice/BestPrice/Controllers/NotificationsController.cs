@@ -73,7 +73,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,ProductName,Seller,BeforePrice,CurrentPrice,PriceStatus,LastModified")] Notifications notifications)
+        public async Task<IActionResult> Create([Bind("Id,UserId,ProductName,Seller,BeforePrice,CurrentPrice,PriceStatus,LastModified,ProductDescription,ProductCondition,Link,Image")] Notifications notifications)
         {
             if (ModelState.IsValid)
             {
@@ -107,7 +107,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ProductName,Seller,BeforePrice,CurrentPrice,PriceStatus,LastModified")] Notifications notifications)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ProductName,Seller,BeforePrice,CurrentPrice,PriceStatus,LastModified,ProductDescription,ProductCondition,Link,Image")] Notifications notifications)
         {
             if (id != notifications.Id)
             {

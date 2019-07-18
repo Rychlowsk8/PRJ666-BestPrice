@@ -58,7 +58,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Subject,Description,Rating,ProductName,SellerName")] Reviews reviews)
+        public async Task<IActionResult> Create([Bind("Id,Subject,Description,Rating,ProductName,SellerName,Image,Link,ProductDescription,ProductCondition,Price,SoldOut")] Reviews reviews)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Subject,Description,Rating,ProductName,SellerName")] Reviews reviews)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Subject,Description,Rating,ProductName,SellerName,Image,Link,ProductDescription,ProductCondition,Price,SoldOut")] Reviews reviews)
         {
             if (id != reviews.Id)
             {

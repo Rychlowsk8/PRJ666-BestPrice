@@ -11,6 +11,13 @@ namespace BestPrice.Models
         public string SellerName { get; set; }
         public DateTime Date { get; set; }
         public string UserId { get; set; }
+        public string ProductName { get; set; }
+        public string Image { get; set; }
+        public string Link { get; set; }
+        public decimal Price { get; set; }
+        public string ProductDescription { get; set; }
+        public string ProductCondition { get; set; }
+        public short SoldOut { get; set; }
 
         public virtual AspNetUsers User { get; set; }
     }

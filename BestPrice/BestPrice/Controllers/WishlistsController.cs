@@ -61,7 +61,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,ProductName,SellerName,Link,Image")] Wishlists wishlists)
+        public async Task<IActionResult> Create([Bind("Id,UserId,ProductName,SellerName,Link,Image,Price,Description,ProductCondition,SoldOut")] Wishlists wishlists)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ProductName,SellerName,Link,Image")] Wishlists wishlists)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ProductName,SellerName,Link,Image,Price,Description,ProductCondition,SoldOut")] Wishlists wishlists)
         {
             if (id != wishlists.Id)
             {

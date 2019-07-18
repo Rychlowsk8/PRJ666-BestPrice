@@ -67,7 +67,7 @@ namespace BestPrice.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
             modelBuilder.Entity<AspNetRoleClaims>(entity =>
             {
@@ -776,11 +776,27 @@ namespace BestPrice.Models
 
                 entity.Property(e => e.CurrentPrice).HasColumnType("decimal(10,0)");
 
+                entity.Property(e => e.Image)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.LastModified).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.Link)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.PriceStatus)
                     .IsRequired()
                     .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ProductCondition)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ProductDescription)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ProductName)
@@ -827,17 +843,39 @@ namespace BestPrice.Models
                     .HasMaxLength(1500)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Image)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Link)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Price).HasColumnType("decimal(10,0)");
+
+                entity.Property(e => e.ProductCondition)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ProductDescription)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.ProductName)
-                    .IsRequired()
+                    //.IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Rating).HasColumnType("int(1) unsigned");
 
                 entity.Property(e => e.SellerName)
-                    .IsRequired()
+                    //.IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
+
+                entity.Property(e => e.SoldOut)
+                    .HasColumnType("bit(1)")
+                    .HasDefaultValueSql("b'0'");
 
                 entity.Property(e => e.Subject)
                     .IsRequired()
@@ -854,14 +892,41 @@ namespace BestPrice.Models
 
                 entity.Property(e => e.Id).HasColumnType("int(10)");
 
+                entity.Property(e => e.Image)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Link)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Name)
                     .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Price).HasColumnType("decimal(10,0)");
+
+                entity.Property(e => e.ProductCondition)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ProductDescription)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ProductName)
+                    //.IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.SellerName)
                     .HasMaxLength(30)
                     .IsUnicode(false);
+
+                entity.Property(e => e.SoldOut)
+                    .HasColumnType("bit(1)")
+                    .HasDefaultValueSql("b'0'");
 
                 entity.Property(e => e.UserId)
                     .IsRequired()
@@ -906,14 +971,22 @@ namespace BestPrice.Models
 
                 entity.Property(e => e.Id).HasColumnType("int(10)");
 
+                entity.Property(e => e.Description)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Image)
-                    .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Link)
-                    .IsRequired()
                     .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Price).HasColumnType("decimal(10,0)");
+
+                entity.Property(e => e.ProductCondition)
+                    .HasMaxLength(30)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ProductName)
@@ -925,6 +998,10 @@ namespace BestPrice.Models
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
+
+                entity.Property(e => e.SoldOut)
+                    .HasColumnType("bit(1)")
+                    .HasDefaultValueSql("b'0'");
 
                 entity.Property(e => e.UserId)
                     .IsRequired()

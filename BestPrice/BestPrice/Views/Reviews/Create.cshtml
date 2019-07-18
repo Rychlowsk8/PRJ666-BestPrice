@@ -5,52 +5,80 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+@*<div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Subject" class="control-label"></label>
+                    <input asp-for="Subject" class="form-control" />
+                    <span asp-validation-for="Subject" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Rating" class="control-label"></label>
+                    <input asp-for="Rating" class="form-control" />
+                    <span asp-validation-for="Rating" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductName" class="control-label"></label>
+                    <input asp-for="ProductName" class="form-control" />
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SellerName" class="control-label"></label>
+                    <input asp-for="SellerName" class="form-control" />
+                    <span asp-validation-for="SellerName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>
 
-<h4>Reviews</h4>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+
+<h1>Create Review</h1>
+
 <hr />
 
-<h3>Product Name: @ViewBag.productName</h3>
-<h3>Seller: @ViewBag.sellerName</h3>
-<p>Picture: <img src="@ViewBag.picture" alt="Image not available" height="150" width="150" /></p>
+<h2 style="margin-left:192px">Give us your opinions about this product</h2>
 
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Subject" class="control-label"></label>
-                <input asp-for="Subject" class="form-control" />
-                <span asp-validation-for="Subject" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
-                <input asp-for="Rating" class="form-control" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductName" class="control-label"></label>
-                <input asp-for="ProductName" class="form-control" />
-                <span asp-validation-for="ProductName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SellerName" class="control-label"></label>
-                <input asp-for="SellerName" class="form-control" />
-                <span asp-validation-for="SellerName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+    <div class="col-md-2">
+        <img src="@ViewBag.picture" alt="Image not available" height="150" width="150" />
+    </div>
+    <div class="col-md-10">
+        <h3>@ViewBag.productName &nbsp; from &nbsp; @ViewBag.sellerName</h3>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<hr />
+
+<div class="col-md-8 well" style="background: white;margin-left:192px">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Subject" class="control-label">Add a subject</label>
+            <input asp-for="Subject" class="form-control" placeholder="What's most important to know?">
+            <span asp-validation-for="Subject" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label">Write your review</label>
+            <textarea asp-for="Description" class="form-control" placeholder="What did you like or dislike about this product or seller?" rows="4" cols="50" style="resize: none"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group text-center">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+    </form>
 </div>
 
+<br />

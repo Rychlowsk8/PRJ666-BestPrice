@@ -116,7 +116,7 @@ namespace BestPrice
 
             app.UseHangfireDashboard("/hangfire");
 
-            RecurringJob.AddOrUpdate<NotificationsController>(x => x.SendEmailForNotifications(), Cron.Hourly);
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.SendEmailForNotifications(), Cron.Hourly);
         }
     }
 }
