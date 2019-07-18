@@ -52,7 +52,7 @@ namespace BestPrice.Controllers
         // GET: SearchHistories/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email");
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
             return View();
         }
 
@@ -61,7 +61,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Date,UserId")] SearchHistories searchHistories)
+        public async Task<IActionResult> Create([Bind("Id,Name,SellerName,Date,UserId")] SearchHistories searchHistories)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace BestPrice.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", searchHistories.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", searchHistories.UserId);
             return View(searchHistories);
         }
 
@@ -86,7 +86,7 @@ namespace BestPrice.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", searchHistories.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", searchHistories.UserId);
             return View(searchHistories);
         }
 
@@ -95,7 +95,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Date,UserId")] SearchHistories searchHistories)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,SellerName,Date,UserId")] SearchHistories searchHistories)
         {
             if (id != searchHistories.Id)
             {
@@ -122,7 +122,7 @@ namespace BestPrice.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", searchHistories.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", searchHistories.UserId);
             return View(searchHistories);
         }
 

@@ -52,7 +52,7 @@ namespace BestPrice.Controllers
         // GET: Wishlists/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email");
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
             return View();
         }
 
@@ -61,7 +61,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId")] Wishlists wishlists)
+        public async Task<IActionResult> Create([Bind("Id,UserId,ProductName,SellerName,Link,Image")] Wishlists wishlists)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace BestPrice.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", wishlists.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", wishlists.UserId);
             return View(wishlists);
         }
 
@@ -86,7 +86,7 @@ namespace BestPrice.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", wishlists.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", wishlists.UserId);
             return View(wishlists);
         }
 
@@ -95,7 +95,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId")] Wishlists wishlists)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ProductName,SellerName,Link,Image")] Wishlists wishlists)
         {
             if (id != wishlists.Id)
             {
@@ -122,7 +122,7 @@ namespace BestPrice.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Email", wishlists.UserId);
+            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", wishlists.UserId);
             return View(wishlists);
         }
 
