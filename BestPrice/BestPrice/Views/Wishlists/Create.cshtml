@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 ﻿@model BestPrice.Models.Wishlists
 
 @{
@@ -56,3 +57,31 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+=======
+﻿@model BestPrice.Models.Wishlists
+
+@{
+    ViewData["Title"] = "Success";
+}
+
+@if (Model.ProductId == -1)
+{
+    <h4 style="margin-top:20px"><b>@Model.ProductName</b> is already in your wishlist!</h4>
+}
+else
+{
+    <h4 style="margin-top:20px"><b>@Model.ProductName</b> added to your wishlist!</h4>
+}
+
+<hr />
+
+<div>
+    <a asp-action="Index">View your Wishlist</a> |
+    <a href='javascript:history.go(-1)'>Back to products</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+>>>>>>> Stashed changes

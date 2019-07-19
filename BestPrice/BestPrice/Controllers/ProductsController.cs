@@ -21,8 +21,7 @@ namespace BestPrice.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var prj666_192a03Context = _context.Products.Include(p => p.Seller);
-            return View(await prj666_192a03Context.ToListAsync());
+            return View(await _context.Products.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -34,7 +33,6 @@ namespace BestPrice.Controllers
             }
 
             var products = await _context.Products
-                .Include(p => p.Seller)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (products == null)
             {
@@ -47,7 +45,6 @@ namespace BestPrice.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["SellerId"] = new SelectList(_context.Sellers, "Id", "Link");
             return View();
         }
 
@@ -64,7 +61,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CurrentPrice,BeforePrice,SellerId")] Products products)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Products products)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +69,6 @@ namespace BestPrice.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SellerId"] = new SelectList(_context.Sellers, "Id", "Link", products.SellerId);
             return View(products);
         }
 
@@ -89,7 +85,6 @@ namespace BestPrice.Controllers
             {
                 return NotFound();
             }
-            ViewData["SellerId"] = new SelectList(_context.Sellers, "Id", "Link", products.SellerId);
             return View(products);
         }
 
@@ -98,7 +93,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CurrentPrice,BeforePrice,SellerId")] Products products)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Products products)
         {
             if (id != products.Id)
             {
@@ -125,7 +120,6 @@ namespace BestPrice.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SellerId"] = new SelectList(_context.Sellers, "Id", "Link", products.SellerId);
             return View(products);
         }
 
@@ -138,7 +132,6 @@ namespace BestPrice.Controllers
             }
 
             var products = await _context.Products
-                .Include(p => p.Seller)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (products == null)
             {

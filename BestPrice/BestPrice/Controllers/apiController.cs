@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using BestPrice.Models;
 using BestPrice.Models.Api;
+using BestPrice.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -66,20 +67,24 @@ namespace BestPrice.Controllers
             return View(items);
         }
         [Route("[action]/{keyword}")]
-        public async Task<IActionResult> Search(string keyword)
+        public async Task<IActionResult> Search(string keyword, int? pageNumber)
         {
             if (User.Identity.IsAuthenticated)
             {
-                SearchHistories entry = new SearchHistories();
-                entry.Name = keyword;
-                entry.Date = DateTime.Now;
                 var user = await _userManager.GetUserAsync(User);
-                entry.UserId = user.Id;
-                _context.SearchHistories.Add(entry);
-                await _context.SaveChangesAsync();
+                if (user.saveSearches)
+                {
+                    SearchHistories entry = new SearchHistories();
+                    entry.Name = keyword;
+                    entry.Date = DateTime.Now;
+                    entry.UserId = user.Id;
+                    _context.SearchHistories.Add(entry);
+                    await _context.SaveChangesAsync();
+                }
             }
 
             ViewBag.keyword = keyword;
+
             List<Item> items = new List<Item>();
 
             /*
@@ -166,7 +171,9 @@ namespace BestPrice.Controllers
                 items.Add(aItem);
             }
 
-            return View(items.OrderBy(p => p.CurrentPrice));
+            int pageSize = 20;
+            
+            return View(PaginatedList<Item>.CreatePage(items.OrderBy(p => p.CurrentPrice), pageNumber ?? 1, pageSize));
         }
 
     }

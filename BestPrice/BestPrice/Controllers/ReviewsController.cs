@@ -21,8 +21,7 @@ namespace BestPrice.Controllers
         // GET: Reviews
         public async Task<IActionResult> Index()
         {
-            var prj666_192a03Context = _context.Reviews.Include(r => r.Product);
-            return View(await prj666_192a03Context.ToListAsync());
+            return View(await _context.Reviews.ToListAsync());
         }
 
         // GET: Reviews/Details/5
@@ -34,7 +33,6 @@ namespace BestPrice.Controllers
             }
 
             var reviews = await _context.Reviews
-                .Include(r => r.Product)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (reviews == null)
             {
@@ -45,18 +43,22 @@ namespace BestPrice.Controllers
         }
 
         // GET: Reviews/Create
-        public IActionResult Create()
+        public IActionResult Create(string productName, string sellerName, string picture)
         {
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
+            ViewBag.productName = productName;
+            ViewBag.sellerName = sellerName;
+            ViewBag.picture = picture;
             return View();
         }
+
 
         // POST: Reviews/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Subject,Description,Rating,ProductId")] Reviews reviews)
+        public async Task<IActionResult> Create([Bind("Id,Subject,Description,Rating,ProductName,SellerName,Image,Link,ProductDescription,ProductCondition,Price,SoldOut")] Reviews reviews)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +66,6 @@ namespace BestPrice.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", reviews.ProductId);
             return View(reviews);
         }
 
@@ -81,7 +82,6 @@ namespace BestPrice.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", reviews.ProductId);
             return View(reviews);
         }
 
@@ -90,7 +90,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Subject,Description,Rating,ProductId")] Reviews reviews)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Subject,Description,Rating,ProductName,SellerName,Image,Link,ProductDescription,ProductCondition,Price,SoldOut")] Reviews reviews)
         {
             if (id != reviews.Id)
             {
@@ -117,7 +117,6 @@ namespace BestPrice.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", reviews.ProductId);
             return View(reviews);
         }
 
@@ -130,7 +129,6 @@ namespace BestPrice.Controllers
             }
 
             var reviews = await _context.Reviews
-                .Include(r => r.Product)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (reviews == null)
             {

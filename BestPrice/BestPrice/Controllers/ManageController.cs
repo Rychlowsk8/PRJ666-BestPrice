@@ -254,8 +254,11 @@ namespace BestPrice.Controllers
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+            SettingsViewModel model = new SettingsViewModel();
+            model.getNotified = user.getNotified;
+            model.saveSearches = user.saveSearches;
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]

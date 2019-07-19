@@ -271,6 +271,26 @@ namespace BestPrice.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
+        [Route("DeleteAccount")]
+        public async Task<IActionResult> DeleteAccount(string id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return View();
+        }
+
+        [HttpPost, ActionName("Delete Account")]
+        [ValidateAntiForgeryToken]
+        [Route("DeleteAccount")]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            await _signInManager.SignOutAsync();
+            await _userManager.DeleteAsync(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]

@@ -13,6 +13,9 @@ using BestPrice.Models;
 using BestPrice.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Http;
+using Hangfire;
+using Hangfire.MySql.Core;
+using BestPrice.Controllers;
 
 namespace BestPrice
 {
@@ -28,6 +31,10 @@ namespace BestPrice
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            GlobalConfiguration.Configuration.UseStorage(
+                new MySqlStorage(Configuration.GetConnectionString("BestPriceDatabase")));
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("BestPriceDatabase")));
 
@@ -41,12 +48,17 @@ namespace BestPrice
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
+         
             services.AddMvc();
 
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySQL(Configuration.GetConnectionString("BestPriceDatabase")));
 
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySql(Configuration.GetConnectionString("BestPriceDatabase")));
+
+            services.AddHangfire(x => x.UseStorage(new MySqlStorage(Configuration.GetConnectionString("BestPriceDatabase"), new MySqlStorageOptions() { TablePrefix = "Custom" })));
+
+            services.AddHangfireServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,6 +113,10 @@ namespace BestPrice
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseHangfireDashboard("/hangfire");
+
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.SendEmailForNotifications(), Cron.Hourly);
         }
     }
 }
