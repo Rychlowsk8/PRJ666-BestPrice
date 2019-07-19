@@ -116,7 +116,7 @@
         </tr>
         <tr>
             <td class="col-md-12" colspan="3">
-                <a asp-controller="Wishlists" asp-action="Create"><b style="color:#0094ff">Add to Wishlist</b></a>
+                <a asp-controller="Wishlists" asp-action="Create" asp-route-productId="@item.ItemId" asp-route-productName="@item.Title" asp-route-description="@item.subtitle" asp-route-link="@item.ViewItemURL" asp-route-image="@item.GalleryURL" asp-route-price="@item.CurrentPrice" asp-route-soldBy="@item.soldBy"><b style="color:#0094ff">Add to Wishlist</b></a>
                 <b style="color:#0094ff">  |  </b>
                 <a asp-controller="Reviews" asp-action="Index"><b style="color:#0094ff">Visit Reviews</b></a>
                 <b style="color:#0094ff">  |  </b>

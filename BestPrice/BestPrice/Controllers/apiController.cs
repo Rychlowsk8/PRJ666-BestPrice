@@ -71,13 +71,16 @@ namespace BestPrice.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                SearchHistories entry = new SearchHistories();
-                entry.Name = keyword;
-                entry.Date = DateTime.Now;
                 var user = await _userManager.GetUserAsync(User);
-                entry.UserId = user.Id;
-                _context.SearchHistories.Add(entry);
-                await _context.SaveChangesAsync();
+                if (user.saveSearches)
+                {
+                    SearchHistories entry = new SearchHistories();
+                    entry.Name = keyword;
+                    entry.Date = DateTime.Now;
+                    entry.UserId = user.Id;
+                    _context.SearchHistories.Add(entry);
+                    await _context.SaveChangesAsync();
+                }
             }
 
             ViewBag.keyword = keyword;
