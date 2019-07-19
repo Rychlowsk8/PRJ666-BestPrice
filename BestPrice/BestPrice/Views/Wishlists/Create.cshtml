@@ -4,7 +4,11 @@
     ViewData["Title"] = "Success";
 }
 
-@if (Model.ProductId == -1)
+@if (Model.ProductId == -2)
+{
+    <h4 style="margin-top:20px">There are too many products on your wishlist! (Limit: 20)</h4>
+}
+else if (Model.ProductId == -1)
 {
     <h4 style="margin-top:20px"><b>@Model.ProductName</b> is already in your wishlist!</h4>
 }

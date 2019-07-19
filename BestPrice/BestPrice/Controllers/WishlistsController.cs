@@ -62,28 +62,40 @@ namespace BestPrice.Controllers
         public async Task<IActionResult> Create(long productId, string productName, string description, string link, string image, decimal price, string soldBy)
         {
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
+            var user = await _userManager.GetUserAsync(User);
+            Wishlists list = new Wishlists();
+            list.ProductName = productName;
 
             var noItem = await _context.Wishlists
                 .Include(w => w.User)
                 .SingleOrDefaultAsync(m => m.ProductId == productId);
 
-            Wishlists list = new Wishlists();
-            list.ProductName = productName;
             if (noItem == null)
             {
-                list.ProductId = productId;               
-                list.Description = description;
-                list.Link = link;
-                list.Image = image;
-                list.Price = price;
-                list.SellerName = soldBy;
+                var tooManyItems = _context.Wishlists
+                    .Include(w => w.User)
+                    .Where(m => m.UserId == user.Id.ToString())
+                    .ToList();
 
-                var user = await _userManager.GetUserAsync(User);
-                list.UserId = user.Id.ToString();
+                if (tooManyItems.Count() >= 20)
+                {
+                    list.ProductId = -2;
+                }
+                else
+                {
+                    list.ProductId = productId;
+                    list.Description = description;
+                    list.Link = link;
+                    list.Image = image;
+                    list.Price = price;
+                    list.SellerName = soldBy;
+                    list.UserId = user.Id.ToString();
 
-                _context.Add(list);
-                await _context.SaveChangesAsync();
-            } else
+                    _context.Add(list);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            else
             {
                 list.ProductId = -1;
             }
