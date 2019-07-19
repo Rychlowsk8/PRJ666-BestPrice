@@ -64,7 +64,7 @@ namespace BestPrice
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -90,7 +90,7 @@ namespace BestPrice
 
             //app.UseExceptionHandler("/Home/Error");
 
-            
+
             //For Core 2.0
             //app.UseStatusCodePagesWithRedirects("/Home/Error/404");
 
@@ -116,7 +116,22 @@ namespace BestPrice
 
             app.UseHangfireDashboard("/hangfire");
 
-            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.SendEmailForNotifications(), Cron.Hourly);
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.SendEmailForNotifications(), Cron.Minutely);
+
+
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemOne(), Cron.Hourly);
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemTwo(), Cron.Hourly);
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemThree(), Cron.Hourly);
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemFive(), Cron.Hourly);
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemFour(), Cron.Hourly);
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemSix(), Cron.Hourly);
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemSeven(), Cron.Hourly);
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemEight(), Cron.Hourly);
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemNine(), Cron.Hourly);
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemTen(), Cron.Hourly);
+
+
+            //BackgroundJob.Enqueue<NotificationsController>(x => x.CheckPriceforItemNine());  
+        }
         }
     }
-}

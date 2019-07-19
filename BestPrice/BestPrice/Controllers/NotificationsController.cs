@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BestPrice.Models;
 using BestPrice.Services;
+using System.Net;
+using System.IO;
+using Newtonsoft.Json;
+using BestPrice.Models.Notification;
+using Newtonsoft.Json.Linq;
 
 namespace BestPrice.Controllers
 {
@@ -41,6 +46,577 @@ namespace BestPrice.Controllers
                    $"Testinggggggggggggggg: helooooooooooooo");
             return Ok();
         }
+
+        public async Task<IActionResult> CheckPriceforItemOne()
+        {
+            string url = "http://open.api.ebay.com/shopping?callname=GetSingleItem&responseencoding=JSON&appid=JatinKum-TechPG-PRD-41ea39f9c-08819029&siteid=2&version=967&ItemID=273032356635";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            // Set credentials to use for this request.
+            request.Credentials = CredentialCache.DefaultCredentials;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // Get the stream associated with the response.
+            Stream receiveStream = response.GetResponseStream();
+
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
+            string ebayResponse = readStream.ReadToEnd();
+            response.Close();
+            readStream.Close();
+
+            JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
+            JObject ebayParser = JObject.Parse(ebayResponse);
+
+            String check = ebayParser["Ack"].ToObject<String>();
+            if (check == "Success")
+            {
+                JToken jEbay = ebayParser["Item"];
+                {
+                    Product eItem = new Product();
+                    eItem.Title = (string)jEbay["Title"];
+                    eItem.ItemId = (long)jEbay["ItemID"];
+                    eItem.CurrentPrice = (int)((float)(jEbay["ConvertedCurrentPrice"]["Value"]));
+                    eItem.ViewItemURL = (string)jEbay["ViewItemURLForNaturalSearch"];
+
+                    if (eItem.CurrentPrice != 169)
+                    {
+                        await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                      $"<h1>Product</h1> <br/>" +
+                      $"Title: " + eItem.Title + "<br/>" +
+                      $"Price Before: 169" + "<br/>" +
+                      $"Price Now: " + eItem.CurrentPrice + "<br/>" +
+                      $"Link: " + eItem.ViewItemURL + "<br/>"
+                      );
+                    }
+                }
+            }
+            else
+            {
+                await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                  $"<h1>Boy its not working</h1> <br/>"
+
+                  );
+            }
+            return Ok();
+
+        }
+
+
+        public async Task<IActionResult> CheckPriceforItemTwo()
+        {
+            string url = "http://open.api.ebay.com/shopping?callname=GetSingleItem&responseencoding=JSON&appid=JatinKum-TechPG-PRD-41ea39f9c-08819029&siteid=2&version=967&ItemID=123732025135";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            // Set credentials to use for this request.
+            request.Credentials = CredentialCache.DefaultCredentials;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // Get the stream associated with the response.
+            Stream receiveStream = response.GetResponseStream();
+
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
+            string ebayResponse = readStream.ReadToEnd();
+            response.Close();
+            readStream.Close();
+
+            JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
+            JObject ebayParser = JObject.Parse(ebayResponse);
+
+            String check = ebayParser["Ack"].ToObject<String>();
+            if (check == "Success")
+            {
+                JToken jEbay = ebayParser["Item"];
+                {
+                    Product eItem = new Product();
+                    eItem.Title = (string)jEbay["Title"];
+                    eItem.ItemId = (long)jEbay["ItemID"];
+                    eItem.CurrentPrice = (int)((float)(jEbay["ConvertedCurrentPrice"]["Value"]));
+                    eItem.ViewItemURL = (string)jEbay["ViewItemURLForNaturalSearch"];
+
+                    if (eItem.CurrentPrice != 364)
+                    {
+                        await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                      $"<h1>Product</h1> <br/>" +
+                      $"Title: " + eItem.Title + "<br/>" +
+                      $"Price Before: 364" + "<br/>" +
+                      $"Price Now: " + eItem.CurrentPrice + "<br/>" +
+                      $"Link: " + eItem.ViewItemURL + "<br/>"
+                      );
+                    }
+                }
+            }
+            else
+            {
+                await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                  $"<h1>Boy its not working</h1> <br/>"
+
+                  );
+            }
+            return Ok();
+
+        }
+
+        public async Task<IActionResult> CheckPriceforItemThree()
+        {
+            string url = "http://open.api.ebay.com/shopping?callname=GetSingleItem&responseencoding=JSON&appid=JatinKum-TechPG-PRD-41ea39f9c-08819029&siteid=2&version=967&ItemID=293104493960";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            // Set credentials to use for this request.
+            request.Credentials = CredentialCache.DefaultCredentials;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // Get the stream associated with the response.
+            Stream receiveStream = response.GetResponseStream();
+
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
+            string ebayResponse = readStream.ReadToEnd();
+            response.Close();
+            readStream.Close();
+
+            JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
+            JObject ebayParser = JObject.Parse(ebayResponse);
+
+            String check = ebayParser["Ack"].ToObject<String>();
+            if (check == "Success")
+            {
+                JToken jEbay = ebayParser["Item"];
+                {
+                    Product eItem = new Product();
+                    eItem.Title = (string)jEbay["Title"];
+                    eItem.ItemId = (long)jEbay["ItemID"];
+                    eItem.CurrentPrice = (int)((float)(jEbay["ConvertedCurrentPrice"]["Value"]));
+                    eItem.ViewItemURL = (string)jEbay["ViewItemURLForNaturalSearch"];
+
+                    if (eItem.CurrentPrice != 1799)
+                    {
+                        await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                      $"<h1>Product</h1> <br/>" +
+                      $"Title: " + eItem.Title + "<br/>" +
+                      $"Price Before: 1799" + "<br/>" +
+                      $"Price Now: " + eItem.CurrentPrice + "<br/>" +
+                      $"Link: " + eItem.ViewItemURL + "<br/>"
+                      );
+                    }
+                }
+            }
+            else
+            {
+                await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                  $"<h1>Boy its not working</h1> <br/>"
+
+                  );
+            }
+            return Ok();
+
+        }
+
+        public async Task<IActionResult> CheckPriceforItemFour()
+        {
+            string url = "http://open.api.ebay.com/shopping?callname=GetSingleItem&responseencoding=JSON&appid=JatinKum-TechPG-PRD-41ea39f9c-08819029&siteid=2&version=967&ItemID=173703481402";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            // Set credentials to use for this request.
+            request.Credentials = CredentialCache.DefaultCredentials;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // Get the stream associated with the response.
+            Stream receiveStream = response.GetResponseStream();
+
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
+            string ebayResponse = readStream.ReadToEnd();
+            response.Close();
+            readStream.Close();
+
+            JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
+            JObject ebayParser = JObject.Parse(ebayResponse);
+
+            String check = ebayParser["Ack"].ToObject<String>();
+            if (check == "Success")
+            {
+                JToken jEbay = ebayParser["Item"];
+                {
+                    Product eItem = new Product();
+                    eItem.Title = (string)jEbay["Title"];
+                    eItem.ItemId = (long)jEbay["ItemID"];
+                    eItem.CurrentPrice = (int)((float)(jEbay["ConvertedCurrentPrice"]["Value"]));
+                    eItem.ViewItemURL = (string)jEbay["ViewItemURLForNaturalSearch"];
+
+                    if (eItem.CurrentPrice != 399)
+                    {
+                        await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                      $"<h1>Product</h1> <br/>" +
+                      $"Title: " + eItem.Title + "<br/>" +
+                      $"Price Before: 399" + "<br/>" +
+                      $"Price Now: " + eItem.CurrentPrice + "<br/>" +
+                      $"Link: " + eItem.ViewItemURL + "<br/>"
+                      );
+                    }
+                }
+            }
+            else
+            {
+                await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                  $"<h1>Boy its not working</h1> <br/>"
+
+                  );
+            }
+            return Ok();
+
+        }
+
+
+
+        public async Task<IActionResult> CheckPriceforItemFive()
+        {
+            string url = "http://open.api.ebay.com/shopping?callname=GetSingleItem&responseencoding=JSON&appid=JatinKum-TechPG-PRD-41ea39f9c-08819029&siteid=2&version=967&ItemID=162528855123";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            // Set credentials to use for this request.
+            request.Credentials = CredentialCache.DefaultCredentials;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // Get the stream associated with the response.
+            Stream receiveStream = response.GetResponseStream();
+
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
+            string ebayResponse = readStream.ReadToEnd();
+            response.Close();
+            readStream.Close();
+
+            JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
+            JObject ebayParser = JObject.Parse(ebayResponse);
+
+            String check = ebayParser["Ack"].ToObject<String>();
+            if (check == "Success")
+            {
+                JToken jEbay = ebayParser["Item"];
+                {
+                    Product eItem = new Product();
+                    eItem.Title = (string)jEbay["Title"];
+                    eItem.ItemId = (long)jEbay["ItemID"];
+                    eItem.CurrentPrice = (int)((float)(jEbay["ConvertedCurrentPrice"]["Value"]));
+                    eItem.ViewItemURL = (string)jEbay["ViewItemURLForNaturalSearch"];
+
+                    if (eItem.CurrentPrice != 189)
+                    {
+                        await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                      $"<h1>Product</h1> <br/>" +
+                      $"Title: " + eItem.Title + "<br/>" +
+                      $"Price Before: 189" + "<br/>" +
+                      $"Price Now: " + eItem.CurrentPrice + "<br/>" +
+                      $"Link: " + eItem.ViewItemURL + "<br/>"
+                      );
+                    }
+                }
+            }
+            else
+            {
+                await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                  $"<h1>Boy its not working</h1> <br/>"
+
+                  );
+            }
+            return Ok();
+
+        }
+
+
+
+
+        public async Task<IActionResult> CheckPriceforItemSix()
+        {
+            string url = "http://open.api.ebay.com/shopping?callname=GetSingleItem&responseencoding=JSON&appid=JatinKum-TechPG-PRD-41ea39f9c-08819029&siteid=2&version=967&ItemID=292993730163";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            // Set credentials to use for this request.
+            request.Credentials = CredentialCache.DefaultCredentials;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // Get the stream associated with the response.
+            Stream receiveStream = response.GetResponseStream();
+
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
+            string ebayResponse = readStream.ReadToEnd();
+            response.Close();
+            readStream.Close();
+
+            JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
+            JObject ebayParser = JObject.Parse(ebayResponse);
+
+            String check = ebayParser["Ack"].ToObject<String>();
+            if (check == "Success")
+            {
+                JToken jEbay = ebayParser["Item"];
+                {
+                    Product eItem = new Product();
+                    eItem.Title = (string)jEbay["Title"];
+                    eItem.ItemId = (long)jEbay["ItemID"];
+                    eItem.CurrentPrice = (int)((float)(jEbay["ConvertedCurrentPrice"]["Value"]));
+                    eItem.ViewItemURL = (string)jEbay["ViewItemURLForNaturalSearch"];
+
+                    if (eItem.CurrentPrice != 299)
+                    {
+                        await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                      $"<h1>Product</h1> <br/>" +
+                      $"Title: " + eItem.Title + "<br/>" +
+                      $"Price Before: 299" + "<br/>" +
+                      $"Price Now: " + eItem.CurrentPrice + "<br/>" +
+                      $"Link: " + eItem.ViewItemURL + "<br/>"
+                      );
+                    }
+                }
+            }
+            else
+            {
+                await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                  $"<h1>Boy its not working</h1> <br/>"
+
+                  );
+            }
+            return Ok();
+
+        }
+
+
+
+
+        public async Task<IActionResult> CheckPriceforItemSeven()
+        {
+            string url = "http://open.api.ebay.com/shopping?callname=GetSingleItem&responseencoding=JSON&appid=JatinKum-TechPG-PRD-41ea39f9c-08819029&siteid=2&version=967&ItemID=123832160256";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            // Set credentials to use for this request.
+            request.Credentials = CredentialCache.DefaultCredentials;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // Get the stream associated with the response.
+            Stream receiveStream = response.GetResponseStream();
+
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
+            string ebayResponse = readStream.ReadToEnd();
+            response.Close();
+            readStream.Close();
+
+            JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
+            JObject ebayParser = JObject.Parse(ebayResponse);
+
+            String check = ebayParser["Ack"].ToObject<String>();
+            if (check == "Success")
+            {
+                JToken jEbay = ebayParser["Item"];
+                {
+                    Product eItem = new Product();
+                    eItem.Title = (string)jEbay["Title"];
+                    eItem.ItemId = (long)jEbay["ItemID"];
+                    eItem.CurrentPrice = (int)((float)(jEbay["ConvertedCurrentPrice"]["Value"]));
+                    eItem.ViewItemURL = (string)jEbay["ViewItemURLForNaturalSearch"];
+
+                    if (eItem.CurrentPrice != 800)
+                    {
+                        await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                      $"<h1>Product</h1> <br/>" +
+                      $"Title: " + eItem.Title + "<br/>" +
+                      $"Price Before: 800" + "<br/>" +
+                      $"Price Now: " + eItem.CurrentPrice + "<br/>" +
+                      $"Link: " + eItem.ViewItemURL + "<br/>"
+                      );
+                    }
+                }
+            }
+            else
+            {
+                await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                  $"<h1>Boy its not working</h1> <br/>"
+
+                  );
+            }
+            return Ok();
+
+        }
+
+
+        public async Task<IActionResult> CheckPriceforItemEight()
+        {
+            string url = "http://open.api.ebay.com/shopping?callname=GetSingleItem&responseencoding=JSON&appid=JatinKum-TechPG-PRD-41ea39f9c-08819029&siteid=2&version=967&ItemID=153562128346";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            // Set credentials to use for this request.
+            request.Credentials = CredentialCache.DefaultCredentials;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // Get the stream associated with the response.
+            Stream receiveStream = response.GetResponseStream();
+
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
+            string ebayResponse = readStream.ReadToEnd();
+            response.Close();
+            readStream.Close();
+
+            JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
+            JObject ebayParser = JObject.Parse(ebayResponse);
+
+            String check = ebayParser["Ack"].ToObject<String>();
+            if (check == "Success")
+            {
+                JToken jEbay = ebayParser["Item"];
+                {
+                    Product eItem = new Product();
+                    eItem.Title = (string)jEbay["Title"];
+                    eItem.ItemId = (long)jEbay["ItemID"];
+                    eItem.CurrentPrice = (int)((float)(jEbay["ConvertedCurrentPrice"]["Value"]));
+                    eItem.ViewItemURL = (string)jEbay["ViewItemURLForNaturalSearch"];
+
+                    if (eItem.CurrentPrice != 8)
+                    {
+                        await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                      $"<h1>Product</h1> <br/>" +
+                      $"Title: " + eItem.Title + "<br/>" +
+                      $"Price Before: 8" + "<br/>" +
+                      $"Price Now: " + eItem.CurrentPrice + "<br/>" +
+                      $"Link: " + eItem.ViewItemURL + "<br/>"
+                      );
+                    }
+                }
+            }
+            else
+            {
+                await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                  $"<h1>Boy its not working</h1> <br/>"
+
+                  );
+            }
+            return Ok();
+
+        }
+
+
+
+        public async Task<IActionResult> CheckPriceforItemNine()
+        {
+            string url = "http://open.api.ebay.com/shopping?callname=GetSingleItem&responseencoding=JSON&appid=JatinKum-TechPG-PRD-41ea39f9c-08819029&siteid=2&version=967&ItemID=273927661844";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            // Set credentials to use for this request.
+            request.Credentials = CredentialCache.DefaultCredentials;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // Get the stream associated with the response.
+            Stream receiveStream = response.GetResponseStream();
+
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
+            string ebayResponse = readStream.ReadToEnd();
+            response.Close();
+            readStream.Close();
+
+            JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
+            JObject ebayParser = JObject.Parse(ebayResponse);
+
+            String check = ebayParser["Ack"].ToObject<String>();
+            if (check == "Success")
+            {
+                JToken jEbay = ebayParser["Item"];
+                {
+                    Product eItem = new Product();
+                    eItem.Title = (string)jEbay["Title"];
+                    eItem.ItemId = (long)jEbay["ItemID"];
+                    eItem.CurrentPrice = (int)((float)(jEbay["ConvertedCurrentPrice"]["Value"]));
+                    eItem.ViewItemURL = (string)jEbay["ViewItemURLForNaturalSearch"];
+
+                    if (eItem.CurrentPrice != 13)
+                    {
+                        await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                      $"<h1>Product</h1> <br/>" +
+                      $"Title: " + eItem.Title + "<br/>" +
+                      $"Price Before: 13" + "<br/>" +
+                      $"Price Now: " + eItem.CurrentPrice + "<br/>" +
+                      $"Link: " + eItem.ViewItemURL + "<br/>"
+                      );
+                    }
+                }
+            }
+            else
+            {
+                await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                  $"<h1>Boy its not working</h1> <br/>"
+
+                  );
+            }
+            return Ok();
+
+        }
+
+
+        public async Task<IActionResult> CheckPriceforItemTen()
+        {
+            string url = "http://open.api.ebay.com/shopping?callname=GetSingleItem&responseencoding=JSON&appid=JatinKum-TechPG-PRD-41ea39f9c-08819029&siteid=2&version=967&ItemID=302839163319";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            // Set credentials to use for this request.
+            request.Credentials = CredentialCache.DefaultCredentials;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // Get the stream associated with the response.
+            Stream receiveStream = response.GetResponseStream();
+
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
+            string ebayResponse = readStream.ReadToEnd();
+            response.Close();
+            readStream.Close();
+
+            JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
+            JObject ebayParser = JObject.Parse(ebayResponse);
+
+            String check = ebayParser["Ack"].ToObject<String>();
+            if (check == "Success")
+            {
+                JToken jEbay = ebayParser["Item"];
+                {
+                    Product eItem = new Product();
+                    eItem.Title = (string)jEbay["Title"];
+                    eItem.ItemId = (long)jEbay["ItemID"];
+                    eItem.CurrentPrice = (int)((float)(jEbay["ConvertedCurrentPrice"]["Value"]));
+                    eItem.ViewItemURL = (string)jEbay["ViewItemURLForNaturalSearch"];
+
+                    if (eItem.CurrentPrice != 23)
+                    {
+                        await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                      $"<h1>Product</h1> <br/>" +
+                      $"Title: " + eItem.Title + "<br/>" +
+                      $"Price Before: 23" + "<br/>" +
+                      $"Price Now: " + eItem.CurrentPrice + "<br/>" +
+                      $"Link: " + eItem.ViewItemURL + "<br/>"
+                      );
+                    }
+                }
+            }
+            else
+            {
+                await _emailSender.SendEmailByMailKitAsync2("jatinkumarg18@gmail.com", "TechPG - Product price change",
+                  $"<h1>Boy its not working</h1> <br/>"
+
+                  );
+            }
+            return Ok();
+
+        }
+
+
+
+
+
+
+
+
 
         // GET: Notifications/Details/5
         public async Task<IActionResult> Details(int? id)
