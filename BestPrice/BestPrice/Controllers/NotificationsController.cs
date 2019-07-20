@@ -82,7 +82,7 @@ namespace BestPrice.Controllers
                             eItem.CurrentPrice = (float)(jEbay["ConvertedCurrentPrice"]["Value"]);
                             eItem.ViewItemURL = (string)jEbay["ViewItemURLForNaturalSearch"];
 
-                            if ((decimal)eItem.CurrentPrice != wish.Price)
+                            if (eItem.CurrentPrice != wish.Price)
                             {
                                 Notifications list = new Notifications();
                                 list.ProductName = wish.ProductName;
@@ -90,7 +90,7 @@ namespace BestPrice.Controllers
                                 list.Image = wish.Image;
                                 list.Seller = wish.SellerName;
                                 list.BeforePrice = wish.Price;
-                                list.CurrentPrice = (decimal)eItem.CurrentPrice;
+                                list.CurrentPrice = eItem.CurrentPrice;
                                 if (list.BeforePrice > list.CurrentPrice)
                                 {
                                     list.PriceStatus = "Decreased";
