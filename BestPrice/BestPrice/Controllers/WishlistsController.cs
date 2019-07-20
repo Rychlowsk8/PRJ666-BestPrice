@@ -59,7 +59,7 @@ namespace BestPrice.Controllers
         }
 
         // GET: Wishlists/Create
-        public async Task<IActionResult> Create(long productId, string productName, string description, string link, string image, decimal price, string soldBy)
+        public async Task<IActionResult> Create(long productId, string productName, string description, string link, string image, float price, string soldBy)
         {
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
             var user = await _userManager.GetUserAsync(User);

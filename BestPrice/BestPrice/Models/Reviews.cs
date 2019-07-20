@@ -20,7 +20,7 @@ namespace BestPrice.Models
         public string Link { get; set; }
         public string ProductDescription { get; set; }
         public string ProductCondition { get; set; }
-        public decimal? Price { get; set; }
+        public float? Price { get; set; }
         public short SoldOut { get; set; }
     }
 }

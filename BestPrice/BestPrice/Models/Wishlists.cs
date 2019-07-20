@@ -12,7 +12,7 @@ namespace BestPrice.Models
         public string SellerName { get; set; }
         public string Link { get; set; }
         public string Image { get; set; }
-        public decimal Price { get; set; }
+        public float Price { get; set; }
         public string Description { get; set; }
         public string ProductCondition { get; set; }
         public short SoldOut { get; set; }

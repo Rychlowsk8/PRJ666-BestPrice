@@ -19,7 +19,7 @@ namespace BestPrice.Controllers
         }
 
         // GET: Reviews
-        public async Task<IActionResult> Index(string productName, string sellerName, string picture, string link, string productDescription, decimal price)
+        public async Task<IActionResult> Index(string productName, string sellerName, string picture, string link, string productDescription, float price)
         {
             ViewBag.productName = productName;
             ViewBag.sellerName = sellerName;
@@ -49,7 +49,7 @@ namespace BestPrice.Controllers
         }
 
         // GET: Reviews/Create
-        public IActionResult Create(string productName, string sellerName, string picture, string link, string productDescription, decimal price)
+        public IActionResult Create(string productName, string sellerName, string picture, string link, string productDescription, float price)
         {
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
             ViewBag.productName = productName;

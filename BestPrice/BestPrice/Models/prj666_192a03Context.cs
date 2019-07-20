@@ -772,9 +772,9 @@ namespace BestPrice.Models
 
                 entity.Property(e => e.Id).HasColumnType("int(10)");
 
-                entity.Property(e => e.BeforePrice).HasColumnType("decimal(10,0)");
+                entity.Property(e => e.BeforePrice).HasColumnType("float(10,0)");
 
-                entity.Property(e => e.CurrentPrice).HasColumnType("decimal(10,0)");
+                entity.Property(e => e.CurrentPrice).HasColumnType("float(10,0)");
 
                 entity.Property(e => e.Image)
                     .HasMaxLength(255)
@@ -851,7 +851,7 @@ namespace BestPrice.Models
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Price).HasColumnType("decimal(10,0)");
+                entity.Property(e => e.Price).HasColumnType("float(10,0)");
 
                 entity.Property(e => e.ProductCondition)
                     .HasMaxLength(30)
@@ -905,7 +905,7 @@ namespace BestPrice.Models
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Price).HasColumnType("decimal(10,0)");
+                entity.Property(e => e.Price).HasColumnType("float(10,0)");
 
                 entity.Property(e => e.ProductCondition)
                     .HasMaxLength(20)
@@ -983,7 +983,7 @@ namespace BestPrice.Models
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Price).HasColumnType("decimal(10,0)");
+                entity.Property(e => e.Price).HasColumnType("float(10,0)");
 
                 entity.Property(e => e.ProductCondition)
                     .HasMaxLength(30)

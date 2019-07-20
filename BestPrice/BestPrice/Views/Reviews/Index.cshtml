@@ -54,6 +54,53 @@ else
 
         <br />
     }
+
+    <nav style="margin-top:0px; margin-bottom: 0px" aria-label="Page navigation example" class="text-center">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a asp-action="Search"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   class="btn btn-default @prevDisabled">
+                    Previous
+                </a>
+            </li>
+            @if (Model.TotalPages <= 20)
+            {
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    @if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                }
+            }
+            else
+            {
+                @for (var i = 1; i <= 20; i++)
+                {
+                    @if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="Search"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   class="btn btn-default @nextDisabled">
+                    Next
+                </a>
+            </li>
+        </ul>
+    </nav>
 }
 
 <br />
