@@ -147,7 +147,7 @@ namespace BestPrice.Controllers
                     eItem.Title = (string)i["title"][0];
                     eItem.ItemId = (long)i["itemId"][0];
                     eItem.GalleryURL = (string)i["galleryURL"][0];
-                    eItem.CurrentPrice = (int)((float)(i["sellingStatus"][0]["currentPrice"][0]["__value__"]));
+                    eItem.CurrentPrice = (float)(i["sellingStatus"][0]["currentPrice"][0]["__value__"]);
                     if (i["condition"] != null)
                     {
                         eItem.subtitle = "Condition: " + (string)i["condition"][0]["conditionDisplayName"][0];

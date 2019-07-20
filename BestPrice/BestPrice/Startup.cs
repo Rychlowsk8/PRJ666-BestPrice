@@ -130,8 +130,9 @@ namespace BestPrice
             //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemNine(), Cron.Hourly);
             //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemTen(), Cron.Hourly);
 
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforAll(), Cron.Hourly);
 
             //BackgroundJob.Enqueue<NotificationsController>(x => x.CheckPriceforItemNine());  
         }
-        }
+    }
     }
