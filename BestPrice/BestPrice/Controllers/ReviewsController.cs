@@ -19,9 +19,15 @@ namespace BestPrice.Controllers
         }
 
         // GET: Reviews
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string productName, string sellerName, string picture, string link, string productDescription, float price)
         {
-            return View(await _context.Reviews.ToListAsync());
+            ViewBag.productName = productName;
+            ViewBag.sellerName = sellerName;
+            ViewBag.picture = picture;
+            ViewBag.link = link;
+            ViewBag.productDescription = productDescription;
+            ViewBag.price = price;
+            return View(await _context.Reviews.Where(r => r.ProductName == productName && r.SellerName == sellerName).ToListAsync());
         }
 
         // GET: Reviews/Details/5
@@ -43,12 +49,16 @@ namespace BestPrice.Controllers
         }
 
         // GET: Reviews/Create
-        public IActionResult Create(string productName, string sellerName, string picture)
+        public IActionResult Create(string productName, string sellerName, string picture, string link, string productDescription, float price)
         {
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
             ViewBag.productName = productName;
             ViewBag.sellerName = sellerName;
             ViewBag.picture = picture;
+            ViewBag.link = link;
+            ViewBag.productDescription = productDescription;
+            ViewBag.price = price;
+
             return View();
         }
 
@@ -64,9 +74,13 @@ namespace BestPrice.Controllers
             {
                 _context.Add(reviews);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Index", new { productName = reviews.ProductName, sellerName = reviews.SellerName, picture = reviews.Image, link = reviews.Link, productDescription = reviews.ProductDescription, price = reviews.Price });
             }
-            return View(reviews);
+            ViewBag.productName = reviews.ProductName;
+            ViewBag.sellerName = reviews.SellerName;
+            ViewBag.picture = reviews.Image;
+            return View();
         }
 
         // GET: Reviews/Edit/5

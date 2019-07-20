@@ -5,92 +5,107 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Reviews for:</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Subject)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Rating)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProductName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SellerName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Image)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Link)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProductDescription)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProductCondition)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SoldOut)
-                </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SellerName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Link)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductCondition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoldOut)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+<br />
+
+<table class="table table-bordered" style="width:75%; margin:auto; margin-top:0px; margin-bottom: 10px">
+    <tr>
+        <td class="col-md-11" colspan="2">
+            <b>@ViewBag.productName</b>
+        </td>
+        <td class="col-md-1">
+            <b style="text-align:center">CAD$@ViewBag.price</b>
+        </td>
+    </tr>
+    <tr>
+        <td class="col-md-2">
+            <img src="@ViewBag.picture" alt="Image not available" height="150" width="150" />
+        </td>
+        <td class="col-md-10" colspan="3">
+            <p style="font-family: 'Trebuchet MS', Helvetica, sans-serif">
+                @ViewBag.productDescription
+
+                <br /><br />
+                Sold by: @ViewBag.sellerName
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td class="col-md-12" colspan="3">
+            <a class="pull-right" href="@ViewBag.link" target="_blank"><b style="color:#0094ff">View Item</b></a>
+        </td>
+    </tr>
 </table>
+
+@if (Model.Count() == 0)
+{
+    <br />
+    <h3 class="text-center text-info">This product doesn't have any reviews yet, would you be the first one to write a review?</h3>
+}
+else
+{
+    @foreach (var item in Model)
+    {
+        <br />
+        <h4> @Html.DisplayFor(modelItem => item.Subject) </h4>
+        <p>  @Html.DisplayFor(modelItem => item.Description) </p>
+        <hr />
+
+        <br />
+    }
+
+    <nav style="margin-top:0px; margin-bottom: 0px" aria-label="Page navigation example" class="text-center">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a asp-action="Search"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   class="btn btn-default @prevDisabled">
+                    Previous
+                </a>
+            </li>
+            @if (Model.TotalPages <= 20)
+            {
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    @if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                }
+            }
+            else
+            {
+                @for (var i = 1; i <= 20; i++)
+                {
+                    @if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="Search"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   class="btn btn-default @nextDisabled">
+                    Next
+                </a>
+            </li>
+        </ul>
+    </nav>
+}
+
+<br />
+<p class="text-center">
+    <a asp-action="Create" asp-route-productName="@ViewBag.productName" asp-route-sellerName="@ViewBag.sellerName" asp-route-picture="@ViewBag.picture" asp-route-link="@ViewBag.link" asp-route-productDescription="@ViewBag.productDescription" asp-route-price="@ViewBag.price" class="btn btn-primary">Write a review</a>
+</p>
+<br />
+<br />
