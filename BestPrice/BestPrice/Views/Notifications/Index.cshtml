@@ -1,8 +1,13 @@
-﻿@model IEnumerable<BestPrice.Models.Notifications>
+﻿@model BestPrice.Services.PaginatedList<BestPrice.Models.Notifications>
 @{
     ViewData["Title"] = "Notifications";
 }
 <h2>Notifications</h2>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
 
 <hr style="margin-bottom:5px" />
 
@@ -12,6 +17,53 @@
 }
 else
 {
+    <nav style="margin-top:-10px; margin-bottom: -35px" aria-label="Page navigation example" class="text-right">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a asp-action="Search"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   class="btn btn-default @prevDisabled">
+                    Previous
+                </a>
+            </li>
+            @if (Model.TotalPages <= 5)
+            {
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    @if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active"><a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                }
+            }
+            else
+            {
+                @for (var i = 1; i <= 5; i++)
+                {
+                    @if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active"><a class="page-link active" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="Index"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   class="btn btn-default @nextDisabled">
+                    Next
+                </a>
+            </li>
+        </ul>
+    </nav>
+
     <br />
     <table class="table table-striped table-bordered">
         <thead style="background-color:dimgrey;color:azure">
@@ -31,8 +83,8 @@ else
                 <tr>
                     <th scope="row">@item.ProductName</th>
                     <td>@item.Seller</td>
-                    <td>@item.BeforePrice</td>
-                    <td>@item.CurrentPrice</td>
+                    <td>CAD$@item.BeforePrice</td>
+                    <td>CAD$@item.CurrentPrice</td>
                     <td>@item.PriceStatus</td>
                     <td>@item.LastModified</td>
                     <td><a href="@item.Link" target="_blank"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></td>
@@ -40,6 +92,55 @@ else
             }
         </tbody>
     </table>
+
+    @*
+    <nav aria-label="Page navigation example" class="text-center" style="margin-top:0px">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a asp-action="Index"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   class="btn btn-default @prevDisabled">
+                    Previous
+                </a>
+            </li>
+            @if (Model.TotalPages <= 5)
+            {
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    @if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active"><a class="page-link active" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                }
+            }
+            else
+            {
+                @for (var i = 1; i <= 5; i++)
+                {
+                    @if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active"><a class="page-link active" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="Index"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   class="btn btn-default @nextDisabled">
+                    Next
+                </a>
+            </li>
+        </ul>
+    </nav>
+        *@
     <br />
     <br />
 }

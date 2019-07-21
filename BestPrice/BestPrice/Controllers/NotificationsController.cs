@@ -31,7 +31,7 @@ namespace BestPrice.Controllers
         }
 
         // GET: Notifications
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {           
             if (!User.Identity.IsAuthenticated)
             {
@@ -40,7 +40,10 @@ namespace BestPrice.Controllers
 
             var user = await _userManager.GetUserAsync(User);
             var prj666_192a03Context = _context.Notifications.Include(n => n.User).Where(x => x.UserId == user.Id);
-            return View(await prj666_192a03Context.ToListAsync());
+            List<Notifications> items = new List<Notifications>(await prj666_192a03Context.ToListAsync());
+
+            int pageSize = 5;
+            return View(PaginatedList<Notifications>.CreatePage(items.OrderBy(p => p.LastModified), pageNumber ?? 1, pageSize));
         }
        
 
