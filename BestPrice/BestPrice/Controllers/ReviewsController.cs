@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BestPrice.Models;
+using BestPrice.Services;
 
 namespace BestPrice.Controllers
 {
@@ -19,7 +20,7 @@ namespace BestPrice.Controllers
         }
 
         // GET: Reviews
-        public async Task<IActionResult> Index(string productName, string sellerName, string picture, string link, string productDescription, float price)
+        public async Task<IActionResult> Index(string productName, string sellerName, string picture, string link, string productDescription, float price, int? pageNumber)
         {
             ViewBag.productName = productName;
             ViewBag.sellerName = sellerName;
@@ -27,7 +28,8 @@ namespace BestPrice.Controllers
             ViewBag.link = link;
             ViewBag.productDescription = productDescription;
             ViewBag.price = price;
-            return View(await _context.Reviews.Where(r => r.ProductName == productName && r.SellerName == sellerName).ToListAsync());
+            int pageSize = 10;
+            return View(PaginatedList<Reviews>.CreatePage((await _context.Reviews.Where(r => r.ProductName == productName && r.SellerName == sellerName).ToListAsync()).OrderByDescending(r => r.Id), pageNumber ?? 1, pageSize));
         }
 
         // GET: Reviews/Details/5

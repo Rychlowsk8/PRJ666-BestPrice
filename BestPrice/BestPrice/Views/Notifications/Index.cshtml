@@ -19,21 +19,16 @@ else
 {
     <nav style="margin-top:-10px; margin-bottom: -35px" aria-label="Page navigation example" class="text-right">
         <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a asp-action="Index"
-                   asp-route-pageNumber="@(Model.PageIndex - 1)"
-                   class="btn btn-lg @prevDisabled">
-                    Previous
-                </a>
-            </li>
-           
-            <li class="page-item">
-                <a asp-action="Index"
-                   asp-route-pageNumber="@(Model.PageIndex + 1)"
-                   class="btn btn-lg @nextDisabled">
-                    Next
-                </a>
-            </li>
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               class="page-item btn btn-primary @prevDisabled">
+                Previous
+            </a>
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               class="page-item btn btn-primary @nextDisabled">
+                Next
+            </a>
         </ul>
     </nav>
 
@@ -76,7 +71,7 @@ else
                     Previous
                 </a>
             </li>
-            @if (Model.TotalPages <= 5)
+            @if (Model.TotalPages <= 20)
             {
                 @for (var i = 1; i <= Model.TotalPages; i++)
                 {
@@ -92,7 +87,7 @@ else
             }
             else
             {
-                @for (var i = 1; i <= 5; i++)
+                @for (var i = 1; i <= 20; i++)
                 {
                     @if (i == Model.PageIndex)
                     {
