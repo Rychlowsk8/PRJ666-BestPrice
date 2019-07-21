@@ -43,7 +43,7 @@ namespace BestPrice.Controllers
             List<Notifications> items = new List<Notifications>(await prj666_192a03Context.ToListAsync());
 
             int pageSize = 5;
-            return View(PaginatedList<Notifications>.CreatePage(items.OrderBy(p => p.LastModified), pageNumber ?? 1, pageSize));
+            return View(PaginatedList<Notifications>.CreatePage(items.OrderByDescending(p => p.LastModified), pageNumber ?? 1, pageSize));
         }
        
 
