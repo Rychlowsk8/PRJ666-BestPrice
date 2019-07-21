@@ -36,7 +36,7 @@ namespace BestPrice.Controllers
             List<Wishlists> items = new List<Wishlists>(await prj666_192a03Context.ToListAsync());
             int pageSize = 5;
 
-            return View(PaginatedList<Wishlists>.CreatePage(items.OrderBy(p => p), pageNumber ?? 1, pageSize));
+            return View(PaginatedList<Wishlists>.CreatePage(items.OrderBy(p => p.Price), pageNumber ?? 1, pageSize));
         }
 
         // GET: Wishlists/Details/5

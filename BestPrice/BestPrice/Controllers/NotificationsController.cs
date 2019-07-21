@@ -105,14 +105,17 @@ namespace BestPrice.Controllers
 
                             var user = _context.AspNetUsers.FirstOrDefault(u => u.Id == wish.UserId);
 
-                            await _emailSender.SendEmailByMailKitAsync2(user.Email, "TechPG - Product price change",
-                                     $"<h1>Product</h1>: " + wish.ProductName + "<br/>" +
-                                     $"<img src='" + wish.Image + "' style='width:200px;height:150px' alt='TechPG logo' >" + "<br/>" +
-                                     $"Price Before: " + wish.Price + "<br/>" +
-                                     $"Price Now: " + list.CurrentPrice + "<br/>" +
-                                     $"Link: " + wish.Link + "<br/>"
-                                     );
-
+                                if (user.GetNotified == 1)
+                                {
+                                    await _emailSender.SendEmailByMailKitAsync2(user.Email, "TechPG - Product price change",
+                                    $"<h1>Product</h1>: " + wish.ProductName + "<br/>" +
+                                    $"<img src='" + wish.Image + "' style='width:200px;height:150px' alt='TechPG logo' >" + "<br/>" +
+                                    $"Price Before: " + wish.Price + "<br/>" +
+                                    $"Price Now: " + list.CurrentPrice + "<br/>" +
+                                    $"Link: " + wish.Link + "<br/>"
+                                    );
+                                }
+                           
                                  _context.Add(list);
                                 await _context.SaveChangesAsync();
                           
