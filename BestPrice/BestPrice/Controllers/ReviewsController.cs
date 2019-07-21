@@ -60,8 +60,8 @@ namespace BestPrice.Controllers
             ViewBag.link = link;
             ViewBag.productDescription = productDescription;
             ViewBag.price = price;
-
-            return View();
+            Reviews reviews = new Reviews();
+            return View(reviews);
         }
 
 
@@ -82,7 +82,7 @@ namespace BestPrice.Controllers
             ViewBag.productName = reviews.ProductName;
             ViewBag.sellerName = reviews.SellerName;
             ViewBag.picture = reviews.Image;
-            return View();
+            return View(reviews);
         }
 
         // GET: Reviews/Edit/5
