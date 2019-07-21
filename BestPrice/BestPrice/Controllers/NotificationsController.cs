@@ -118,8 +118,11 @@ namespace BestPrice.Controllers
                                     $"Link: " + wish.Link + "<br/>"
                                     );
                                 }
-                           
-                                 _context.Add(list);
+
+                                //To update the wishlist price
+                                _context.Wishlists.Where(p => p.ProductId == wish.ProductId).ToList().ForEach(x => x.Price = list.CurrentPrice);
+
+                                _context.Add(list);
                                 await _context.SaveChangesAsync();
                           
                             }
