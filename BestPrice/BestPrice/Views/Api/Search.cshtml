@@ -12,7 +12,23 @@
 
 <h1 style="font-family:'Kreon'">Showing results for "@CurrentURL"</h1>
 
+<div class="col-sm-2">
+    <div class="dropdown">
+        @*<button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                Tutorials
+                <span class="caret"></span>
+            </button>*@
+        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+            <li role="presentation"><a role="menuitem" href="#">Seller</a></li>
+            <li role="presentation"><a role="menuitem" href="#">Price Low to High</a></li>
+            <li role="presentation"><a role="menuitem" href="#">Price High to Low</a></li>
+
+        </ul>
+    </div>
+</div>
+
 <div class="row">
+
     <div class="col-sm">
         <div class="input-group" style="margin-left:300px;margin-right:300px">
             <input type="text" class="form-control" id="textAutocomplete" value="@ViewBag.keyword" placeholder="Search For Products..." />
@@ -42,6 +58,7 @@
 <hr style="margin-bottom:0px"/>
 
 <nav style="margin-top:0px; margin-bottom: 0px" aria-label="Page navigation example" class="text-center">
+    
     <ul class="pagination justify-content-center">
         <li class="page-item">
             <a asp-action="Search"
