@@ -52,12 +52,14 @@ namespace BestPrice
             services.AddMvc();
 
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySQL(Configuration.GetConnectionString("BestPriceDatabase")));
+            
 
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
-            /*
+            
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySql(Configuration.GetConnectionString("BestPriceDatabase")));
 
+            /*
             services.AddHangfire(x => x.UseStorage(new MySqlStorage(Configuration.GetConnectionString("BestPriceDatabase"), new MySqlStorageOptions() { TablePrefix = "Custom" })));
 
             services.AddHangfireServer();
