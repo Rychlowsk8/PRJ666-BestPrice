@@ -13,7 +13,9 @@ namespace BestPrice.Models
         [MaxLength(1500, ErrorMessage = "Maximum length of this field is 1500")]
         [Required]
         public string Description { get; set; }
-        public int? Rating { get; set; }
+        [Range(1,5, ErrorMessage = "Please give a rating between 1 and 5 star")]
+        [Required]
+        public int Rating { get; set; }
         public string ProductName { get; set; }
         public string SellerName { get; set; }
         public string Image { get; set; }
