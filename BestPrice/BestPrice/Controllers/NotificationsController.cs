@@ -160,8 +160,9 @@ namespace BestPrice.Controllers
 
                             JsonTextReader aReader = new JsonTextReader(new StringReader(amazonResponse));
                             JObject amazonParser = JObject.Parse(amazonResponse);
-                            
+
                             JToken jAmazon = amazonParser;
+                            if (jAmazon["responseStatus"] != null)
                             {
                                 Product aItem = new Product();
                                 aItem.Title = (string)jAmazon["productTitle"];

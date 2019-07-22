@@ -88,7 +88,8 @@ namespace BestPrice.Controllers
 
             List<Item> items = new List<Item>();
 
-            string url1 = "https://svcs.ebay.com/services/search/FindingService/v1?SECURITY-APPNAME=JatinKum-TechPG-PRD-41ea39f9c-08819029&OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&RESPONSE-DATA-FORMAT=JSON&callback=_cb_findItemsByKeywords&REST-PAYLOAD&keywords=";
+            //string url1 = "https://svcs.ebay.com/services/search/FindingService/v1?SECURITY-APPNAME=JatinKum-TechPG-PRD-41ea39f9c-08819029&OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&RESPONSE-DATA-FORMAT=JSON&callback=_cb_findItemsByKeywords&REST-PAYLOAD&keywords=";
+            string url1 = "https://svcs.ebay.com/services/search/FindingService/v1?SECURITY-APPNAME=JatinKum-TechPG-PRD-41ea39f9c-08819029&OPERATION-NAME=findItemsAdvanced&SERVICE-VERSION=1.0.0&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&categoryId(0)=177&categoryId(1)=9355&keywords=";
             string keywordz = keyword;
             string url2 = "&GLOBAL-ID=EBAY-ENCA&siteid=2";
             string url = url1 + keyword + url2;
@@ -107,9 +108,12 @@ namespace BestPrice.Controllers
             response.Close();
             readStream.Close();
 
+            /*
             // Malformed json String --> replace unfitting parts
-            ebayResponse = ebayResponse.Replace("/**/_cb_findItemsByKeywords(", "");
-            ebayResponse = ebayResponse.Remove(ebayResponse.Length - 1, 1);           
+            ebayResponse = ebayResponse.Replace("/**/
+            /*_cb_findItemsByKeywords(", "");
+            ebayResponse = ebayResponse.Remove(ebayResponse.Length - 1, 1);   
+            */
 
             JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
             JObject ebayParser = JObject.Parse(ebayResponse);
