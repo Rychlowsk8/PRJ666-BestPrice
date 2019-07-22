@@ -45,7 +45,19 @@ namespace BestPrice.Controllers
             int pageSize = 5;
             return View(PaginatedList<Notifications>.CreatePage(items.OrderByDescending(p => p.LastModified), pageNumber ?? 1, pageSize));
         }
-       
+
+        public async Task<IActionResult> ClearNotifications()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var prj666_192a03Context = _context.Notifications.Include(n => n.User).Where(x => x.UserId == user.Id);
+            List<Notifications> list = new List<Notifications>(await prj666_192a03Context.ToListAsync());
+
+            _context.Notifications.RemoveRange(list);
+             await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
 
         public async Task<IActionResult> CheckPriceforAll()
         {
@@ -206,6 +218,9 @@ namespace BestPrice.Controllers
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", notifications.UserId);
             return View(notifications);
         }
+
+
+        
 
         // GET: Notifications/Delete/5
         public async Task<IActionResult> Delete(int? id)
