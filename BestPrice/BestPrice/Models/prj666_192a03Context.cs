@@ -883,8 +883,9 @@ namespace BestPrice.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.ProductId)
-                   .HasColumnName("productID")
-                   .HasColumnType("bigint(20)");
+                   .IsRequired()
+                   .HasMaxLength(255)
+                   .IsUnicode(false);
             });
 
             modelBuilder.Entity<SearchHistories>(entity =>

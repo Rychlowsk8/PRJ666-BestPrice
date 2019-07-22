@@ -10,6 +10,7 @@ using BestPrice.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -67,7 +68,7 @@ namespace BestPrice.Controllers
             return View(items);
         }
         [Route("[action]/{keyword}")]
-        public async Task<IActionResult> Search(string keyword, int? pageNumber)
+        public async Task<IActionResult> Search(string keyword, int? pageNumber, string sortOrder, string filter)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -183,8 +184,53 @@ namespace BestPrice.Controllers
             }
 
             int pageSize = 20;
-            
-            return View(PaginatedList<Item>.CreatePage(items.OrderBy(p => p.CurrentPrice), pageNumber ?? 1, pageSize));
+
+            foreach (var item in items)
+            {
+                var item_reviews = await _context.Reviews.Where(r => r.ProductId == item.ItemId).ToListAsync();
+                var total_reviews = item_reviews.Count();
+                int sum_ratings = 0;
+                foreach (var review in item_reviews)
+                {
+                    sum_ratings += review.Rating;
+                }
+                item.averageRating = (int)Math.Round((double)sum_ratings / total_reviews);
+            }
+
+            IOrderedEnumerable<Item> list = null;
+
+            if (sortOrder == null)
+            {
+                list = items.OrderBy(p => p.CurrentPrice);
+            }
+            else if (sortOrder == "price decrease")
+            {
+                list = items.OrderByDescending(p => p.CurrentPrice);
+            }
+            else if (sortOrder == "name increase")
+            {
+                list = items.OrderBy(p => p.Title);
+            }
+            else if (sortOrder == "name decrease")
+            {
+                list = items.OrderByDescending(p => p.Title);
+            }
+            else if (sortOrder == "rating")
+            {
+                list  = items.OrderByDescending(p => p.averageRating);
+            }
+
+            if (filter == "Amazon")
+            {
+                list = (IOrderedEnumerable<Item>)list.Where(i => i.soldBy == "Amazon");
+            } else if (filter == "eBay")
+            {
+                list = (IOrderedEnumerable<Item>)list.Where(i => i.soldBy == "eBay");
+            }
+
+            ViewBag.currentSortOrder = sortOrder;
+
+            return View(PaginatedList<Item>.CreatePage(list, pageNumber ?? 1, pageSize));
         }
 
     }
