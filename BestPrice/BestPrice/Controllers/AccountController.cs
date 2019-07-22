@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using BestPrice.Models;
 using BestPrice.Models.AccountViewModels;
 using BestPrice.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace BestPrice.Controllers
 {
@@ -271,22 +272,50 @@ namespace BestPrice.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        [Route("DeleteAccount")]
-        public async Task<IActionResult> DeleteAccount(string id)
+        public async Task<IActionResult> Delete()
         {
             var user = await _userManager.GetUserAsync(User);
-            return View();
+
+            return View(user);
         }
 
-        [HttpPost, ActionName("Delete Account")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Route("DeleteAccount")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            if (ModelState.IsValid)
+            {
+                if (id == null) return RedirectToAction("Settings", "Manage");
+            }
+
+            var user = await _userManager.FindByIdAsync(id);            
+
+            var searchHistories = _context.SearchHistories
+                .Include(s => s.User)
+                .Where(m => m.UserId == id).ToList();
+            var notifications = _context.Notifications
+                .Include(s => s.User)
+                .Where(n => n.UserId == id).ToList();
+            var wishlists = _context.Wishlists
+                .Include(s => s.User)                
+                .Where(o => o.UserId == id).ToList();
+
+            foreach (SearchHistories i in searchHistories)
+            {
+                _context.SearchHistories.Remove(i);
+            }
+            foreach (Notifications i in notifications)
+            {
+                _context.Notifications.Remove(i);
+            }
+            foreach (Wishlists i in wishlists)
+            {
+                _context.Wishlists.Remove(i);
+            }
+            await _context.SaveChangesAsync();
+
             await _signInManager.SignOutAsync();
             await _userManager.DeleteAsync(user);
-            await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
         }

@@ -1,0 +1,15 @@
+﻿@model BestPrice.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Delete Account";
+}
+
+<h2>Delete your account?</h2>
+<h4>Are you sure you want to do this?</h4>
+<hr />
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Delete Account" class="btn btn-danger" /> |
+    <a asp-controller="Manage" asp-action="Settings">Back to Settings</a>
+</form>
