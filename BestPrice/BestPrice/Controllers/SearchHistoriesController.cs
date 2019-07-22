@@ -61,7 +61,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,SellerName,Date,UserId")] SearchHistories searchHistories)
+        public async Task<IActionResult> Create([Bind("Id,Name,SellerName,Date,UserId,ProductName,Image,Link,Price,ProductDescription,ProductCondition,SoldOut")] SearchHistories searchHistories)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,SellerName,Date,UserId")] SearchHistories searchHistories)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,SellerName,Date,UserId,ProductName,Image,Link,Price,ProductDescription,ProductCondition,SoldOut")] SearchHistories searchHistories)
         {
             if (id != searchHistories.Id)
             {

@@ -71,23 +71,22 @@ namespace BestPrice.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                SearchHistories entry = new SearchHistories();
-                entry.Name = keyword;
-                entry.Date = DateTime.Now;
                 var user = await _userManager.GetUserAsync(User);
-                entry.UserId = user.Id;
-                _context.SearchHistories.Add(entry);
-                await _context.SaveChangesAsync();
+                if (user.saveSearches)
+                {
+                    SearchHistories entry = new SearchHistories();
+                    entry.Name = keyword;
+                    entry.Date = DateTime.Now;
+                    entry.UserId = user.Id;
+                    _context.SearchHistories.Add(entry);
+                    await _context.SaveChangesAsync();
+                }
             }
 
             ViewBag.keyword = keyword;
 
             List<Item> items = new List<Item>();
 
-            /*
-             * eBay API Details
-             * 
-             **/
             string url1 = "https://svcs.ebay.com/services/search/FindingService/v1?SECURITY-APPNAME=JatinKum-TechPG-PRD-41ea39f9c-08819029&OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&RESPONSE-DATA-FORMAT=JSON&callback=_cb_findItemsByKeywords&REST-PAYLOAD&keywords=";
             string keywordz = keyword;
             string url2 = "&GLOBAL-ID=EBAY-ENCA&siteid=2";
@@ -148,8 +147,15 @@ namespace BestPrice.Controllers
                     eItem.Title = (string)i["title"][0];
                     eItem.ItemId = (long)i["itemId"][0];
                     eItem.GalleryURL = (string)i["galleryURL"][0];
-                    eItem.CurrentPrice = (int)((float)(i["sellingStatus"][0]["currentPrice"][0]["__value__"]));
-                    eItem.subtitle = "Condition: " + (string)i["condition"][0]["conditionDisplayName"][0];
+                    eItem.CurrentPrice = (float)(i["sellingStatus"][0]["currentPrice"][0]["__value__"]);
+                    if (i["condition"] != null)
+                    {
+                        eItem.subtitle = "Condition: " + (string)i["condition"][0]["conditionDisplayName"][0];
+                    }
+                    else
+                    {
+                        eItem.subtitle = "Unknown";
+                    }
                     eItem.ViewItemURL = (string)i["viewItemURL"][0];
                     eItem.soldBy = "eBay";
                     items.Add(eItem);
@@ -162,7 +168,14 @@ namespace BestPrice.Controllers
                 aItem.Title = (string)i["productTitle"];
                 aItem.GalleryURL = (string)i["imageUrlList"][0];
                 aItem.CurrentPrice = (float)i["price"];
-                aItem.subtitle = (string)i["productDescription"];
+                if (i["productDescription"] != null)
+                {
+                    aItem.subtitle = (string)i["productDescription"];
+                }
+                else
+                {
+                    aItem.subtitle = "Unknown";
+                }
                 aItem.ViewItemURL = "https://www.amazon.ca/dp/" + (string)i["asin"];
                 aItem.soldBy = "Amazon";
                 items.Add(aItem);

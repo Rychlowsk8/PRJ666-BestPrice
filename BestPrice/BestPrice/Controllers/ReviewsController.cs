@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BestPrice.Models;
+using BestPrice.Services;
 
 namespace BestPrice.Controllers
 {
@@ -19,9 +20,16 @@ namespace BestPrice.Controllers
         }
 
         // GET: Reviews
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string productName, string sellerName, string picture, string link, string productDescription, float price, int? pageNumber)
         {
-            return View(await _context.Reviews.ToListAsync());
+            ViewBag.productName = productName;
+            ViewBag.sellerName = sellerName;
+            ViewBag.picture = picture;
+            ViewBag.link = link;
+            ViewBag.productDescription = productDescription;
+            ViewBag.price = price;
+            int pageSize = 10;
+            return View(PaginatedList<Reviews>.CreatePage((await _context.Reviews.Where(r => r.ProductName == productName && r.SellerName == sellerName).ToListAsync()).OrderByDescending(r => r.Id), pageNumber ?? 1, pageSize));
         }
 
         // GET: Reviews/Details/5
@@ -43,12 +51,16 @@ namespace BestPrice.Controllers
         }
 
         // GET: Reviews/Create
-        public IActionResult Create(string productName, string sellerName, string picture)
+        public IActionResult Create(string productName, string sellerName, string picture, string link, string productDescription, float price)
         {
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
             ViewBag.productName = productName;
             ViewBag.sellerName = sellerName;
             ViewBag.picture = picture;
+            ViewBag.link = link;
+            ViewBag.productDescription = productDescription;
+            ViewBag.price = price;
+
             return View();
         }
 
@@ -58,15 +70,19 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Subject,Description,Rating,ProductName,SellerName")] Reviews reviews)
+        public async Task<IActionResult> Create([Bind("Id,Subject,Description,Rating,ProductName,SellerName,Image,Link,ProductDescription,ProductCondition,Price,SoldOut")] Reviews reviews)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(reviews);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Index", new { productName = reviews.ProductName, sellerName = reviews.SellerName, picture = reviews.Image, link = reviews.Link, productDescription = reviews.ProductDescription, price = reviews.Price });
             }
-            return View(reviews);
+            ViewBag.productName = reviews.ProductName;
+            ViewBag.sellerName = reviews.SellerName;
+            ViewBag.picture = reviews.Image;
+            return View();
         }
 
         // GET: Reviews/Edit/5
@@ -90,7 +106,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Subject,Description,Rating,ProductName,SellerName")] Reviews reviews)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Subject,Description,Rating,ProductName,SellerName,Image,Link,ProductDescription,ProductCondition,Price,SoldOut")] Reviews reviews)
         {
             if (id != reviews.Id)
             {

@@ -1,34 +1,18 @@
 ﻿@model BestPrice.Services.PaginatedList<BestPrice.Models.Api.Item>
-
+@using Microsoft.AspNetCore.Identity
+@using BestPrice.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Search list";
 
     string CurrentURL = ViewBag.keyword;
 }
-
 <head>
     <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css'>
 </head>
-
 <h1 style="font-family:'Kreon'">Showing results for "@CurrentURL"</h1>
-
-<div class="col-sm-2">
-    <div class="dropdown">
-        @*<button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                Tutorials
-                <span class="caret"></span>
-            </button>*@
-        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-            <li role="presentation"><a role="menuitem" href="#">Seller</a></li>
-            <li role="presentation"><a role="menuitem" href="#">Price Low to High</a></li>
-            <li role="presentation"><a role="menuitem" href="#">Price High to Low</a></li>
-
-        </ul>
-    </div>
-</div>
-
 <div class="row">
-
     <div class="col-sm">
         <div class="input-group" style="margin-left:300px;margin-right:300px">
             <input type="text" class="form-control" id="textAutocomplete" value="@ViewBag.keyword" placeholder="Search For Products..." />
@@ -38,7 +22,6 @@
         </div><!-- /input-group -->
     </div>
 </div>
-
 @*<div class="dropdown" style="float:left; position:absolute; margin-top:10px">
         <button class="dropdown-toggle btn" type="button" data-toggle="dropdown">Sort by</button>
         <ul class="dropdown-menu">
@@ -49,16 +32,12 @@
             <li><input type="text" placeholder="Seller" /></li>
         </ul>
     </div>*@
-
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
-
-<hr style="margin-bottom:0px"/>
-
+<hr style="margin-bottom:0px" />
 <nav style="margin-top:0px; margin-bottom: 0px" aria-label="Page navigation example" class="text-center">
-    
     <ul class="pagination justify-content-center">
         <li class="page-item">
             <a asp-action="Search"
@@ -104,7 +83,6 @@
         </li>
     </ul>
 </nav>
-
 @foreach (var item in Model)
 {
     <table class="table table-bordered" style="width:75%; margin:auto; margin-top:0px; margin-bottom: 10px">
@@ -123,9 +101,7 @@
             <td class="col-md-10" colspan="3">
                 <p style="font-family: 'Trebuchet MS', Helvetica, sans-serif">
                     @Html.DisplayFor(modelItem => item.subtitle)
-
                     @*Location: @Html.DisplayFor(modelItem => item.Location), @Html.DisplayFor(modelItem => item.Country)*@
-
                     <br /><br />
                     Sold by: @Html.DisplayFor(modelItem => item.soldBy)
                 </p>
@@ -133,18 +109,20 @@
         </tr>
         <tr>
             <td class="col-md-12" colspan="3">
-                <a asp-controller="Wishlists" asp-action="Create"><b style="color:#0094ff">Add to Wishlist</b></a>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a asp-controller="Wishlists" asp-action="Create" asp-route-productId="@item.ItemId" asp-route-productName="@item.Title" asp-route-description="@item.subtitle" asp-route-link="@item.ViewItemURL" asp-route-image="@item.GalleryURL" asp-route-price="@item.CurrentPrice" asp-route-soldBy="@item.soldBy"><b style="color:#0094ff">Add to Wishlist</b></a>
+                    <b style="color:#0094ff">  |  </b>
+                }
+                <a asp-controller="Reviews" asp-action="Index" asp-route-productName="@item.Title" asp-route-sellerName="@item.soldBy" asp-route-picture="@item.GalleryURL" asp-route-link="@item.ViewItemURL" asp-route-productDescription="@item.subtitle" asp-route-price="@item.CurrentPrice"><b style="color:#0094ff">See Reviews</b></a>
                 <b style="color:#0094ff">  |  </b>
-                <a asp-controller="Reviews" asp-action="Index"><b style="color:#0094ff">Visit Reviews</b></a>
-                <b style="color:#0094ff">  |  </b>
-                <a asp-controller="Reviews" asp-action="Create" asp-route-productName="@item.Title" asp-route-sellerName="@item.soldBy" asp-route-picture="@item.GalleryURL"><b style="color:#0094ff">Create Reviews</b></a>
+                <a asp-controller="Reviews" asp-action="Create" asp-route-productName="@item.Title" asp-route-sellerName="@item.soldBy" asp-route-picture="@item.GalleryURL" asp-route-link="@item.ViewItemURL" asp-route-productDescription="@item.subtitle" asp-route-price="@item.CurrentPrice"><b style="color:#0094ff">Create Reviews</b></a>
 
                 <a class="pull-right" href="@Html.DisplayFor(modelItem => item.ViewItemURL)" target="_blank"><b style="color:#0094ff">View Item</b></a>
             </td>
         </tr>
     </table>
 }
-
 <nav aria-label="Page navigation example" class="text-center" style="margin-top:0px">
     <ul class="pagination justify-content-center">
         <li class="page-item">
@@ -191,10 +169,8 @@
         </li>
     </ul>
 </nav>
-
 <hr />
 <br />
-
 <script>
 
     $("#textAutocomplete").autocomplete({
