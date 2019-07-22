@@ -7,7 +7,7 @@ namespace BestPrice.Models
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public long ProductId { get; set; }
+        public string ProductId { get; set; }
         public string ProductName { get; set; }
         public string SellerName { get; set; }
         public string Link { get; set; }

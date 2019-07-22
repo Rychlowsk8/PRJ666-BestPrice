@@ -9,7 +9,7 @@ namespace BestPrice.Models.Api
     public class Item
     {
         public int Id { get; set; }
-        public long ItemId { get; set; }
+        public string ItemId { get; set; }
         public string Title { get; set; }
         public string subtitle { get; set; }
         public string GalleryURL { get; set; }
