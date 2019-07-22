@@ -10,7 +10,7 @@ namespace BestPrice.Models.Notification
     public class Product
     {
         public int Id { get; set; }
-        public long ItemId { get; set; }
+        public String ItemId { get; set; }
         public string Title { get; set; }
         public float CurrentPrice { get; set; }
         public string ViewItemURL { get; set; }

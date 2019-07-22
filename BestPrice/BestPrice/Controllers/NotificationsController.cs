@@ -70,6 +70,8 @@ namespace BestPrice.Controllers
                     var user = _context.AspNetUsers.FirstOrDefault(u => u.Id == wish.UserId);
                     if (user.GetNotified == 1)
                     {
+                        if (wish.SellerName == "eBay")
+                        { 
                         string url = "http://open.api.ebay.com/shopping?callname=GetSingleItem&responseencoding=JSON&appid=JatinKum-TechPG-PRD-41ea39f9c-08819029&siteid=2&version=967&ItemID=" + wish.ProductId;
 
                         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -96,7 +98,7 @@ namespace BestPrice.Controllers
                             {
                                 Product eItem = new Product();
                                 eItem.Title = (string)jEbay["Title"];
-                                eItem.ItemId = (long)jEbay["ItemID"];
+                                eItem.ItemId = (string)jEbay["ItemID"];
                                 eItem.CurrentPrice = (float)(jEbay["ConvertedCurrentPrice"]["Value"]);
                                 eItem.ViewItemURL = (string)jEbay["ViewItemURLForNaturalSearch"];
 
@@ -137,7 +139,77 @@ namespace BestPrice.Controllers
 
                                 }
                             }
+                         }
+                      }
+                     // ------------------------------------Amazon------------------------------------
+                     /*
+                        if (wish.SellerName == "Amazon")
+                        {
+                            string amazonUrl1 = "https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product?url=https%3A%2F%2Fwww.amazon.ca%2Fdp%2F";
+                            string amazonUrl = amazonUrl1 + wish.ProductId;
+                            HttpWebRequest ARequest = (HttpWebRequest)WebRequest.Create(amazonUrl);
+                            ARequest.Credentials = CredentialCache.DefaultCredentials;
+                            ARequest.Headers["X-RapidAPI-Host"] = "axesso-axesso-amazon-data-service-v1.p.rapidapi.com";
+                            ARequest.Headers["X-RapidAPI-Key"] = "823b61990amsh1d2994b66a6151cp14a23cjsn2ad2c946e5f7";
+                            HttpWebResponse AResponse = (HttpWebResponse)ARequest.GetResponse();
+                            Stream AReceiveStream = AResponse.GetResponseStream();
+                            StreamReader AReadStream = new StreamReader(AReceiveStream, System.Text.Encoding.UTF8);
+                            string amazonResponse = AReadStream.ReadToEnd();
+                            AResponse.Close();
+                            AReadStream.Close();                         
+
+                            JsonTextReader aReader = new JsonTextReader(new StringReader(amazonResponse));
+                            JObject amazonParser = JObject.Parse(amazonResponse);
+                            
+                            JToken jAmazon = amazonParser;
+                            {
+                                Product aItem = new Product();
+                                aItem.Title = (string)jAmazon["productTitle"];
+                                aItem.ItemId = (string)jAmazon["asin"];
+                                aItem.CurrentPrice = (float)jAmazon["price"];
+                                aItem.ViewItemURL = "https://www.amazon.ca/dp/" + (string)jAmazon["asin"];
+
+                                if (aItem.CurrentPrice != wish.Price)
+                                    {
+                                        Notifications list = new Notifications();
+                                        list.ProductName = wish.ProductName;
+                                        list.Link = wish.Link;
+                                        list.Image = wish.Image;
+                                        list.Seller = wish.SellerName;
+                                        list.BeforePrice = wish.Price;
+                                        list.CurrentPrice = aItem.CurrentPrice;
+                                        if (list.BeforePrice > list.CurrentPrice)
+                                        {
+                                            list.PriceStatus = "Decreased";
+                                        }
+                                        else
+                                        {
+                                            list.PriceStatus = "Increased";
+                                        }
+                                        list.LastModified = DateTime.Now;
+
+                                        list.UserId = wish.UserId;
+
+                                        await _emailSender.SendEmailByMailKitAsync2(user.Email, "TechPG - Product price change",
+                                        $"<h1>Product</h1>: " + wish.ProductName + "<br/>" +
+                                        $"<img src='" + wish.Image + "' style='width:200px;height:150px' alt='TechPG logo' >" + "<br/>" +
+                                        $"Price Before: " + wish.Price + "<br/>" +
+                                        $"Price Now: " + list.CurrentPrice + "<br/>" +
+                                        $"Link: " + wish.Link + "<br/>"
+                                        );
+
+                                        //To update the wishlist price
+                                        _context.Wishlists.Where(p => p.ProductId == wish.ProductId).ToList().ForEach(x => x.Price = list.CurrentPrice);
+
+                                        _context.Add(list);
+                                        await _context.SaveChangesAsync();
+
+                                    }
+                                }
+        
                         }
+                        */
+                        //-----------------------------------------------Amazon----------------------------------------------------------
                     }
                 }
             }          
