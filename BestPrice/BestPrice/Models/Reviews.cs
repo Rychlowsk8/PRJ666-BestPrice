@@ -24,5 +24,7 @@ namespace BestPrice.Models
         public string ProductCondition { get; set; }
         public float? Price { get; set; }
         public short SoldOut { get; set; }
+        public long ProductId { get; set; }
+
     }
 }
