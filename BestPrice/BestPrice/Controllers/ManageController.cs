@@ -321,8 +321,10 @@ namespace BestPrice.Controllers
             {
                 return NotFound();
             }
+            _context.SearchHistories.Remove(searchHistories);
+            await _context.SaveChangesAsync();
 
-            return View(searchHistories);
+            return RedirectToAction("History");
         }
 
         [HttpPost, ActionName("Delete")]
