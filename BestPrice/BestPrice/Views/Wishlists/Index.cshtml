@@ -86,7 +86,13 @@ else
         <table class="table table-bordered" style="width:75%; margin:auto; margin-top:0px; margin-bottom: 10px">
             <tr>
                 <td class="col-md-11" colspan="2">
-                    <b>@Html.DisplayFor(modelItem => item.ProductName)</b>
+                    <b>
+                        @Html.DisplayFor(modelItem => item.ProductName) &nbsp;
+                            @if (item.SoldOut == 1)
+                            {
+                                <font color="red">(Sold Out)</font>
+                            }
+                    </b>
                 </td>
                 <td class="col-md-1">
                     <b style="text-align:center">CAD$@Html.DisplayFor(modelItem => item.Price)</b>
