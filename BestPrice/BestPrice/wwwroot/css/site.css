@@ -71,3 +71,22 @@
             color: #41cac0;
             content: "★";
         }
+.btn-info {
+    background-color: #337ab7;
+    border-color: #337ab7;
+    color: #fff;
+}
+
+.dropdown-menu > li > a {
+    line-height: 0.2;
+    padding:15px 20px;
+}
+
+.dropdown-menu .divider {
+    margin:0px;
+}
+
+#filter-dropdown {
+    height: 150px !important;
+
+}
