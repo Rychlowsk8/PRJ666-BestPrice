@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BestPrice.Models;
 using BestPrice.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace BestPrice.Controllers
 {
@@ -41,6 +42,8 @@ namespace BestPrice.Controllers
                 ViewBag.average_rating = product.AverageRating;
             }
           
+            ViewBag.keyword = HttpContext.Session.GetString("keyword");
+
             return View(PaginatedList<Reviews>.CreatePage(paged_reviews, pageNumber ?? 1, pageSize));
         }
 

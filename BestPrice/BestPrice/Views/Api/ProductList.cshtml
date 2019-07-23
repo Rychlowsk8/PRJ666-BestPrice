@@ -5,13 +5,12 @@
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Search list";
-
-    string CurrentURL = ViewBag.keyword;
 }
 <head>
     <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css'>
 </head>
-<h1 style="font-family:'Kreon'">Showing results for "@CurrentURL"</h1>
+<h1 style="font-family:'Kreon'">Showing results for "@ViewBag.keyword"</h1>
+<br />
 <div class="row">
     <div class="dropdown pull-left">
         <button id="view_map" class="btn btn-success" type="button">View Map</button>
@@ -22,8 +21,8 @@
         <ul class="dropdown-menu" id="filter-dropdown">
             <li><b class="text-info">&nbsp; Seller</b> </li>
             <li class="divider"></li>
-            <li><a asp-action="Search" asp-route-keyword="@ViewBag.keyword" asp-route-filter="Amazon">Amazon</a></li>
-            <li><a asp-action="Search" asp-route-keyword="@ViewBag.keyword" asp-route-filter="Ebay">eBay</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="Amazon">Amazon</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="Ebay">eBay</a></li>
             <li class="divider"></li>
             <li><b class="text-info">&nbsp; Price range &nbsp;</b></li>&nbsp;
             <input type="text" size="4" placeholder="$" />&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;
@@ -34,15 +33,15 @@
     <div class="dropdown pull-right" style="margin-right:5px">
         <button class="dropdown-toggle btn btn-info" type="button" data-toggle="dropdown">Sort by <span class="caret"></span></button>
         <ul class="dropdown-menu">
-            <li><a asp-action="Search" asp-route-keyword="@ViewBag.keyword"><b class="text-info">&nbsp; Price: Low to High</b></a></li>
+            <li><a asp-action="ProductList" ><b class="text-info">&nbsp; Price: Low to High</b></a></li>
             <li class="divider"></li>
-            <li><a asp-action="Search" asp-route-keyword="@ViewBag.keyword" asp-route-sortOrder="price decrease"><b class="text-info">&nbsp; Price: High to Low</b></a></li>
+            <li><a asp-action="ProductList" asp-route-sortOrder="price decrease"><b class="text-info">&nbsp; Price: High to Low</b></a></li>
             <li class="divider"></li>
-            <li><a asp-action="Search" asp-route-keyword="@ViewBag.keyword" asp-route-sortOrder="name increase"><b class="text-info">&nbsp; Name: A-Z</b></a></li>
+            <li><a asp-action="ProductList" asp-route-sortOrder="name increase"><b class="text-info">&nbsp; Name: A-Z</b></a></li>
             <li class="divider"></li>
-            <li><a asp-action="Search" asp-route-keyword="@ViewBag.keyword" asp-route-sortOrder="name decrease"><b class="text-info">&nbsp; Name: Z-A</b></a></li>
+            <li><a asp-action="ProductList" asp-route-sortOrder="name decrease"><b class="text-info">&nbsp; Name: Z-A</b></a></li>
             <li class="divider"></li>
-            <li><a asp-action="Search" asp-route-keyword="@ViewBag.keyword" asp-route-sortOrder="rating"><b class="text-info">&nbsp; Average Review</b></a></li>
+            <li><a asp-action="ProductList" asp-route-sortOrder="rating"><b class="text-info">&nbsp; Average Review</b></a></li>
         </ul>
     </div>
     <div class="col-sm">
@@ -63,13 +62,13 @@
 }
 <br />
 <hr style="margin-bottom:0px" />
-<nav style="margin-top:30px; margin-bottom: 30px" aria-label="Page navigation example" class="text-center">
+<nav style="margin-top:0px; margin-bottom: 0px" aria-label="Page navigation example" class="text-center">
     <ul class="pagination justify-content-center">
         <li class="page-item">
-            <a asp-action="Search"
-               asp-route-pageNumber="@(Model.PageIndex - 1)"
+            <a asp-action="ProductList"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"      
                class="btn btn-default @prevDisabled">
-                Previous
+                Previous           
             </a>
         </li>
         @if (Model.TotalPages <= 20)
@@ -78,11 +77,11 @@
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
             }
         }
@@ -92,16 +91,16 @@
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
             }
         }
         <li class="page-item">
-            <a asp-action="Search"
+            <a asp-action="ProductList"
                asp-route-pageNumber="@(Model.PageIndex + 1)"
                class="btn btn-default @nextDisabled">
                 Next
@@ -160,7 +159,7 @@
 <nav aria-label="Page navigation example" class="text-center" style="margin-top:0px">
     <ul class="pagination justify-content-center">
         <li class="page-item">
-            <a asp-action="Search"
+            <a asp-action="ProductList"
                asp-route-pageNumber="@(Model.PageIndex - 1)"
                class="btn btn-default @prevDisabled">
                 Previous
@@ -172,11 +171,11 @@
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
             }
         }
@@ -186,16 +185,16 @@
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
             }
         }
         <li class="page-item">
-            <a asp-action="Search"
+            <a asp-action="ProductList"
                asp-route-pageNumber="@(Model.PageIndex + 1)"
                class="btn btn-default @nextDisabled">
                 Next
@@ -229,6 +228,13 @@
             window.location.href = url + '/' + textValue;
         });
     });
+
+    $(document).ready(function(){
+    $('#textAutocomplete').keypress(function(e){
+      if(e.keyCode==13)
+      $('#button').click();
+    });
+});
 
     $(document).ready(function () {
         //$('#button').attr('disabled', true);

@@ -69,6 +69,17 @@
         });
     });
 
+     
+
+$(document).ready(function(){
+    $('#textAutocomplete').keypress(function(e){
+      if(e.keyCode==13)
+      $('#button').click();
+    });
+});
+
+
+
     $(document).ready(function () {
         $('#button').attr('disabled', true);
 

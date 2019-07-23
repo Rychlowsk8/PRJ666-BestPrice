@@ -50,6 +50,8 @@ namespace BestPrice
 
          
             services.AddMvc();
+            services.AddDistributedMemoryCache();
+            services.AddSession();
 
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySQL(Configuration.GetConnectionString("BestPriceDatabase")));
             
@@ -111,7 +113,7 @@ namespace BestPrice
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
