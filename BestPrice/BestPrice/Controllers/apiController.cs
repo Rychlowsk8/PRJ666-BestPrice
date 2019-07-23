@@ -191,14 +191,14 @@ namespace BestPrice.Controllers
 
             foreach (var item in items)
             {
-                var item_reviews = await _context.Reviews.Where(r => r.ProductId == item.ItemId).ToListAsync();
-                var total_reviews = item_reviews.Count();
-                int sum_ratings = 0;
-                foreach (var review in item_reviews)
+                var dbProduct = _context.Products.FirstOrDefault(p => p.Id.Equals(item.ItemId));
+                if (dbProduct != null)
                 {
-                    sum_ratings += review.Rating;
+                    item.averageRating = dbProduct.AverageRating ?? 0;
+                } else
+                {
+                    item.averageRating = 0;
                 }
-                item.averageRating = (int)Math.Round((double)sum_ratings / total_reviews);
             }
 
             IOrderedEnumerable<Item> list = null;
