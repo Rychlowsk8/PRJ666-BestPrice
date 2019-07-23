@@ -10,23 +10,6 @@
 }
 <head>
     <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css'>
-    <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
-    <script>
-        $(document).ready(function () {
-            var count = 0;
-            $("#view_map").click(function () {
-                if (count % 2 == 0) {
-                    $.get('@Url.Action("ViewMap","api")', {}, function (response) {
-                        $("#map").html(response);
-                    });
-                }
-                else {
-                    $("#map").empty();
-                }
-                count++;
-            });
-        });
-    </script>
 </head>
 <h1 style="font-family:'Kreon'">Showing results for "@CurrentURL"</h1>
 <div class="row">
@@ -259,5 +242,20 @@
                 $('#button').prop('disabled', true);
             }
         })
+    });
+
+    $(document).ready(function () {
+        var count = 0;
+        $("#view_map").click(function () {
+            if (count % 2 == 0) {
+                $.get('@Url.Action("ViewMap","api")', {}, function (response) {
+                    $("#map").html(response);
+                });
+            }
+            else {
+                $("#map").empty();
+            }
+            count++;
         });
+    });
 </script>

@@ -1,14 +1,19 @@
 ﻿@inject UserManager<ApplicationUser> UserManager
 @{
     var user = await UserManager.GetUserAsync(User);
-    var location = user.Location;
-    if (location == null)
-    {
-        location = "70 The Pond Rd, North York";
-    }
+    var location = "70 The Pond Rd, North York";
+    var location_url = "";
 
+    if (user != null)
+    {
+        location = user.Location;
+        if (location == null)
+        {
+            location = "70 The Pond Rd, North York";
+        }
+    } 
     location = Uri.EscapeDataString(location);
-    var location_url = "https://maps.google.com/maps?q=" + location + "&t=&z=13&ie=UTF8&iwloc=&output=embed";
+    location_url = "https://maps.google.com/maps?q=" + location + "&t=&z=13&ie=UTF8&iwloc=&output=embed";
 }
 
 <hr />
