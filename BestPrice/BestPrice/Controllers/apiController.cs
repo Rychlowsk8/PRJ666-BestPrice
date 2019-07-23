@@ -237,5 +237,10 @@ namespace BestPrice.Controllers
             return View(PaginatedList<Item>.CreatePage(list, pageNumber ?? 1, pageSize));
         }
 
+        [Route("/api/ViewMap")]
+        public PartialViewResult ViewMap()
+        {
+            return PartialView("_ViewMap");
+        }
     }
 }

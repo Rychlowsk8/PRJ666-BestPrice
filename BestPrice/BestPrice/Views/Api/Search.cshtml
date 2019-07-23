@@ -10,9 +10,30 @@
 }
 <head>
     <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css'>
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
+    <script>
+        $(document).ready(function () {
+            var count = 0;
+            $("#view_map").click(function () {
+                if (count % 2 == 0) {
+                    $.get('@Url.Action("ViewMap","api")', {}, function (response) {
+                        $("#map").html(response);
+                    });
+                }
+                else {
+                    $("#map").empty();
+                }
+                count++;
+            });
+        });
+    </script>
 </head>
 <h1 style="font-family:'Kreon'">Showing results for "@CurrentURL"</h1>
 <div class="row">
+    <div class="dropdown pull-left">
+        <button id="view_map" class="btn btn-success" type="button">View Map</button>
+    </div>
+
     <div class="dropdown pull-right">
         <button class="dropdown-toggle btn btn-info" type="button" data-toggle="dropdown">Filtered by <span class="caret"></span></button>
         <ul class="dropdown-menu" id="filter-dropdown">
@@ -51,7 +72,7 @@
     </div>
 </div>
 
-
+<div id="map"></div>
 
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
