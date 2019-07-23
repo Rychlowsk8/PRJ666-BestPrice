@@ -20,7 +20,7 @@ namespace BestPrice.Controllers
         }
 
         // GET: Reviews
-        public async Task<IActionResult> Index(string productName, string sellerName, string picture, string link, string productDescription, float price, int? pageNumber)
+        public async Task<IActionResult> Index(string productName, string sellerName, string picture, string link, string productDescription, float price, long productId, int? pageNumber)
         {
             ViewBag.productName = productName;
             ViewBag.sellerName = sellerName;
@@ -28,8 +28,19 @@ namespace BestPrice.Controllers
             ViewBag.link = link;
             ViewBag.productDescription = productDescription;
             ViewBag.price = price;
+            ViewBag.productId = productId;
             int pageSize = 10;
-            return View(PaginatedList<Reviews>.CreatePage((await _context.Reviews.Where(r => r.ProductName == productName && r.SellerName == sellerName).ToListAsync()).OrderByDescending(r => r.Id), pageNumber ?? 1, pageSize));
+            var paged_reviews = (await _context.Reviews.Where(r => r.ProductId == productId).ToListAsync()).OrderByDescending(r => r.Id);
+            var totalReviews = paged_reviews.Count();
+            int sum_ratings = 0;
+            foreach (var review in paged_reviews)
+            {
+                sum_ratings += review.Rating;
+            }
+            int average_rating = (int)Math.Round((double)sum_ratings / totalReviews);
+            ViewBag.total_reviews = totalReviews;
+            ViewBag.average_rating = average_rating;
+            return View(PaginatedList<Reviews>.CreatePage(paged_reviews, pageNumber ?? 1, pageSize));
         }
 
         // GET: Reviews/Details/5
@@ -51,17 +62,18 @@ namespace BestPrice.Controllers
         }
 
         // GET: Reviews/Create
-        public IActionResult Create(string productName, string sellerName, string picture, string link, string productDescription, float price)
+        public IActionResult Create(string productName, string sellerName, string picture, string link, string productDescription, float price, long productId)
         {
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
-            ViewBag.productName = productName;
-            ViewBag.sellerName = sellerName;
-            ViewBag.picture = picture;
-            ViewBag.link = link;
-            ViewBag.productDescription = productDescription;
-            ViewBag.price = price;
-
-            return View();
+            Reviews reviews = new Reviews();
+            reviews.ProductName = productName;
+            reviews.SellerName = sellerName;
+            reviews.Image = picture;
+            reviews.Link = link;
+            reviews.ProductDescription = productDescription;
+            reviews.Price = price;
+            reviews.ProductId = productId;
+            return View(reviews);
         }
 
 
@@ -70,19 +82,16 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Subject,Description,Rating,ProductName,SellerName,Image,Link,ProductDescription,ProductCondition,Price,SoldOut")] Reviews reviews)
+        public async Task<IActionResult> Create([Bind("Id,Subject,Description,Rating,ProductName,SellerName,Image,Link,ProductDescription,ProductCondition,Price,SoldOut,ProductId")] Reviews reviews)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(reviews);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index", new { productName = reviews.ProductName, sellerName = reviews.SellerName, picture = reviews.Image, link = reviews.Link, productDescription = reviews.ProductDescription, price = reviews.Price });
+                return RedirectToAction("Index", new { productName = reviews.ProductName, sellerName = reviews.SellerName, picture = reviews.Image, link = reviews.Link, productDescription = reviews.ProductDescription, price = reviews.Price, productId = reviews.ProductId});
             }
-            ViewBag.productName = reviews.ProductName;
-            ViewBag.sellerName = reviews.SellerName;
-            ViewBag.picture = reviews.Image;
-            return View();
+            return View(reviews);
         }
 
         // GET: Reviews/Edit/5

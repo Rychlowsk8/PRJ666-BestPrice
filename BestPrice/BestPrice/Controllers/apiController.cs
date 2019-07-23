@@ -145,7 +145,7 @@ namespace BestPrice.Controllers
                 {
                     Item eItem = new Item();
                     eItem.Title = (string)i["title"][0];
-                    eItem.ItemId = (long)i["itemId"][0];
+                    eItem.ItemId = (string)i["itemId"][0];
                     eItem.GalleryURL = (string)i["galleryURL"][0];
                     eItem.CurrentPrice = (float)(i["sellingStatus"][0]["currentPrice"][0]["__value__"]);
                     if (i["condition"] != null)
@@ -166,6 +166,7 @@ namespace BestPrice.Controllers
             {
                 Item aItem = new Item();
                 aItem.Title = (string)i["productTitle"];
+                aItem.ItemId = (string)i["asin"];
                 aItem.GalleryURL = (string)i["imageUrlList"][0];
                 aItem.CurrentPrice = (float)i["price"];
                 if (i["productDescription"] != null)

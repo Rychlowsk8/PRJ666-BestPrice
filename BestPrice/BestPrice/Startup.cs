@@ -31,10 +31,10 @@ namespace BestPrice
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            /*
             GlobalConfiguration.Configuration.UseStorage(
                 new MySqlStorage(Configuration.GetConnectionString("BestPriceDatabase")));
-
+            */
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("BestPriceDatabase")));
 
@@ -52,13 +52,18 @@ namespace BestPrice
             services.AddMvc();
 
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySQL(Configuration.GetConnectionString("BestPriceDatabase")));
+            
 
             services.Configure<AuthMessageSenderOptions>(Configuration);
+
+            
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySql(Configuration.GetConnectionString("BestPriceDatabase")));
 
+            /*
             services.AddHangfire(x => x.UseStorage(new MySqlStorage(Configuration.GetConnectionString("BestPriceDatabase"), new MySqlStorageOptions() { TablePrefix = "Custom" })));
 
             services.AddHangfireServer();
+            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -114,7 +119,7 @@ namespace BestPrice
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseHangfireDashboard("/hangfire");
+            //app.UseHangfireDashboard("/hangfire");
 
             //RecurringJob.AddOrUpdate<NotificationsController>(x => x.SendEmailForNotifications(), Cron.Minutely);
 
@@ -130,7 +135,7 @@ namespace BestPrice
             //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemNine(), Cron.Hourly);
             //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforItemTen(), Cron.Hourly);
 
-            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforAll(), Cron.Hourly);
+            //RecurringJob.AddOrUpdate<NotificationsController>(x => x.CheckPriceforAll(), "0 */6 * * *");
 
             //BackgroundJob.Enqueue<NotificationsController>(x => x.CheckPriceforItemNine());  
         }

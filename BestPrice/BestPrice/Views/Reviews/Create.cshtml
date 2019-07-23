@@ -4,75 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<h2>Create</h2>
-
-    <h4>Reviews</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Subject" class="control-label"></label>
-                    <input asp-for="Subject" class="form-control" />
-                    <span asp-validation-for="Subject" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Description" class="control-label"></label>
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Rating" class="control-label"></label>
-                    <input asp-for="Rating" class="form-control" />
-                    <span asp-validation-for="Rating" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ProductName" class="control-label"></label>
-                    <input asp-for="ProductName" class="form-control" />
-                    <span asp-validation-for="ProductName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="SellerName" class="control-label"></label>
-                    <input asp-for="SellerName" class="form-control" />
-                    <span asp-validation-for="SellerName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Image" class="control-label"></label>
-                    <input asp-for="Image" class="form-control" />
-                    <span asp-validation-for="Image" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Link" class="control-label"></label>
-                    <input asp-for="Link" class="form-control" />
-                    <span asp-validation-for="Link" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ProductDescription" class="control-label"></label>
-                    <input asp-for="ProductDescription" class="form-control" />
-                    <span asp-validation-for="ProductDescription" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ProductCondition" class="control-label"></label>
-                    <input asp-for="ProductCondition" class="form-control" />
-                    <span asp-validation-for="ProductCondition" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Price" class="control-label"></label>
-                    <input asp-for="Price" class="form-control" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>*@
-
 <h1>Create Review</h1>
 
 <hr />
@@ -81,10 +12,10 @@
 
 <div class="row">
     <div class="col-md-2">
-        <img src="@ViewBag.picture" alt="Image not available" height="150" width="150" />
+        <img src="@Model.Image" alt="Image not available" height="150" width="150" />
     </div>
     <div class="col-md-10">
-        <h3>@ViewBag.productName &nbsp; from &nbsp; @ViewBag.sellerName</h3>
+        <h3>@Model.ProductName &nbsp; from &nbsp; @Model.SellerName</h3>
     </div>
 </div>
 
@@ -103,18 +34,43 @@
             <textarea asp-for="Description" class="form-control" placeholder="What did you like or dislike about this product or seller?" rows="4" cols="50" style="resize: none"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
+        <div class="form-group">
+            <label asp-for="Rating" class="control-label">Give a rating</label>
+            <div class="col-md-12">
+                <span class="rating">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        var starClass = "star";
+                        if (Model.Rating == 6 - i)
+                        {
+                            starClass += " active";
+                        }
+                        <span data-value="@(6 - i)" class="@starClass"></span>
+                    }
+                </span>
+            </div>
+            <input asp-for="Rating" hidden/>
+            <br />
+            <span asp-validation-for="Rating" class="text-danger"></span>
+        </div>
+        <input asp-for="ProductName" hidden />
+        <input asp-for="SellerName" hidden />
+        <input asp-for="Image" hidden />
+        <input asp-for="Link" hidden />
+        <input asp-for="ProductDescription" hidden />
+        <input asp-for="Price" hidden />
+        <input asp-for="ProductId" hidden/>
         <div class="form-group text-center">
             <input type="submit" value="Submit" class="btn btn-primary" />
         </div>
-        @Html.Hidden("ProductName", $"{ViewBag.productName}")
-        @Html.Hidden("SellerName", $"{ViewBag.sellerName}")
-        @Html.Hidden("Image", $"{ViewBag.picture}")
-        @Html.Hidden("Link", $"{ViewBag.link}")
-        @Html.Hidden("ProductDescription", $"{ViewBag.productDescription}")
-        @Html.Hidden("Price", $"{ViewBag.price}")
 
     </form>
 </div>
 
 <br />
+
+@section Scripts {
+    <script src="~/js/rating.js"></script>
+
+}
 

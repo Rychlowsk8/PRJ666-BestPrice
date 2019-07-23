@@ -50,13 +50,33 @@
 }
 else
 {
+    <h3>Total Reviews: @ViewBag.total_reviews</h3>
+    <h3>Average Rating:
+        <span class="rating">
+        @for (int i = 1; i <= ViewBag.average_rating; i++)
+        {
+            var starClass = "star";
+            <span class="@starClass active"></span>
+        }
+        </span>
+    </h3>
 
+    <hr />
 
     @foreach (var item in Model)
     {
         <br />
         <h4> @Html.DisplayFor(modelItem => item.Subject) </h4>
         <p>  @Html.DisplayFor(modelItem => item.Description) </p>
+        <p>
+            <span class="rating">
+                @for (int i = 1; i <= item.Rating; i++)
+                {
+                    var starClass = "star";
+                    <span class="@starClass active"></span>
+                }
+            </span>
+        </p>
         <hr />
 
         <br />
@@ -99,7 +119,7 @@ else
 
 <br />
 <p class="text-center">
-    <a asp-action="Create" asp-route-productName="@ViewBag.productName" asp-route-sellerName="@ViewBag.sellerName" asp-route-picture="@ViewBag.picture" asp-route-link="@ViewBag.link" asp-route-productDescription="@ViewBag.productDescription" asp-route-price="@ViewBag.price" class="btn btn-primary">Write a review</a>
+    <a asp-action="Create" asp-route-productName="@ViewBag.productName" asp-route-sellerName="@ViewBag.sellerName" asp-route-picture="@ViewBag.picture" asp-route-link="@ViewBag.link" asp-route-productDescription="@ViewBag.productDescription" asp-route-price="@ViewBag.price" asp-route-productId="@ViewBag.productId" class="btn btn-primary">Write a review</a>
 </p>
 <br />
 <br />

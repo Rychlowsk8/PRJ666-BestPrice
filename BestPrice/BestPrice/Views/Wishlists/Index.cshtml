@@ -111,7 +111,7 @@ else
                     <b style="color:#0094ff">  |  </b>
                     <a asp-controller="Reviews" asp-action="Index" asp-route-productName="@item.ProductName" asp-route-sellerName="@item.SellerName" asp-route-picture="@item.Image" asp-route-link="@item.Link" asp-route-productDescription="@item.Description" asp-route-price="@item.Price"><b style="color:#0094ff">See Reviews</b></a>
                     <b style="color:#0094ff">  |  </b>
-                    <a asp-controller="Reviews" asp-action="Create" asp-route-productName="@item.ProductName" asp-route-sellerName="@item.SellerName" asp-route-picture="@item.Image"><b style="color:#0094ff">Create Reviews</b></a>
+                    <a asp-controller="Reviews" asp-action="Create" asp-route-productName="@item.ProductName" asp-route-sellerName="@item.SellerName" asp-route-picture="@item.Image" asp-route-link="@item.Link" asp-route-productDescription="@item.Description" asp-route-price="@item.Price"><b style="color:#0094ff">Create Reviews</b></a>
                     <a class="pull-right" href="@Html.DisplayFor(modelItem => item.Link)" target="_blank"><b style="color:#0094ff">View Item</b></a>
                 </td>
             </tr>
