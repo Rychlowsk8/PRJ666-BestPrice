@@ -72,6 +72,7 @@ namespace BestPrice
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
 
+            /*
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -82,6 +83,7 @@ namespace BestPrice
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            */
 
             // Abstract code for core 1.1 to handle any exception from the browser
             /*app.Use(async (context, next) =>
@@ -99,7 +101,7 @@ namespace BestPrice
 
 
             //For Core 2.0
-            //app.UseStatusCodePagesWithRedirects("/Home/Error/404");
+            app.UseStatusCodePagesWithRedirects("/Home/Error/404");
 
             //For core 2.2
             //app.UseExceptionHandler("/Home/Error");
