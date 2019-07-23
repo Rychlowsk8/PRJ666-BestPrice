@@ -18,5 +18,6 @@ namespace BestPrice.Models.Api
         public int ConditionId { get; set; }
         public string ConditionDisplayName { get; set; }
         public string soldBy { get; set; }
+        public int averageRating { get; set; }
     }
 }

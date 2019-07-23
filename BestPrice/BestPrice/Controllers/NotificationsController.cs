@@ -42,7 +42,7 @@ namespace BestPrice.Controllers
             var prj666_192a03Context = _context.Notifications.Include(n => n.User).Where(x => x.UserId == user.Id);
             List<Notifications> items = new List<Notifications>(await prj666_192a03Context.ToListAsync());
 
-            int pageSize = 5;
+            int pageSize = 10;
             return View(PaginatedList<Notifications>.CreatePage(items.OrderByDescending(p => p.LastModified), pageNumber ?? 1, pageSize));
         }
 
@@ -160,8 +160,9 @@ namespace BestPrice.Controllers
 
                             JsonTextReader aReader = new JsonTextReader(new StringReader(amazonResponse));
                             JObject amazonParser = JObject.Parse(amazonResponse);
-                            
+
                             JToken jAmazon = amazonParser;
+                            if (jAmazon["responseStatus"] != null)
                             {
                                 Product aItem = new Product();
                                 aItem.Title = (string)jAmazon["productTitle"];

@@ -10,6 +10,7 @@ using BestPrice.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -67,7 +68,7 @@ namespace BestPrice.Controllers
             return View(items);
         }
         [Route("[action]/{keyword}")]
-        public async Task<IActionResult> Search(string keyword, int? pageNumber)
+        public async Task<IActionResult> Search(string keyword, int? pageNumber, string sortOrder, string filter)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -87,7 +88,8 @@ namespace BestPrice.Controllers
 
             List<Item> items = new List<Item>();
 
-            string url1 = "https://svcs.ebay.com/services/search/FindingService/v1?SECURITY-APPNAME=JatinKum-TechPG-PRD-41ea39f9c-08819029&OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&RESPONSE-DATA-FORMAT=JSON&callback=_cb_findItemsByKeywords&REST-PAYLOAD&keywords=";
+            //string url1 = "https://svcs.ebay.com/services/search/FindingService/v1?SECURITY-APPNAME=JatinKum-TechPG-PRD-41ea39f9c-08819029&OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&RESPONSE-DATA-FORMAT=JSON&callback=_cb_findItemsByKeywords&REST-PAYLOAD&keywords=";
+            string url1 = "https://svcs.ebay.com/services/search/FindingService/v1?SECURITY-APPNAME=JatinKum-TechPG-PRD-41ea39f9c-08819029&OPERATION-NAME=findItemsAdvanced&SERVICE-VERSION=1.0.0&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&categoryId(0)=177&categoryId(1)=9355&keywords=";
             string keywordz = keyword;
             string url2 = "&GLOBAL-ID=EBAY-ENCA&siteid=2";
             string url = url1 + keyword + url2;
@@ -106,9 +108,12 @@ namespace BestPrice.Controllers
             response.Close();
             readStream.Close();
 
+            /*
             // Malformed json String --> replace unfitting parts
-            ebayResponse = ebayResponse.Replace("/**/_cb_findItemsByKeywords(", "");
-            ebayResponse = ebayResponse.Remove(ebayResponse.Length - 1, 1);           
+            ebayResponse = ebayResponse.Replace("/**/
+            /*_cb_findItemsByKeywords(", "");
+            ebayResponse = ebayResponse.Remove(ebayResponse.Length - 1, 1);   
+            */
 
             JsonTextReader reader = new JsonTextReader(new StringReader(ebayResponse));
             JObject ebayParser = JObject.Parse(ebayResponse);
@@ -183,8 +188,53 @@ namespace BestPrice.Controllers
             }
 
             int pageSize = 20;
-            
-            return View(PaginatedList<Item>.CreatePage(items.OrderBy(p => p.CurrentPrice), pageNumber ?? 1, pageSize));
+
+            foreach (var item in items)
+            {
+                var item_reviews = await _context.Reviews.Where(r => r.ProductId == item.ItemId).ToListAsync();
+                var total_reviews = item_reviews.Count();
+                int sum_ratings = 0;
+                foreach (var review in item_reviews)
+                {
+                    sum_ratings += review.Rating;
+                }
+                item.averageRating = (int)Math.Round((double)sum_ratings / total_reviews);
+            }
+
+            IOrderedEnumerable<Item> list = null;
+
+            if (sortOrder == null)
+            {
+                list = items.OrderBy(p => p.CurrentPrice);
+            }
+            else if (sortOrder == "price decrease")
+            {
+                list = items.OrderByDescending(p => p.CurrentPrice);
+            }
+            else if (sortOrder == "name increase")
+            {
+                list = items.OrderBy(p => p.Title);
+            }
+            else if (sortOrder == "name decrease")
+            {
+                list = items.OrderByDescending(p => p.Title);
+            }
+            else if (sortOrder == "rating")
+            {
+                list  = items.OrderByDescending(p => p.averageRating);
+            }
+
+            if (filter == "Amazon")
+            {
+                list = (IOrderedEnumerable<Item>)list.Where(i => i.soldBy == "Amazon");
+            } else if (filter == "eBay")
+            {
+                list = (IOrderedEnumerable<Item>)list.Where(i => i.soldBy == "eBay");
+            }
+
+            ViewBag.currentSortOrder = sortOrder;
+
+            return View(PaginatedList<Item>.CreatePage(list, pageNumber ?? 1, pageSize));
         }
 
     }

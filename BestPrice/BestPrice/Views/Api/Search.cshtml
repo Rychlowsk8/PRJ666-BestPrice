@@ -22,20 +22,36 @@
         </div><!-- /input-group -->
     </div>
 </div>
-@*<div class="dropdown" style="float:left; position:absolute; margin-top:10px">
-        <button class="dropdown-toggle btn" type="button" data-toggle="dropdown">Sort by</button>
+
+<div class="dropdown pull-right">
+    <button class="dropdown-toggle btn btn-info" type="button" data-toggle="dropdown">Filtered by <span class="caret"></span></button>
+    <ul class="dropdown-menu" id="filter-dropdown">
+        <li>&nbsp; Seller <a asp-action="Search" asp-route-keyword="@ViewBag.keyword" asp-route-filter="Amazon"><b class="text-info">Amazon</b></a> <a asp-action="Search" asp-route-keyword="@ViewBag.keyword" asp-route-filter="Ebay"><b class="text-info">eBay</b></a></li>
+        <li class="divider"></li>
+        <li>&nbsp; Price range &nbsp;<input type="text" size="1" placeholder="$" /> - <input type="text" size="1" placeholder="$" /></li>
+    </ul>
+</div>
+
+<div class="dropdown pull-right" style="margin-right:5px" >
+        <button class="dropdown-toggle btn btn-info" type="button" data-toggle="dropdown">Sort by <span class="caret"></span></button>
         <ul class="dropdown-menu">
-            <li>Price</li>
-            <li>Name</li>
-            <li>Reviews</li>
-            <li>Price range<input type="text" size="1" placeholder="$" /> - <input type="text" size="1" placeholder="$" /></li>
-            <li><input type="text" placeholder="Seller" /></li>
+            <li><a asp-action="Search" asp-route-keyword="@ViewBag.keyword">&nbsp; Price: Low to High</a></li>
+            <li class="divider"></li>
+            <li><a asp-action="Search" asp-route-keyword="@ViewBag.keyword" asp-route-sortOrder="price decrease">&nbsp; Price: High to Low</a></li>
+            <li class="divider"></li>
+            <li><a asp-action="Search" asp-route-keyword="@ViewBag.keyword" asp-route-sortOrder="name increase">&nbsp; Name: A-Z</a></li>
+            <li class="divider"></li>
+            <li><a asp-action="Search" asp-route-keyword="@ViewBag.keyword" asp-route-sortOrder="name decrease">&nbsp; Name: Z-A</a></li>
+            <li class="divider"></li>
+            <li><a asp-action="Search" asp-route-keyword="@ViewBag.keyword" asp-route-sortOrder="rating">&nbsp; Average Review</a></li>
         </ul>
-    </div>*@
+</div>
+
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
+<br />
 <hr style="margin-bottom:0px" />
 <nav style="margin-top:0px; margin-bottom: 0px" aria-label="Page navigation example" class="text-center">
     <ul class="pagination justify-content-center">
@@ -52,11 +68,11 @@
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
             }
         }
@@ -66,11 +82,11 @@
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
             }
         }
@@ -95,10 +111,19 @@
             </td>
         </tr>
         <tr>
-            <td class="col-md-2">
-                <img src="@Html.DisplayFor(modelItem => item.GalleryURL)" alt="Image not available" height="150" width="150" />
+            <td class="col-md-3">
+                <img src="@Html.DisplayFor(modelItem => item.GalleryURL)" alt="Image not available" height="150" width="150" style="display:block; margin:auto"/>
+                <p>
+                    <span class="rating">
+                        @for (int i = 1; i <= item.averageRating; i++)
+                        {
+                            var starClass = "star";
+                            <span class="@starClass active"></span>
+                        }
+                    </span>
+                </p>
             </td>
-            <td class="col-md-10" colspan="3">
+            <td class="col-md-9" colspan="3">
                 <p style="font-family: 'Trebuchet MS', Helvetica, sans-serif">
                     @Html.DisplayFor(modelItem => item.subtitle)
                     @*Location: @Html.DisplayFor(modelItem => item.Location), @Html.DisplayFor(modelItem => item.Country)*@
@@ -137,11 +162,11 @@
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
             }
         }
@@ -151,11 +176,11 @@
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    <li class="page-item active"><a class="page-link active" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-action="Search" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
                 }
             }
         }

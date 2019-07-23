@@ -34,6 +34,11 @@
     }
 }
 
+#filter-dropdown {
+    width: 200px !important;
+    height: 80px !important;
+}
+
 .rating {
     unicode-bidi: bidi-override;
     direction: rtl;
