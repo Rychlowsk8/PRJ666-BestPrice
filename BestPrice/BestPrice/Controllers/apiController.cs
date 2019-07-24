@@ -198,7 +198,6 @@ namespace BestPrice.Controllers
                 }
             }
 
-
             HttpContext.Session.SetString("keyword", keyword);
             HttpContext.Session.SetObject("searchItems", items);
 
@@ -237,14 +236,43 @@ namespace BestPrice.Controllers
 
             if (filter == "Amazon")
             {
-                list = (IOrderedEnumerable<Item>)list.Where(i => i.soldBy == "Amazon");
+                list = (IOrderedEnumerable<Item>)items.Where(i => i.soldBy == "Amazon");
             }
             else if (filter == "eBay")
             {
-                list = (IOrderedEnumerable<Item>)list.Where(i => i.soldBy == "eBay");
+                list = (IOrderedEnumerable<Item>)items.Where(i => i.soldBy == "eBay");
+            }
+            else if (filter == "1")
+            {
+                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) < 100);
+            }
+            else if (filter == "2")
+            {
+                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) >= 100 && (int)Math.Round(i.CurrentPrice) < 200);
+            }
+            else if (filter == "3")
+            {
+                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) >= 200 && (int)Math.Round(i.CurrentPrice) < 400);
+            }
+            else if (filter == "4")
+            {
+                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) >= 400 && (int)Math.Round(i.CurrentPrice) < 600);
+            }
+            else if (filter == "5")
+            {
+                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) >= 600 && (int)Math.Round(i.CurrentPrice) < 800);
+            }
+            else if (filter == "6")
+            {
+                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) >= 800 && (int)Math.Round(i.CurrentPrice) < 1000);
+            }
+            else if (filter == "7")
+            {
+                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) >= 1000);
             }
 
             ViewBag.currentSortOrder = sortOrder;
+            ViewBag.currentFilter = filter;
             ViewBag.keyword = HttpContext.Session.GetString("keyword");
 
             return View(PaginatedList<Item>.CreatePage(list, pageNumber ?? 1, pageSize));

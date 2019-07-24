@@ -18,30 +18,34 @@
 
     <div class="dropdown pull-right">
         <button class="dropdown-toggle btn btn-info" type="button" data-toggle="dropdown">Filtered by <span class="caret"></span></button>
-        <ul class="dropdown-menu" id="filter-dropdown">
+        <ul class="dropdown-menu">
             <li><b class="text-info">&nbsp; Seller</b> </li>
+            <li><a asp-action="ProductList" asp-route-filter="Amazon" asp-route-sortOrder="@ViewBag.currentSortOrder">Amazon</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="Ebay" asp-route-sortOrder="@ViewBag.currentSortOrder">eBay</a></li>
             <li class="divider"></li>
-            <li><a asp-action="ProductList" asp-route-filter="Amazon">Amazon</a></li>
-            <li><a asp-action="ProductList" asp-route-filter="Ebay">eBay</a></li>
-            <li class="divider"></li>
-            <li><b class="text-info">&nbsp; Price range &nbsp;</b></li>&nbsp;
-            <input type="text" size="4" placeholder="$" />&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="text" size="4" placeholder="$" />
+            <li><b class="text-info">&nbsp; Price Range</b></li>
+            <li><a asp-action="ProductList" asp-route-filter="1" asp-route-sortOrder="@ViewBag.currentSortOrder">Less than $100</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="2" asp-route-sortOrder="@ViewBag.currentSortOrder">$100 - $199</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="3" asp-route-sortOrder="@ViewBag.currentSortOrder">$200 - $399</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="4" asp-route-sortOrder="@ViewBag.currentSortOrder">$400 - $599</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="5" asp-route-sortOrder="@ViewBag.currentSortOrder">$600 - $799</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="6" asp-route-sortOrder="@ViewBag.currentSortOrder">$800 - $999</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="7" asp-route-sortOrder="@ViewBag.currentSortOrder">$1000 and Up</a></li>
         </ul>
     </div>
 
     <div class="dropdown pull-right" style="margin-right:5px">
         <button class="dropdown-toggle btn btn-info" type="button" data-toggle="dropdown">Sort by <span class="caret"></span></button>
         <ul class="dropdown-menu">
-            <li><a asp-action="ProductList" ><b class="text-info">&nbsp; Price: Low to High</b></a></li>
+            <li><a asp-action="ProductList" asp-route-filter="@ViewBag.currentFilter"><b class="text-info">&nbsp; Price: Low to High</b></a></li>
             <li class="divider"></li>
-            <li><a asp-action="ProductList" asp-route-sortOrder="price decrease"><b class="text-info">&nbsp; Price: High to Low</b></a></li>
+            <li><a asp-action="ProductList" asp-route-sortOrder="price decrease" asp-route-filter="@ViewBag.currentFilter"><b class="text-info">&nbsp; Price: High to Low</b></a></li>
             <li class="divider"></li>
-            <li><a asp-action="ProductList" asp-route-sortOrder="name increase"><b class="text-info">&nbsp; Name: A-Z</b></a></li>
+            <li><a asp-action="ProductList" asp-route-sortOrder="name increase" asp-route-filter="@ViewBag.currentFilter"><b class="text-info">&nbsp; Name: A-Z</b></a></li>
             <li class="divider"></li>
-            <li><a asp-action="ProductList" asp-route-sortOrder="name decrease"><b class="text-info">&nbsp; Name: Z-A</b></a></li>
+            <li><a asp-action="ProductList" asp-route-sortOrder="name decrease" asp-route-filter="@ViewBag.currentFilter"><b class="text-info">&nbsp; Name: Z-A</b></a></li>
             <li class="divider"></li>
-            <li><a asp-action="ProductList" asp-route-sortOrder="rating"><b class="text-info">&nbsp; Average Review</b></a></li>
+            <li><a asp-action="ProductList" asp-route-sortOrder="rating" asp-route-filter="@ViewBag.currentFilter"><b class="text-info">&nbsp; Average Review</b></a></li>
         </ul>
     </div>
     <div class="col-sm">
@@ -66,7 +70,7 @@
     <ul class="pagination justify-content-center">
         <li class="page-item">
             <a asp-action="ProductList"
-               asp-route-pageNumber="@(Model.PageIndex - 1)"      
+               asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter"
                class="btn btn-default @prevDisabled">
                 Previous           
             </a>
@@ -77,11 +81,11 @@
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
                 }
             }
         }
@@ -91,17 +95,17 @@
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
                 }
             }
         }
         <li class="page-item">
             <a asp-action="ProductList"
-               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter"
                class="btn btn-default @nextDisabled">
                 Next
             </a>
@@ -160,7 +164,7 @@
     <ul class="pagination justify-content-center">
         <li class="page-item">
             <a asp-action="ProductList"
-               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter"
                class="btn btn-default @prevDisabled">
                 Previous
             </a>
@@ -171,11 +175,11 @@
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
                 }
             }
         }
@@ -185,17 +189,17 @@
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
                 }
             }
         }
         <li class="page-item">
             <a asp-action="ProductList"
-               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter"
                class="btn btn-default @nextDisabled">
                 Next
             </a>
