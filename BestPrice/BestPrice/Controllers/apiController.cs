@@ -212,63 +212,64 @@ namespace BestPrice.Controllers
             int pageSize = 20;
 
             IOrderedEnumerable<Item> list = null;
-
-            if (sortOrder == null)
-            {
-                list = items.OrderBy(p => p.CurrentPrice);
-            }
-            else if (sortOrder == "price decrease")
-            {
-                list = items.OrderByDescending(p => p.CurrentPrice);
-            }
-            else if (sortOrder == "name increase")
-            {
-                list = items.OrderBy(p => p.Title);
-            }
-            else if (sortOrder == "name decrease")
-            {
-                list = items.OrderByDescending(p => p.Title);
-            }
-            else if (sortOrder == "rating")
-            {
-                list = items.OrderByDescending(p => p.averageRating);
-            }
+            IEnumerable<Item> temp_list = items;
 
             if (filter == "Amazon")
             {
-                list = (IOrderedEnumerable<Item>)items.Where(i => i.soldBy == "Amazon");
+                temp_list = items.Where(i => i.soldBy == "Amazon");
             }
             else if (filter == "eBay")
             {
-                list = (IOrderedEnumerable<Item>)items.Where(i => i.soldBy == "eBay");
+                temp_list = items.Where(i => i.soldBy == "eBay");
             }
             else if (filter == "1")
             {
-                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) < 100);
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) < 100);
             }
             else if (filter == "2")
             {
-                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) >= 100 && (int)Math.Round(i.CurrentPrice) < 200);
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) >= 100 && (int)Math.Round(i.CurrentPrice) < 200);
             }
             else if (filter == "3")
             {
-                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) >= 200 && (int)Math.Round(i.CurrentPrice) < 400);
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) >= 200 && (int)Math.Round(i.CurrentPrice) < 400);
             }
             else if (filter == "4")
             {
-                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) >= 400 && (int)Math.Round(i.CurrentPrice) < 600);
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) >= 400 && (int)Math.Round(i.CurrentPrice) < 600);
             }
             else if (filter == "5")
             {
-                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) >= 600 && (int)Math.Round(i.CurrentPrice) < 800);
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) >= 600 && (int)Math.Round(i.CurrentPrice) < 800);
             }
             else if (filter == "6")
             {
-                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) >= 800 && (int)Math.Round(i.CurrentPrice) < 1000);
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) >= 800 && (int)Math.Round(i.CurrentPrice) < 1000);
             }
             else if (filter == "7")
             {
-                list = (IOrderedEnumerable<Item>)items.Where(i => (int)Math.Round(i.CurrentPrice) >= 1000);
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) >= 1000);
+            }
+
+            if (sortOrder == null)
+            {
+                list = temp_list.OrderBy(p => p.CurrentPrice);
+            }
+            else if (sortOrder == "price decrease")
+            {
+                list = temp_list.OrderByDescending(p => p.CurrentPrice);
+            }
+            else if (sortOrder == "name increase")
+            {
+                list = temp_list.OrderBy(p => p.Title);
+            }
+            else if (sortOrder == "name decrease")
+            {
+                list = temp_list.OrderByDescending(p => p.Title);
+            }
+            else if (sortOrder == "rating")
+            {
+                list = temp_list.OrderByDescending(p => p.averageRating);
             }
 
             ViewBag.currentSortOrder = sortOrder;
