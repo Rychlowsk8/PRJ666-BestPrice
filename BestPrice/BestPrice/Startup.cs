@@ -35,6 +35,7 @@ namespace BestPrice
             GlobalConfiguration.Configuration.UseStorage(
                 new MySqlStorage(Configuration.GetConnectionString("BestPriceDatabase")));
             */
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("BestPriceDatabase")));
 
@@ -61,11 +62,11 @@ namespace BestPrice
             
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySql(Configuration.GetConnectionString("BestPriceDatabase")));
 
-            /*
-            services.AddHangfire(x => x.UseStorage(new MySqlStorage(Configuration.GetConnectionString("BestPriceDatabase"), new MySqlStorageOptions() { TablePrefix = "Custom" })));
+            
+            //services.AddHangfire(x => x.UseStorage(new MySqlStorage(Configuration.GetConnectionString("BestPriceDatabase"), new MySqlStorageOptions() { TablePrefix = "Custom" })));
 
-            services.AddHangfireServer();
-            */
+            //services.AddHangfireServer();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
