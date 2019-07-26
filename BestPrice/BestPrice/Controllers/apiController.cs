@@ -275,6 +275,7 @@ namespace BestPrice.Controllers
             ViewBag.currentSortOrder = sortOrder;
             ViewBag.currentFilter = filter;
             ViewBag.keyword = HttpContext.Session.GetString("keyword");
+            HttpContext.Session.SetString("reviewFrom", "productList");
 
             return View(PaginatedList<Item>.CreatePage(list, pageNumber ?? 1, pageSize));
         }

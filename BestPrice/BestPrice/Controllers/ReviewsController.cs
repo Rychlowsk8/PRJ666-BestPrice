@@ -43,6 +43,7 @@ namespace BestPrice.Controllers
             }
           
             ViewBag.keyword = HttpContext.Session.GetString("keyword");
+            ViewBag.reviewFrom = HttpContext.Session.GetString("reviewFrom");
 
             return View(PaginatedList<Reviews>.CreatePage(paged_reviews, pageNumber ?? 1, pageSize));
         }

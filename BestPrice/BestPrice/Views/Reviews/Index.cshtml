@@ -51,13 +51,14 @@
 else
 {
     <h3>Total Reviews: @ViewBag.total_reviews</h3>
-    <h3>Average Rating:
+    <h3>
+        Average Rating:
         <span class="rating">
-        @for (int i = 1; i <= ViewBag.average_rating; i++)
-        {
-            var starClass = "star";
-            <span class="@starClass active"></span>
-        }
+            @for (int i = 1; i <= ViewBag.average_rating; i++)
+            {
+                var starClass = "star";
+                <span class="@starClass active"></span>
+            }
         </span>
     </h3>
 
@@ -96,13 +97,17 @@ else
             {
                 @if (i == Model.PageIndex)
                 {
-                    <li class="page-item active"><a class="page-link" asp-action="Index" asp-route-productName="@ViewBag.productName" asp-route-sellerName="@ViewBag.sellerName" asp-route-picture="@ViewBag.picture" asp-route-link="@ViewBag.link" asp-route-productDescription="@ViewBag.productDescription" asp-route-price="@ViewBag.price"
-                    asp-route-pageNumber="@i">@i</a></li>
+                    <li class="page-item active">
+                        <a class="page-link" asp-action="Index" asp-route-productName="@ViewBag.productName" asp-route-sellerName="@ViewBag.sellerName" asp-route-picture="@ViewBag.picture" asp-route-link="@ViewBag.link" asp-route-productDescription="@ViewBag.productDescription" asp-route-price="@ViewBag.price"
+                           asp-route-pageNumber="@i">@i</a>
+                    </li>
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-action="Index" asp-route-productName="@ViewBag.productName" asp-route-sellerName="@ViewBag.sellerName" asp-route-picture="@ViewBag.picture" asp-route-link="@ViewBag.link" asp-route-productDescription="@ViewBag.productDescription" asp-route-price="@ViewBag.price"
-                    asp-route-pageNumber="@i">@i</a></li>
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-productName="@ViewBag.productName" asp-route-sellerName="@ViewBag.sellerName" asp-route-picture="@ViewBag.picture" asp-route-link="@ViewBag.link" asp-route-productDescription="@ViewBag.productDescription" asp-route-price="@ViewBag.price"
+                           asp-route-pageNumber="@i">@i</a>
+                    </li>
                 }
             }
 
@@ -121,8 +126,18 @@ else
 <p class="text-center">
     <a asp-action="Create" asp-route-productName="@ViewBag.productName" asp-route-sellerName="@ViewBag.sellerName" asp-route-picture="@ViewBag.picture" asp-route-link="@ViewBag.link" asp-route-productDescription="@ViewBag.productDescription" asp-route-price="@ViewBag.price" asp-route-productId="@ViewBag.productId" class="btn btn-primary">Write a review</a>
 </p>
-<p class="text-center">
-    <a asp-action="ProductList" asp-controller="Api" class="btn btn-primary">Back to Search</a>
-</p>
+@if (ViewBag.reviewFrom == "wishlist")
+{
+    <p class="text-center">
+        <a asp-action="Index" asp-controller="Wishlists" class="btn btn-primary">Back to Wishlist</a>
+    </p>
+}
+else
+{
+    <p class="text-center">
+        <a asp-action="ProductList" asp-controller="Api" class="btn btn-primary">Back to Search</a>
+    </p>
+}
+
 <br />
 <br />
