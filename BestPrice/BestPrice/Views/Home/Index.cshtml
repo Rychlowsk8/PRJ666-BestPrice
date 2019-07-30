@@ -17,10 +17,10 @@
     <div class="row">
         <div class="col-sm">
             <div class="input-group" style="margin-left:300px;margin-right:300px">
-                <input type="text" class="form-control" id="textAutocomplete" placeholder="Search For Products..."/>
+                <input type="text" class="form-control" id="textAutocomplete" value="@ViewBag.keyword" placeholder="Search For Products..." />
                 <span class="input-group-btn">
                     @* <button onclick="location.href='@Url.Action("Search", "ebay", new { keyword = "iphone" }) })'" class="btn btn-default" type="submit">Search</button> *@
-                       <button id="button" class="btn btn-default" type="submit">Search</button>
+                    <button id="button" class="btn btn-default" type="submit">Search</button>
                 </span>
             </div><!-- /input-group -->
         </div>
@@ -58,7 +58,7 @@
                     }))
                 }
             })
-        }
+        },
     });
 
     $(function () {
@@ -71,9 +71,20 @@
 
             var url = '@Url.Action("Search", "api")';
             var textValue = $('#textAutocomplete').val();
-             window.location.href = url + '/' + textValue;
+            window.location.href = url + '/' + textValue;
         });
     });
+
+     
+
+$(document).ready(function(){
+    $('#textAutocomplete').keypress(function(e){
+      if(e.keyCode==13)
+      $('#button').click();
+    });
+});
+
+
 
     $(document).ready(function () {
         $('#button').attr('disabled', true);
@@ -90,3 +101,14 @@
     });
 
 </script>
+
+<style>
+    .ui-autocomplete {
+            max-height: 200px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+            /* add padding to account for vertical scrollbar */
+            padding-right: 20px;
+        } 
+</style>

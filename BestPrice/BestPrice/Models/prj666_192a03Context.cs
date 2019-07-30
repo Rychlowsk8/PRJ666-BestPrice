@@ -824,11 +824,16 @@ namespace BestPrice.Models
             {
                 entity.ToTable("Products", "prj666_192a03");
 
-                entity.Property(e => e.Id).HasColumnType("int(10)");
+                entity.Property(e => e.Id)
+                     .HasMaxLength(255)
+                     .IsUnicode(false)
+                     .ValueGeneratedNever();
+
+                entity.Property(e => e.AverageRating).HasColumnType("int(1)");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(30)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
             });
 

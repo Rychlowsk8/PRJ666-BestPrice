@@ -25,7 +25,7 @@ namespace BestPrice.Controllers
         }
 
         // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -73,7 +73,7 @@ namespace BestPrice.Controllers
         }
 
         // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -93,7 +93,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Products products)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name")] Products products)
         {
             if (id != products.Id)
             {
@@ -124,7 +124,7 @@ namespace BestPrice.Controllers
         }
 
         // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -144,7 +144,7 @@ namespace BestPrice.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var products = await _context.Products.SingleOrDefaultAsync(m => m.Id == id);
             _context.Products.Remove(products);
@@ -152,7 +152,7 @@ namespace BestPrice.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductsExists(int id)
+        private bool ProductsExists(string id)
         {
             return _context.Products.Any(e => e.Id == id);
         }

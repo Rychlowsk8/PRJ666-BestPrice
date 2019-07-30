@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BestPrice.Models;
 using BestPrice.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace BestPrice.Controllers
 {
@@ -32,14 +33,18 @@ namespace BestPrice.Controllers
             int pageSize = 10;
             var paged_reviews = (await _context.Reviews.Where(r => r.ProductId == productId).ToListAsync()).OrderByDescending(r => r.Id);
             var totalReviews = paged_reviews.Count();
-            int sum_ratings = 0;
-            foreach (var review in paged_reviews)
-            {
-                sum_ratings += review.Rating;
-            }
-            int average_rating = (int)Math.Round((double)sum_ratings / totalReviews);
+           
             ViewBag.total_reviews = totalReviews;
-            ViewBag.average_rating = average_rating;
+
+            var product =_context.Products.FirstOrDefault(p => p.Id.Equals(productId));
+            if (product != null )
+            {
+                ViewBag.average_rating = product.AverageRating;
+            }
+          
+            ViewBag.keyword = HttpContext.Session.GetString("keyword");
+            ViewBag.reviewFrom = HttpContext.Session.GetString("reviewFrom");
+
             return View(PaginatedList<Reviews>.CreatePage(paged_reviews, pageNumber ?? 1, pageSize));
         }
 
@@ -89,7 +94,36 @@ namespace BestPrice.Controllers
                 _context.Add(reviews);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index", new { productName = reviews.ProductName, sellerName = reviews.SellerName, picture = reviews.Image, link = reviews.Link, productDescription = reviews.ProductDescription, price = reviews.Price, productId = reviews.ProductId});
+                var reviewsForAProduct = (await _context.Reviews.Where(r => r.ProductId.Equals(reviews.ProductId)).ToListAsync());
+                var totalReviews = reviewsForAProduct.Count();
+
+                int sum_ratings = 0;
+                foreach (var review in reviewsForAProduct)
+                {
+                    sum_ratings += review.Rating;
+                }
+                int average_rating = (int)Math.Round((double)sum_ratings / totalReviews);
+
+                var result = _context.Products.FirstOrDefault(p => p.Id.Equals(reviews.ProductId));
+                if (result != null)
+                {
+                    var product = _context.Products.Find(reviews.ProductId);
+                    product.AverageRating = average_rating;
+                }
+                else
+                {
+                    Products product = new Products
+                    {
+                        Id = reviews.ProductId,
+                        Name = reviews.ProductName,
+                        AverageRating = average_rating
+                    };
+                    _context.Products.Add(product);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index", new { productName = reviews.ProductName, sellerName = reviews.SellerName, picture = reviews.Image, link = reviews.Link, productDescription = reviews.ProductDescription, price = reviews.Price, productId = reviews.ProductId });
             }
             return View(reviews);
         }

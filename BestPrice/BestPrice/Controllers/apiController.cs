@@ -84,8 +84,6 @@ namespace BestPrice.Controllers
                 }
             }
 
-            ViewBag.keyword = keyword;
-
             List<Item> items = new List<Item>();
 
             //string url1 = "https://svcs.ebay.com/services/search/FindingService/v1?SECURITY-APPNAME=JatinKum-TechPG-PRD-41ea39f9c-08819029&OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&RESPONSE-DATA-FORMAT=JSON&callback=_cb_findItemsByKeywords&REST-PAYLOAD&keywords=";
@@ -121,10 +119,10 @@ namespace BestPrice.Controllers
             int count = jEbay["@count"].ToObject<int>();
 
             // Amazon API test string (USE WHEN TESTING, API CALLS ARE LIMITED)
-            string amazonResponse = "{\"responseStatus\":\"PRODUCT_FOUND_RESPONSE\",\"responseMessage\":\"Product successfully found!\",\"sortStrategy\":\"relevanceblender\",\"domainCode\":\"ca\",\"keyword\":\"laptop\",\"numberOfProducts\":10,\"resultCount\":14,\"foundProducts\":[\"B07Q147J19\",\"B07D8FVX22\",\"B079G38PT5\",\"B071F49Q2P\",\"B07CXY95LG\",\"B07NV1WJ3P\",\"B07G65DGXS\",\"B07D1WBPYG\",\"B07KDQW7Q1\",\"B0795W86N3\"],\"foundProductDetails\":[{\"responseStatus\":\"PRODUCT_FOUND_RESPONSE\",\"responseMessage\":\"Product successfully found!\",\"productTitle\":\"HP Elitebook 840 G1,Core i5,8GB RAM,320GB,Win 10 Pro(Renewed)\",\"manufacturer\":\"Amazon Renewed\",\"countReview\":96,\"answeredQuestions\":122,\"productRating\":\"3.8 out of 5 stars\",\"asin\":\"B079G38PT5\",\"sizeSelection\":[],\"soldBy\":\"Mega PC Mall\",\"fulfilledBy\":\"Amazon\",\"warehouseAvailability\":\"In Stock.\",\"retailPrice\":0.0,\"price\":329.0,\"priceShippingInformation\":\"FREE Shipping\",\"priceSaving\":null,\"features\":[\"14 LED - Backlit anti - glare Display\",\"Intel Core i5 4th Gen, 8 GB DDR3 RAM, 320 GB HDD\",\"90 Day Parts and Labour Hardware Warranty\",\"Windows 10 Pro\"],\"imageUrlList\":[\"https://images-na.ssl-images-amazon.com/images/I/41AbzoLyUQL.jpg\",\"https://images-na.ssl-images-amazon.com/images/I/71ZJQUc13gL._SL1500_.jpg\",\"https://images-na.ssl-images-amazon.com/images/I/31DnFQCYqJL.jpg\",\"https://images-na.ssl-images-amazon.com/images/I/51XLSSu3V%2BL._SL1024_.jpg\",\"https://images-na.ssl-images-amazon.com/images/I/41ODKIrhDSL.jpg\"],\"productDescription\":\"With its sleek and lighter design the HP Elitebook 840 G1 offers you utmost portability while at the work place or on the go . As thin as .83 inches and weighing only 3.48 lb (1.58 kg), you will be confident knowing you can carry less and do more. The HP Elitebook 840 G1 equipped with faster 4th Gen Intel Core i5 along with 8GB RAM offers you faster processing and effortless multi-tasking.\",\"productDetails\":[{\"name\":\"Display Size\",\"value\":\"14 inches\"},{\"name\":\"Processor\",\"value\":\"2 GHz Intel Core i5\"},{\"name\":\"RAM\",\"value\":\"8 GB\"},{\"name\":\"Hard Drive\",\"value\":\"320 GB HDD\"},{\"name\":\"Graphics Coprocessor\",\"value\":\"intel hd graphics 4400\"},{\"name\":\"Chipset Brand\",\"value\":\"intel\"},{\"name\":\"Brand Name\",\"value\":\"HP\"},{\"name\":\"Item model number\",\"value\":\"HP Elitebook 840 G1\"},{\"name\":\"Hardware Platform\",\"value\":\"PC\"},{\"name\":\"Operating System\",\"value\":\"Windows 10\"},{\"name\":\"Item dimensions L x W x H\",\"value\":\"23.7 x 33.9 x 2.1 cm\"},{\"name\":\"Color\",\"value\":\"Gray/Black\"},{\"name\":\"Processor Brand\",\"value\":\"Intel\"},{\"name\":\"Processor Count\",\"value\":\"2\"},{\"name\":\"Memory Type\",\"value\":\"DDR3 SDRAM\"},{\"name\":\"Hard Disk Interface\",\"value\":\"Serial ATA\"},{\"name\":\"Batteries:\",\"value\":\"1 Lithium ion batteries required. (included)\"},{\"name\":\"ASIN\",\"value\":\"B079G38PT5\"},{\"name\":\"Customer Reviews\",\"value\":\"3.8 out of 5 stars 96 customer reviews\"},{\"name\":\"Amazon Bestsellers Rank\",\"value\":\"#1,928 in Electronics (See Top 100 in Electronics) #14 in Laptop Computers\"},{\"name\":\"Shipping Weight\",\"value\":\"2.9 Kg (View shipping rates and policies)\"},{\"name\":\"Date First Available\",\"value\":\"Jan. 30 2018\"}],\"addon\":false,\"pantry\":false,\"prime\":false}]}";
+            //string amazonResponse = "{\"responseStatus\":\"PRODUCT_FOUND_RESPONSE\",\"responseMessage\":\"Product successfully found!\",\"sortStrategy\":\"relevanceblender\",\"domainCode\":\"ca\",\"keyword\":\"laptop\",\"numberOfProducts\":10,\"resultCount\":14,\"foundProducts\":[\"B07Q147J19\",\"B07D8FVX22\",\"B079G38PT5\",\"B071F49Q2P\",\"B07CXY95LG\",\"B07NV1WJ3P\",\"B07G65DGXS\",\"B07D1WBPYG\",\"B07KDQW7Q1\",\"B0795W86N3\"],\"foundProductDetails\":[{\"responseStatus\":\"PRODUCT_FOUND_RESPONSE\",\"responseMessage\":\"Product successfully found!\",\"productTitle\":\"HP Elitebook 840 G1,Core i5,8GB RAM,320GB,Win 10 Pro(Renewed)\",\"manufacturer\":\"Amazon Renewed\",\"countReview\":96,\"answeredQuestions\":122,\"productRating\":\"3.8 out of 5 stars\",\"asin\":\"B079G38PT5\",\"sizeSelection\":[],\"soldBy\":\"Mega PC Mall\",\"fulfilledBy\":\"Amazon\",\"warehouseAvailability\":\"In Stock.\",\"retailPrice\":0.0,\"price\":329.0,\"priceShippingInformation\":\"FREE Shipping\",\"priceSaving\":null,\"features\":[\"14 LED - Backlit anti - glare Display\",\"Intel Core i5 4th Gen, 8 GB DDR3 RAM, 320 GB HDD\",\"90 Day Parts and Labour Hardware Warranty\",\"Windows 10 Pro\"],\"imageUrlList\":[\"https://images-na.ssl-images-amazon.com/images/I/41AbzoLyUQL.jpg\",\"https://images-na.ssl-images-amazon.com/images/I/71ZJQUc13gL._SL1500_.jpg\",\"https://images-na.ssl-images-amazon.com/images/I/31DnFQCYqJL.jpg\",\"https://images-na.ssl-images-amazon.com/images/I/51XLSSu3V%2BL._SL1024_.jpg\",\"https://images-na.ssl-images-amazon.com/images/I/41ODKIrhDSL.jpg\"],\"productDescription\":\"With its sleek and lighter design the HP Elitebook 840 G1 offers you utmost portability while at the work place or on the go . As thin as .83 inches and weighing only 3.48 lb (1.58 kg), you will be confident knowing you can carry less and do more. The HP Elitebook 840 G1 equipped with faster 4th Gen Intel Core i5 along with 8GB RAM offers you faster processing and effortless multi-tasking.\",\"productDetails\":[{\"name\":\"Display Size\",\"value\":\"14 inches\"},{\"name\":\"Processor\",\"value\":\"2 GHz Intel Core i5\"},{\"name\":\"RAM\",\"value\":\"8 GB\"},{\"name\":\"Hard Drive\",\"value\":\"320 GB HDD\"},{\"name\":\"Graphics Coprocessor\",\"value\":\"intel hd graphics 4400\"},{\"name\":\"Chipset Brand\",\"value\":\"intel\"},{\"name\":\"Brand Name\",\"value\":\"HP\"},{\"name\":\"Item model number\",\"value\":\"HP Elitebook 840 G1\"},{\"name\":\"Hardware Platform\",\"value\":\"PC\"},{\"name\":\"Operating System\",\"value\":\"Windows 10\"},{\"name\":\"Item dimensions L x W x H\",\"value\":\"23.7 x 33.9 x 2.1 cm\"},{\"name\":\"Color\",\"value\":\"Gray/Black\"},{\"name\":\"Processor Brand\",\"value\":\"Intel\"},{\"name\":\"Processor Count\",\"value\":\"2\"},{\"name\":\"Memory Type\",\"value\":\"DDR3 SDRAM\"},{\"name\":\"Hard Disk Interface\",\"value\":\"Serial ATA\"},{\"name\":\"Batteries:\",\"value\":\"1 Lithium ion batteries required. (included)\"},{\"name\":\"ASIN\",\"value\":\"B079G38PT5\"},{\"name\":\"Customer Reviews\",\"value\":\"3.8 out of 5 stars 96 customer reviews\"},{\"name\":\"Amazon Bestsellers Rank\",\"value\":\"#1,928 in Electronics (See Top 100 in Electronics) #14 in Laptop Computers\"},{\"name\":\"Shipping Weight\",\"value\":\"2.9 Kg (View shipping rates and policies)\"},{\"name\":\"Date First Available\",\"value\":\"Jan. 30 2018\"}],\"addon\":false,\"pantry\":false,\"prime\":false}]}";
 
             // ** to test, comment out from here to the next comment (uncomment string above as well)
-            /*
+
             string amazonUrl1 = "https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-search-by-keyword?sortBy=relevanceblender&domainCode=ca&page=1&keyword=";
             string amazonUrl = amazonUrl1 + keywordz;
             HttpWebRequest ARequest = (HttpWebRequest)WebRequest.Create(amazonUrl);
@@ -137,7 +135,7 @@ namespace BestPrice.Controllers
             string amazonResponse = AReadStream.ReadToEnd();
             AResponse.Close();
             AReadStream.Close();
-            */
+
             // **comment to here
 
             JsonTextReader aReader = new JsonTextReader(new StringReader(amazonResponse));
@@ -187,55 +185,106 @@ namespace BestPrice.Controllers
                 items.Add(aItem);
             }
 
-            int pageSize = 20;
-
             foreach (var item in items)
             {
-                var item_reviews = await _context.Reviews.Where(r => r.ProductId == item.ItemId).ToListAsync();
-                var total_reviews = item_reviews.Count();
-                int sum_ratings = 0;
-                foreach (var review in item_reviews)
+                var dbProduct = _context.Products.FirstOrDefault(p => p.Id.Equals(item.ItemId));
+                if (dbProduct != null)
                 {
-                    sum_ratings += review.Rating;
+                    item.averageRating = dbProduct.AverageRating ?? 0;
                 }
-                item.averageRating = (int)Math.Round((double)sum_ratings / total_reviews);
+                else
+                {
+                    item.averageRating = 0;
+                }
             }
+
+            HttpContext.Session.SetString("keyword", keyword);
+            HttpContext.Session.SetObject("searchItems", items);
+
+            return RedirectToAction(nameof(ProductList));
+        }
+
+        [Route("/api/ProductList")]
+        public async Task<IActionResult> ProductList(int? pageNumber, string sortOrder, string filter)
+        {
+            var items = HttpContext.Session.GetObject<List<Item>>("searchItems");
+
+            int pageSize = 20;
 
             IOrderedEnumerable<Item> list = null;
-
-            if (sortOrder == null)
-            {
-                list = items.OrderBy(p => p.CurrentPrice);
-            }
-            else if (sortOrder == "price decrease")
-            {
-                list = items.OrderByDescending(p => p.CurrentPrice);
-            }
-            else if (sortOrder == "name increase")
-            {
-                list = items.OrderBy(p => p.Title);
-            }
-            else if (sortOrder == "name decrease")
-            {
-                list = items.OrderByDescending(p => p.Title);
-            }
-            else if (sortOrder == "rating")
-            {
-                list  = items.OrderByDescending(p => p.averageRating);
-            }
+            IEnumerable<Item> temp_list = items;
 
             if (filter == "Amazon")
             {
-                list = (IOrderedEnumerable<Item>)list.Where(i => i.soldBy == "Amazon");
-            } else if (filter == "eBay")
+                temp_list = items.Where(i => i.soldBy == "Amazon");
+            }
+            else if (filter == "eBay")
             {
-                list = (IOrderedEnumerable<Item>)list.Where(i => i.soldBy == "eBay");
+                temp_list = items.Where(i => i.soldBy == "eBay");
+            }
+            else if (filter == "1")
+            {
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) < 100);
+            }
+            else if (filter == "2")
+            {
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) >= 100 && (int)Math.Round(i.CurrentPrice) < 200);
+            }
+            else if (filter == "3")
+            {
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) >= 200 && (int)Math.Round(i.CurrentPrice) < 400);
+            }
+            else if (filter == "4")
+            {
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) >= 400 && (int)Math.Round(i.CurrentPrice) < 600);
+            }
+            else if (filter == "5")
+            {
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) >= 600 && (int)Math.Round(i.CurrentPrice) < 800);
+            }
+            else if (filter == "6")
+            {
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) >= 800 && (int)Math.Round(i.CurrentPrice) < 1000);
+            }
+            else if (filter == "7")
+            {
+                temp_list = items.Where(i => (int)Math.Round(i.CurrentPrice) >= 1000);
+            }
+
+            if (sortOrder == null)
+            {
+                list = temp_list.OrderBy(p => p.CurrentPrice);
+            }
+            else if (sortOrder == "price decrease")
+            {
+                list = temp_list.OrderByDescending(p => p.CurrentPrice);
+            }
+            else if (sortOrder == "name increase")
+            {
+                list = temp_list.OrderBy(p => p.Title);
+            }
+            else if (sortOrder == "name decrease")
+            {
+                list = temp_list.OrderByDescending(p => p.Title);
+            }
+            else if (sortOrder == "rating")
+            {
+                list = temp_list.OrderByDescending(p => p.averageRating);
             }
 
             ViewBag.currentSortOrder = sortOrder;
+            ViewBag.currentFilter = filter;
+            ViewBag.keyword = HttpContext.Session.GetString("keyword");
+            HttpContext.Session.SetString("reviewFrom", "productList");
 
             return View(PaginatedList<Item>.CreatePage(list, pageNumber ?? 1, pageSize));
         }
 
+
+        [Route("/api/ViewMap")]
+        public PartialViewResult ViewMap()
+        {
+            return PartialView("_ViewMap");
+        }
     }
 }

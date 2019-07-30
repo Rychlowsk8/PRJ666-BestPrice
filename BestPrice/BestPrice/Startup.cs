@@ -35,6 +35,7 @@ namespace BestPrice
             GlobalConfiguration.Configuration.UseStorage(
                 new MySqlStorage(Configuration.GetConnectionString("BestPriceDatabase")));
             */
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("BestPriceDatabase")));
 
@@ -50,6 +51,8 @@ namespace BestPrice
 
          
             services.AddMvc();
+            services.AddDistributedMemoryCache();
+            services.AddSession();
 
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySQL(Configuration.GetConnectionString("BestPriceDatabase")));
             
@@ -59,17 +62,18 @@ namespace BestPrice
             
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySql(Configuration.GetConnectionString("BestPriceDatabase")));
 
-            /*
-            services.AddHangfire(x => x.UseStorage(new MySqlStorage(Configuration.GetConnectionString("BestPriceDatabase"), new MySqlStorageOptions() { TablePrefix = "Custom" })));
+            
+            //services.AddHangfire(x => x.UseStorage(new MySqlStorage(Configuration.GetConnectionString("BestPriceDatabase"), new MySqlStorageOptions() { TablePrefix = "Custom" })));
 
-            services.AddHangfireServer();
-            */
+            //services.AddHangfireServer();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
 
+            /*
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -80,6 +84,7 @@ namespace BestPrice
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            */
 
             // Abstract code for core 1.1 to handle any exception from the browser
             /*app.Use(async (context, next) =>
@@ -97,7 +102,7 @@ namespace BestPrice
 
 
             //For Core 2.0
-            //app.UseStatusCodePagesWithRedirects("/Home/Error/404");
+            app.UseStatusCodePagesWithRedirects("/Home/Error/404");
 
             //For core 2.2
             //app.UseExceptionHandler("/Home/Error");
@@ -111,7 +116,7 @@ namespace BestPrice
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

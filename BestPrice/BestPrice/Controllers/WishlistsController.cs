@@ -9,6 +9,7 @@ using BestPrice.Models;
 using BestPrice.Models.Api;
 using BestPrice.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace BestPrice.Controllers
 {
@@ -35,6 +36,7 @@ namespace BestPrice.Controllers
                 .Where(x => x.UserId == user.Id);
             List<Wishlists> items = new List<Wishlists>(await prj666_192a03Context.ToListAsync());
             int pageSize = 5;
+            HttpContext.Session.SetString("reviewFrom", "wishlist");
 
             return View(PaginatedList<Wishlists>.CreatePage(items.OrderBy(p => p.Price), pageNumber ?? 1, pageSize));
         }

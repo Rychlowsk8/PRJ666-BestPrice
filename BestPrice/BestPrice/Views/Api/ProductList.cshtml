@@ -1,0 +1,285 @@
+﻿@model BestPrice.Services.PaginatedList<BestPrice.Models.Api.Item>
+@using Microsoft.AspNetCore.Identity
+@using BestPrice.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Search list";
+}
+<head>
+    <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css'>
+</head>
+<h1 style="font-family:'Kreon'">Showing results for "@ViewBag.keyword"</h1>
+<br />
+<div class="row">
+    <div class="dropdown pull-left">
+        <button id="view_map" class="btn btn-success" type="button">View Map</button>
+    </div>
+
+    <div class="dropdown pull-right">
+        <button class="dropdown-toggle btn btn-info" type="button" data-toggle="dropdown">Filtered by <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><b class="text-info">&nbsp; Seller</b> </li>
+            <li><a asp-action="ProductList" asp-route-filter="Amazon" asp-route-sortOrder="@ViewBag.currentSortOrder">Amazon</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="eBay" asp-route-sortOrder="@ViewBag.currentSortOrder">eBay</a></li>
+            <li class="divider"></li>
+            <li><b class="text-info">&nbsp; Price Range</b></li>
+            <li><a asp-action="ProductList" asp-route-filter="1" asp-route-sortOrder="@ViewBag.currentSortOrder">Less than $100</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="2" asp-route-sortOrder="@ViewBag.currentSortOrder">$100 - $199</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="3" asp-route-sortOrder="@ViewBag.currentSortOrder">$200 - $399</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="4" asp-route-sortOrder="@ViewBag.currentSortOrder">$400 - $599</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="5" asp-route-sortOrder="@ViewBag.currentSortOrder">$600 - $799</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="6" asp-route-sortOrder="@ViewBag.currentSortOrder">$800 - $999</a></li>
+            <li><a asp-action="ProductList" asp-route-filter="7" asp-route-sortOrder="@ViewBag.currentSortOrder">$1000 and Up</a></li>
+        </ul>
+    </div>
+
+    <div class="dropdown pull-right" style="margin-right:5px">
+        <button class="dropdown-toggle btn btn-info" type="button" data-toggle="dropdown">Sort by <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a asp-action="ProductList" asp-route-filter="@ViewBag.currentFilter"><b class="text-info">&nbsp; Price: Low to High</b></a></li>
+            <li class="divider"></li>
+            <li><a asp-action="ProductList" asp-route-sortOrder="price decrease" asp-route-filter="@ViewBag.currentFilter"><b class="text-info">&nbsp; Price: High to Low</b></a></li>
+            <li class="divider"></li>
+            <li><a asp-action="ProductList" asp-route-sortOrder="name increase" asp-route-filter="@ViewBag.currentFilter"><b class="text-info">&nbsp; Name: A-Z</b></a></li>
+            <li class="divider"></li>
+            <li><a asp-action="ProductList" asp-route-sortOrder="name decrease" asp-route-filter="@ViewBag.currentFilter"><b class="text-info">&nbsp; Name: Z-A</b></a></li>
+            <li class="divider"></li>
+            <li><a asp-action="ProductList" asp-route-sortOrder="rating" asp-route-filter="@ViewBag.currentFilter"><b class="text-info">&nbsp; Average Review</b></a></li>
+        </ul>
+    </div>
+    <div class="col-sm">
+        <div class="input-group" style="margin-left:300px;margin-right:300px">
+            <input type="text" class="form-control" id="textAutocomplete" value="@ViewBag.keyword" placeholder="Search For Products..." />
+            <span class="input-group-btn">
+                <button id="button" class="btn btn-default" type="submit">Search</button>
+            </span>
+        </div><!-- /input-group -->
+    </div>
+</div>
+
+<div id="map"></div>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<br />
+<hr style="margin-bottom:0px" />
+
+@if (Model.Count() == 0 && ViewBag.currentSortOrder == null && ViewBag.currentFilter == null)
+{
+    <h3 class="text-center text-info">Sorry, no product was found. Please search for another!</h3>
+}
+else if (Model.Count() == 0 && ViewBag.currentFilter != null)
+{
+    <h3 class="text-center text-info">Sorry, no product was found with the selected price range. Please select another price range filter!</h3>
+
+}
+else
+{
+    <nav style="margin-top:0px; margin-bottom: 0px" aria-label="Page navigation example" class="text-center">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a asp-action="ProductList"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter"
+                   class="btn btn-default @prevDisabled">
+                    Previous
+                </a>
+            </li>
+            @if (Model.TotalPages <= 20)
+            {
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    @if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
+                    }
+                }
+            }
+            else
+            {
+                @for (var i = 1; i <= 20; i++)
+                {
+                    @if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="ProductList"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter"
+                   class="btn btn-default @nextDisabled">
+                    Next
+                </a>
+            </li>
+        </ul>
+    </nav>
+    @foreach (var item in Model)
+    {
+        <table class="table table-bordered" style="width:75%; margin:auto; margin-top:0px; margin-bottom: 10px">
+            <tr>
+                <td class="col-md-11" colspan="2">
+                    <b>@Html.DisplayFor(modelItem => item.Title)</b>
+                </td>
+                <td class="col-md-1">
+                    <b style="text-align:center">CAD$@Html.DisplayFor(modelItem => item.CurrentPrice)</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-3">
+                    <img src="@Html.DisplayFor(modelItem => item.GalleryURL)" alt="Image not available" height="150" width="150" style="display:block; margin:auto" />
+                    <p>
+                        <span class="rating">
+                            @for (int i = 1; i <= item.averageRating; i++)
+                            {
+                                var starClass = "star";
+                                <span class="@starClass active"></span>
+                            }
+                        </span>
+                    </p>
+                </td>
+                <td class="col-md-9" colspan="3">
+                    <p style="font-family: 'Trebuchet MS', Helvetica, sans-serif">
+                        @Html.DisplayFor(modelItem => item.subtitle)
+                        @*Location: @Html.DisplayFor(modelItem => item.Location), @Html.DisplayFor(modelItem => item.Country)*@
+                        <br /><br />
+                        Sold by: @Html.DisplayFor(modelItem => item.soldBy)
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-12" colspan="3">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <a asp-controller="Wishlists" asp-action="Create" asp-route-productId="@item.ItemId" asp-route-productName="@item.Title" asp-route-description="@item.subtitle" asp-route-link="@item.ViewItemURL" asp-route-image="@item.GalleryURL" asp-route-price="@item.CurrentPrice" asp-route-soldBy="@item.soldBy"><b style="color:#0094ff">Add to Wishlist</b></a>
+                        <b style="color:#0094ff">  |  </b>
+                    }
+                    <a asp-controller="Reviews" asp-action="Index" asp-route-productName="@item.Title" asp-route-sellerName="@item.soldBy" asp-route-picture="@item.GalleryURL" asp-route-link="@item.ViewItemURL" asp-route-productDescription="@item.subtitle" asp-route-price="@item.CurrentPrice" asp-route-productId="@item.ItemId"><b style="color:#0094ff">See Reviews</b></a>
+                    <b style="color:#0094ff">  |  </b>
+                    <a asp-controller="Reviews" asp-action="Create" asp-route-productName="@item.Title" asp-route-sellerName="@item.soldBy" asp-route-picture="@item.GalleryURL" asp-route-link="@item.ViewItemURL" asp-route-productDescription="@item.subtitle" asp-route-price="@item.CurrentPrice" asp-route-productId="@item.ItemId"><b style="color:#0094ff">Create Reviews</b></a>
+                    <a class="pull-right" href="@Html.DisplayFor(modelItem => item.ViewItemURL)" target="_blank"><b style="color:#0094ff">View Item</b></a>
+                </td>
+            </tr>
+        </table>
+    }
+    <nav aria-label="Page navigation example" class="text-center" style="margin-top:0px">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a asp-action="ProductList"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter"
+                   class="btn btn-default @prevDisabled">
+                    Previous
+                </a>
+            </li>
+            @if (Model.TotalPages <= 20)
+            {
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    @if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
+                    }
+                }
+            }
+            else
+            {
+                @for (var i = 1; i <= 20; i++)
+                {
+                    @if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active"><a class="page-link active" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="ProductList" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter">@i</a></li>
+                    }
+                }
+            }
+            <li class="page-item">
+                <a asp-action="ProductList"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sortOrder="@ViewBag.currentSortOrder" asp-route-filter="@ViewBag.currentFilter"
+                   class="btn btn-default @nextDisabled">
+                    Next
+                </a>
+            </li>
+        </ul>
+    </nav>
+}
+
+<hr />
+<br />
+<script>
+
+    $("#textAutocomplete").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                type: "GET",
+                url: "/Products/GetSuggestion",
+                data: { text: request.term },
+                success: function(data) {
+                    response($.map(data, function(item) {
+                        return {label: item, value: item}
+                    }))
+                }
+            })
+        }
+    });
+
+    $(function () {
+        $('#button').click(function () {
+            var url = '@Url.Action("Search", "api", new { keyword = "" })';
+            var textValue = $('#textAutocomplete').val();
+            window.location.href = url + '/' + textValue;
+        });
+    });
+
+    $(document).ready(function(){
+    $('#textAutocomplete').keypress(function(e){
+      if(e.keyCode==13)
+      $('#button').click();
+    });
+});
+
+    $(document).ready(function () {
+        //$('#button').attr('disabled', true);
+
+        var valid_check = $('#textAutocomplete');
+        valid_check.keyup(function () {
+            if ($('#textAutocomplete').val().length != 0) {
+                $('#button').prop('disabled', false);
+            }
+            else {
+                $('#button').prop('disabled', true);
+            }
+        })
+    });
+
+    $(document).ready(function () {
+        var count = 0;
+        $("#view_map").click(function () {
+            if (count % 2 == 0) {
+                $.get('@Url.Action("ViewMap","api")', {}, function (response) {
+                    $("#map").html(response);
+                });
+            }
+            else {
+                $("#map").empty();
+            }
+            count++;
+        });
+    });
+</script>

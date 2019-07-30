@@ -86,7 +86,13 @@ else
         <table class="table table-bordered" style="width:75%; margin:auto; margin-top:0px; margin-bottom: 10px">
             <tr>
                 <td class="col-md-11" colspan="2">
-                    <b>@Html.DisplayFor(modelItem => item.ProductName)</b>
+                    <b>
+                        @Html.DisplayFor(modelItem => item.ProductName) &nbsp;
+                            @if (item.SoldOut == 1)
+                            {
+                                <font color="red">(Sold Out)</font>
+                            }
+                    </b>
                 </td>
                 <td class="col-md-1">
                     <b style="text-align:center">CAD$@Html.DisplayFor(modelItem => item.Price)</b>
@@ -109,9 +115,9 @@ else
                 <td class="col-md-12" colspan="3">
                     <a asp-controller="Wishlists" asp-action="Delete" asp-route-productId="@item.Id"><b style="color:#0094ff">Remove from Wishlist</b></a>
                     <b style="color:#0094ff">  |  </b>
-                    <a asp-controller="Reviews" asp-action="Index" asp-route-productName="@item.ProductName" asp-route-sellerName="@item.SellerName" asp-route-picture="@item.Image" asp-route-link="@item.Link" asp-route-productDescription="@item.Description" asp-route-price="@item.Price"><b style="color:#0094ff">See Reviews</b></a>
+                    <a asp-controller="Reviews" asp-action="Index" asp-route-productName="@item.ProductName" asp-route-sellerName="@item.SellerName" asp-route-picture="@item.Image" asp-route-link="@item.Link" asp-route-productDescription="@item.Description" asp-route-price="@item.Price" asp-route-productId="@item.ProductId"><b style="color:#0094ff">See Reviews</b></a>
                     <b style="color:#0094ff">  |  </b>
-                    <a asp-controller="Reviews" asp-action="Create" asp-route-productName="@item.ProductName" asp-route-sellerName="@item.SellerName" asp-route-picture="@item.Image" asp-route-link="@item.Link" asp-route-productDescription="@item.Description" asp-route-price="@item.Price"><b style="color:#0094ff">Create Reviews</b></a>
+                    <a asp-controller="Reviews" asp-action="Create" asp-route-productName="@item.ProductName" asp-route-sellerName="@item.SellerName" asp-route-picture="@item.Image" asp-route-link="@item.Link" asp-route-productDescription="@item.Description" asp-route-price="@item.Price" asp-route-productId="@item.ProductId"><b style="color:#0094ff">Create Reviews</b></a>
                     <a class="pull-right" href="@Html.DisplayFor(modelItem => item.Link)" target="_blank"><b style="color:#0094ff">View Item</b></a>
                 </td>
             </tr>
