@@ -2,9 +2,10 @@
     ViewData["Title"] = "Home Page";
 }
 
-<head>
-    <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css'>
-</head>
+    <head>
+        <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
 
 <div class="text-center">
     <!--<h1 class="display-4">welcome</h1>-->
@@ -17,31 +18,32 @@
     <div class="row">
         <div class="col-sm">
             <div class="input-group" style="margin-left:300px;margin-right:300px">
-                <input type="text" class="form-control" id="textAutocomplete" placeholder="Search For Products..."/>
+                <input type="text" class="form-control" id="textAutocomplete" placeholder="Search For Products..." />
                 <span class="input-group-btn">
                     @* <button onclick="location.href='@Url.Action("Search", "ebay", new { keyword = "iphone" }) })'" class="btn btn-default" type="submit">Search</button> *@
-                       <button id="button" class="btn btn-default" type="submit">Search</button>
+                    <button id="button" class="btn btn-default" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Loading">Search</button>
                 </span>
             </div><!-- /input-group -->
         </div>
     </div>
+
     @*
-    <div class="row" style="margin-top:30px;margin-bottom:30px;">
-        <div class="col">
-            <a class="btn btn-primary" asp-controller="Products" asp-action="Index">Products</a>
-            <a class="btn btn-primary" asp-controller="Sellers" asp-action="Index">Sellers</a>
-            <a class="btn btn-primary" asp-controller="Reviews" asp-action="Index">Reviews</a>
-            <a class="btn btn-primary" asp-controller="Wishlists" asp-action="Index">Wishlists</a>
-            <a class="btn btn-primary" asp-controller="WishlistProduct" asp-action="Index">Wishlist Product</a>
-            <a class="btn btn-primary" asp-controller="Locations" asp-action="Index">Locations</a>
-            <a class="btn btn-primary" asp-controller="SearchHistories" asp-action="Index">Search Histories</a>
-            <a class="btn btn-primary" asp-controller="Faqs" asp-action="Index">Faqs</a>
-            <a class="btn btn-primary" asp-controller="Notifications" asp-action="Index">Notifications</a>
-            <a class="btn btn-primary" asp-controller="ebay" asp-action="Index">Ebay list</a>
+        <div class="row" style="margin-top:30px;margin-bottom:30px;">
+            <div class="col">
+                <a class="btn btn-primary" asp-controller="Products" asp-action="Index">Products</a>
+                <a class="btn btn-primary" asp-controller="Sellers" asp-action="Index">Sellers</a>
+                <a class="btn btn-primary" asp-controller="Reviews" asp-action="Index">Reviews</a>
+                <a class="btn btn-primary" asp-controller="Wishlists" asp-action="Index">Wishlists</a>
+                <a class="btn btn-primary" asp-controller="WishlistProduct" asp-action="Index">Wishlist Product</a>
+                <a class="btn btn-primary" asp-controller="Locations" asp-action="Index">Locations</a>
+                <a class="btn btn-primary" asp-controller="SearchHistories" asp-action="Index">Search Histories</a>
+                <a class="btn btn-primary" asp-controller="Faqs" asp-action="Index">Faqs</a>
+                <a class="btn btn-primary" asp-controller="Notifications" asp-action="Index">Notifications</a>
+                <a class="btn btn-primary" asp-controller="ebay" asp-action="Index">Ebay list</a>
+            </div>
         </div>
-    </div>
     *@
-    
+
 </div>
 
 <script>
@@ -63,6 +65,12 @@
 
     $(function () {
         $('#button').click(function () {
+            var $this = $(this);
+            $this.button('loading');
+            setTimeout(function() {
+                $this.button('reset');
+            }, 8000);
+
             var url = '@Url.Action("Search", "api")';
             var textValue = $('#textAutocomplete').val();
              window.location.href = url + '/' + textValue;

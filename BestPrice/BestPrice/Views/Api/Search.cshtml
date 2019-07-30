@@ -10,6 +10,7 @@
 }
 <head>
     <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <h1 style="font-family:'Kreon'">Showing results for "@CurrentURL"</h1>
 <div class="row">
@@ -45,7 +46,7 @@
         <div class="input-group" style="margin-left:300px;margin-right:300px">
             <input type="text" class="form-control" id="textAutocomplete" value="@ViewBag.keyword" placeholder="Search For Products..." />
             <span class="input-group-btn">
-                <button id="button" class="btn btn-default" type="submit">Search</button>
+                <button id="button" class="btn btn-default" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Loading">Search</button>
             </span>
         </div><!-- /input-group -->
     </div>
@@ -220,6 +221,12 @@
 
     $(function () {
         $('#button').click(function () {
+            var $this = $(this);
+            $this.button('loading');
+            setTimeout(function() {
+                $this.button('reset');
+            }, 8000);
+
             var url = '@Url.Action("Search", "api", new { keyword = "" })';
             var textValue = $('#textAutocomplete').val();
             window.location.href = url + '/' + textValue;
