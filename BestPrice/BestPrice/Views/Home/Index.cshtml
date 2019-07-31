@@ -2,9 +2,10 @@
     ViewData["Title"] = "Home Page";
 }
 
-<head>
-    <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css'>
-</head>
+    <head>
+        <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
 
 <div class="text-center">
     <!--<h1 class="display-4">welcome</h1>-->
@@ -63,6 +64,8 @@
 
     $(function () {
         $('#button').click(function () {
+            var loading = document.getElementById("button");
+            loading.innerHTML = "<i class=\"fa fa-spinner fa-spin\"></i> Please wait ...";
             var url = '@Url.Action("Search", "api")';
             var textValue = $('#textAutocomplete').val();
             window.location.href = url + '/' + textValue;
@@ -99,6 +102,7 @@ $(document).ready(function(){
 <style>
     .ui-autocomplete {
             max-height: 200px;
+            max-width: 570px;
             overflow-y: auto;
             /* prevent horizontal scrollbar */
             overflow-x: hidden;
