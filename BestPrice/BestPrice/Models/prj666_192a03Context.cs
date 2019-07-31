@@ -863,7 +863,7 @@ namespace BestPrice.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.ProductDescription)
-                    .HasMaxLength(255)
+                    .HasMaxLength(2000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ProductName)
