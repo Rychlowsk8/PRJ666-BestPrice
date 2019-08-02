@@ -1,0 +1,22 @@
+﻿.carousel .item {
+    height: 400px;
+}
+
+.item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 400px;
+}
+
+.im {
+    width: 100%;
+}
+
+
+    .hero h1 {
+        font-size: 6em;
+        font-weight: bold;
+        margin: 0;
+        padding: 0;
+    }
