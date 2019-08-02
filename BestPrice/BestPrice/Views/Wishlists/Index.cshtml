@@ -26,7 +26,7 @@
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
-<hr style="margin-bottom:5px" />
+<hr style="margin-bottom:3px;margin-top:5px;" />
 
 @if (Model.Count() == 0)
 {
@@ -88,10 +88,10 @@ else
                 <td class="col-md-11" colspan="2">
                     <b>
                         @Html.DisplayFor(modelItem => item.ProductName) &nbsp;
-                            @if (item.SoldOut == 1)
-                            {
-                                <font color="red">(Sold Out)</font>
-                            }
+                        @if (item.SoldOut == 1)
+                        {
+                            <font color="red">(Sold Out)</font>
+                        }
                     </b>
                 </td>
                 <td class="col-md-1">
