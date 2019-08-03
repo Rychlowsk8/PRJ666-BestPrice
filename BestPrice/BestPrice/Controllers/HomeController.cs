@@ -123,13 +123,37 @@ namespace BestPrice.Controllers
             return PartialView("HelpCentrePartials/_ChangeEmail");
         }
 
-        public PartialViewResult HelpAddItem()
+        public PartialViewResult HelpSaveSearches()
         {
-            return PartialView("HelpCentrePartials/_AddItem");
+            return PartialView("HelpCentrePartials/_SaveSearches");
         }
-        public PartialViewResult HelpRemoveItem()
+        public PartialViewResult HelpSaveLocation()
         {
-            return PartialView("HelpCentrePartials/_RemoveItem");
+            return PartialView("HelpCentrePartials/_SaveLocation");
+        }
+
+        public PartialViewResult HelpReview()
+        {
+            return PartialView("HelpCentrePartials/_Review");
+        }
+
+        public PartialViewResult HelpChangePassword()
+        {
+            return PartialView("HelpCentrePartials/_ChangePassword");
+        }
+
+        public PartialViewResult HelpAccountSettings()
+        {
+            return PartialView("HelpCentrePartials/_AccountSettings");
+        }
+
+        public PartialViewResult HelpReportProblem()
+        {
+            return PartialView("HelpCentrePartials/_ReportProblem");
+        }
+        public PartialViewResult HelpContactDeveloper()
+        {
+            return PartialView("HelpCentrePartials/_ContactDeveloper");
         }
     }
 }

@@ -25,6 +25,11 @@
                     $("#display").html(response);
                 });
             });
+             $("#review").click(function() {
+                $.get('@Url.Action("HelpReview","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
             $("#create_account").click(function() {
                 $.get('@Url.Action("HelpCreateAccount","Home")', {}, function(response) {
                     $("#display").html(response);
@@ -40,13 +45,33 @@
                     $("#display").html(response);
                 });
             });
-            $("#add-item").click(function() {
-                $.get('@Url.Action("HelpAddItem","Home")', {}, function(response) {
+            $("#save_searches").click(function() {
+                $.get('@Url.Action("HelpSaveSearches","Home")', {}, function(response) {
                     $("#display").html(response);
                 });
             });
-            $("#remove_item").click(function() {
-                $.get('@Url.Action("HelpRemoveItem","Home")', {}, function(response) {
+            $("#save_location").click(function() {
+                $.get('@Url.Action("HelpSaveLocation","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
+            $("#change_password").click(function() {
+                $.get('@Url.Action("HelpChangePassword","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
+            $("#account_settings").click(function() {
+                $.get('@Url.Action("HelpAccountSettings","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
+            $("#problem_report").click(function() {
+                $.get('@Url.Action("HelpReportProblem","Home")', {}, function(response) {
+                    $("#display").html(response);
+                });
+            });
+             $("#contact_us").click(function() {
+                $.get('@Url.Action("HelpContactDeveloper","Home")', {}, function(response) {
                     $("#display").html(response);
                 });
             });
@@ -58,28 +83,33 @@
 
 <div class="row">
     <div class="col-md-4">
-        <h2 class="text-info">Navigating TechPG</h2>
+        <h2 class="text-info">TechPG Main Features</h2>
         <ul>
-            <li id="product_search"><a href="#">Product search</a></li>
+            <li id="product_search"><a href="#">Product Search</a></li>
             <li id="notifications"><a href="#">Notifications</a></li>
             <li id="wishlist"><a href="#">Wishlist</a></li>
+            <li id="review"><a href="#">Product Review</a></li>
         </ul>
     </div>
 
     <div class="col-md-4">
-        <h2 class="text-info">Manage Account</h2>
+        <h2 class="text-info">Manage Your Account</h2>
         <ul>
             <li id="create_account"><a href="#">Create Account</a></li>
             <li id="delete_account"><a href="#">Delete Account</a></li>
             <li id="change_email"><a href="#">Change Email</a></li>
+            <li id="change_password"><a href="#">Change Password</a></li>
         </ul>
     </div>
 
     <div class="col-md-4">
-        <h2 class="text-info">Manage Wishlist</h2>
+        <h2 class="text-info">Other Features</h2>
         <ul>
-            <li id="add-item"><a href="#">Add Item</a></li>
-            <li id="remove_item"><a href="#">Remove Item</a></li>
+            <li id="save_searches"><a href="#">Save Recent Searches</a></li>
+            <li id="save_location"><a href="#">Save Location</a></li>
+            <li id="account_settings"><a href="#">Account Settings</a></li>
+            <li id="problem_report"><a href="#">Report Problem</a></li>
+            <li id="contact_us"><a href="#">Contact Developers</a></li>
         </ul>
     </div>
 </div>
