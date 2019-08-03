@@ -1,12 +1,12 @@
 ﻿.carousel .item {
-    height: 380px;
+    height: 400px;
 }
 
 .item img {
     position: absolute;
     top: 0;
     left: 0;
-    height: 380px;
+    height: 400px;
 }
 
 .im {

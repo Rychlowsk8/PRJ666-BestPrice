@@ -7,7 +7,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <div class="text-center">
-    <div class="row" style="margin-top:1px; margin-bottom:20px;height:380px;">
+    <div class="row" style="margin-bottom:20px;margin-top:20px;">
+        <div class="col-sm">
+            <div class="input-group" style="margin-left:300px;margin-right:300px">
+                <input type="text" class="form-control" id="textAutocomplete" value="@ViewBag.keyword" placeholder="Search For Products..." style="border-color:black;border-width: 2px;" />
+                <span class="input-group-btn">
+                    @* <button onclick="location.href='@Url.Action("Search", "ebay", new { keyword = "iphone" }) })'" class="btn btn-default" type="submit">Search</button> *@
+                    <button id="button" class="btn btn-default" type="submit" style="border-color:black; color:black"><b>Search</b></button>
+                </span>
+            </div><!-- /input-group -->
+        </div>
+    </div>
+
+    <div class="row" style="margin-top:1px; margin-bottom:10px;height:400px;">
         <div class="col">
             @*<img src="~/images/facebook_cover_photo_1.png" height="200" style="margin-top:30px;margin-bottom:30px;" />*@
 
@@ -82,17 +94,7 @@
         </div>
         @* <p style="font-family:'Comic Sans MS', cursive, sans-serif">The place where you can find the best price for your smartphones and laptops.</p> *@
     </div>
-    <div class="row">
-        <div class="col-sm">
-            <div class="input-group" style="margin-left:300px;margin-right:300px">
-                <input type="text" class="form-control" id="textAutocomplete" value="@ViewBag.keyword" placeholder="Search For Products..." style="border-color:black;border-width: 2px;"/>
-                <span class="input-group-btn">
-                    @* <button onclick="location.href='@Url.Action("Search", "ebay", new { keyword = "iphone" }) })'" class="btn btn-default" type="submit">Search</button> *@
-                    <button id="button" class="btn btn-default" type="submit" style="border-color:black; color:black" ><b>Search</b></button>
-                </span>
-            </div><!-- /input-group -->
-        </div>
-    </div>
+
     @*
         <div class="row" style="margin-top:30px;margin-bottom:30px;">
             <div class="col">
