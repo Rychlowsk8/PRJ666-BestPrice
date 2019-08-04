@@ -54,6 +54,11 @@ namespace BestPrice
             services.AddDistributedMemoryCache();
             services.AddSession();
 
+            services.AddMvc()
+        .AddJsonOptions(
+            options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+        );
+
             services.AddDbContext<prj666_192a03Context>(options => options.UseMySQL(Configuration.GetConnectionString("BestPriceDatabase")));
             
 

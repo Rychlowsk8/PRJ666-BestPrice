@@ -31,10 +31,11 @@ namespace BestPrice.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetNotification(string text)
+        public JsonResult GetNotificationAsync(string userid)
         {
-            var notificationList = _context.Notifications.OrderByDescending(p => p.LastModified).Take(5);
-            return Json(notificationList);
+            var prj666_192a03Context = _context.Notifications.Include(n => n.User).Where(x => x.UserId == userid).OrderByDescending(p => p.LastModified).Take(5);
+            List<Notifications> notifications = new List<Notifications>(prj666_192a03Context.ToList());
+            return Json(notifications);
         }
 
         // GET: Notifications
@@ -47,17 +48,17 @@ namespace BestPrice.Controllers
 
             var user = await _userManager.GetUserAsync(User);
             var prj666_192a03Context = _context.Notifications.Include(n => n.User).Where(x => x.UserId == user.Id);
-            List<Notifications> items = new List<Notifications>(await prj666_192a03Context.ToListAsync());
+            List<Models.Notifications> items = new List<Models.Notifications>(await prj666_192a03Context.ToListAsync());
 
             int pageSize = 10;
-            return View(PaginatedList<Notifications>.CreatePage(items.OrderByDescending(p => p.LastModified), pageNumber ?? 1, pageSize));
+            return base.View(PaginatedList<Models.Notifications>.CreatePage(items.OrderByDescending(p => p.LastModified), pageNumber ?? 1, pageSize));
         }
 
         public async Task<IActionResult> ClearNotifications()
         {
             var user = await _userManager.GetUserAsync(User);
             var prj666_192a03Context = _context.Notifications.Include(n => n.User).Where(x => x.UserId == user.Id);
-            List<Notifications> list = new List<Notifications>(await prj666_192a03Context.ToListAsync());
+            List<Models.Notifications> list = new List<Models.Notifications>(await prj666_192a03Context.ToListAsync());
 
             _context.Notifications.RemoveRange(list);
              await _context.SaveChangesAsync();
@@ -111,7 +112,7 @@ namespace BestPrice.Controllers
 
                                 if (eItem.CurrentPrice != wish.Price)
                                 {
-                                    Notifications list = new Notifications();
+                                        Models.Notifications list = new Models.Notifications();
                                     list.ProductName = wish.ProductName;
                                     list.Link = wish.Link;
                                     list.Image = wish.Image;
@@ -269,7 +270,7 @@ namespace BestPrice.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ProductName,Seller,BeforePrice,CurrentPrice,PriceStatus,LastModified,ProductDescription,ProductCondition,Link,Image")] Notifications notifications)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ProductName,Seller,BeforePrice,CurrentPrice,PriceStatus,LastModified,ProductDescription,ProductCondition,Link,Image")] Models.Notifications notifications)
         {
             if (id != notifications.Id)
             {
@@ -297,7 +298,7 @@ namespace BestPrice.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", notifications.UserId);
-            return View(notifications);
+            return base.View(notifications);
         }
 
 

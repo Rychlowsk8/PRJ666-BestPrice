@@ -6,33 +6,109 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-<form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            <a style="color:black; font-size:15px; font-family: Georgia, Times, " Times New Roman", serif;" asp-area="" asp-controller="Wishlists" asp-action="Index">
-                <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp; Wishlist
-            </a>
-        </li>
-        <li>
-            <a style="color:black; font-size:15px; font-family: Georgia, Times, " Times New Roman", serif;" asp-area="" asp-controller="Notifications" asp-action="Index">
-                <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>&nbsp; Notifications
-            </a>
-        </li>
-        <li>
-            <a style="color:black; font-size:15px; font-family: Georgia, Times, " Times New Roman", serif;" asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">
-                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; @UserManager.GetUserName(User)!
-            </a>
-        </li>
-        <li>
-            <button style="color:black; font-size:15px; font-family: Georgia, Times, " Times New Roman", serif;" type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
-        </li>
-    </ul>
-</form>
+    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a style="letter-spacing: 0.08em;color:black;font-size:15px;font-family: Georgia, Times, " Times New Roman", serif;" asp-area="" asp-controller="Wishlists" asp-action="Index">
+                    <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp; Wishlist
+                </a>
+            </li>
+            <li>
+                <a id="btnClick" style="background-color:transparent; letter-spacing: 0.08em;color:black;font-size:15px;font-family: Georgia, Times, " Times New Roman", serif;" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Notifications&nbsp;<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                </a>
+                <ul id="xello" class="dropdown-menu" >
+                    <li id="hello" style="background-color:transparent; letter-spacing: 0.08em;color:black;font-size:15px;font-family: Georgia, Times,Times New Roman, serif; padding-left:6px;padding-right:6px;">
+                        Your recent notifications &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><a style="color:#0000FF;margin:0px;padding:0px;" asp-area="" asp-controller="Notifications" asp-action="Index"> View All </a></span>
+                        <hr style="margin-bottom:2px;margin-top:3px;" />
+                    </li>
+             
+                    <li style="padding-left:6px;padding-right:6px;text-align:center;">
+                        <a style="padding-top:8px; padding-bottom:8px; color:#0000FF; font-size:15px; font-family: Georgia, Times" asp-area="" asp-controller="Notifications" asp-action="Index">
+                            View All Notifications
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            @*
+                <li>
+                    <a style="color:black; font-size:15px; font-family: Georgia, Times, " Times New Roman", serif;" asp-area="" asp-controller="Notifications" asp-action="Index">
+                        <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>&nbsp; Notifications
+                    </a>
+                </li>
+            *@
+            <li>
+                <a style="color:black; font-size:15px; font-family: Georgia, Times, " Times New Roman", serif;" asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; @UserManager.GetUserName(User)
+                </a>
+            </li>
+            <li>
+                <button style="letter-spacing: 0.08em;color:black;font-size:15px;font-family: Georgia, Times, " Times New Roman", serif;" type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
+            </li>
+        </ul>
+    </form>
 }
 else
 {
-<ul class="nav navbar-nav navbar-right">
-    <li><a style="color:black; font-size:15px; font-family: Georgia, Times, " Times New Roman", serif;" asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-    <li><a style="color:black; font-size:15px; font-family: Georgia, Times, " Times New Roman", serif;" asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
-</ul>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a style="letter-spacing: 0.08em;color:black;font-size:15px;font-family: Georgia, Times, " Times New Roman", serif;" asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+        <li><a style="letter-spacing: 0.08em;color:black;font-size:15px;font-family: Georgia, Times, " Times New Roman", serif;" asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
+    </ul>
 }
+
+<script>
+    $(document).ready(function () {
+           var id = '@UserManager.GetUserId(User)';
+        $.ajax({
+            url: '/Notifications/GetNotificationAsync',
+            type: 'GET',
+            data: { userid: id },
+            success: function (result) {
+                if (!$.trim(result)) {
+                    $("#hello").append('<li style="background-color:transparent; letter-spacing: 0.08em;color:black;font-size:15px;font-family: Georgia, Times,Times New Roman, serif;">' +
+                        'There are no notifications!' + '</li> <hr style="margin-bottom:2px;margin-top:3px;" />');
+                } else {
+                    $.each(result, function (index, item) {
+                        console.log(item.id + " " + item.seller);
+                        $("#hello").append('<li style="background-color:transparent; letter-spacing: 0.08em;color:black;font-size:11px;font-family: Georgia, Times, " Times New Roman", serif;">' +
+                            '<span style="color:darkslategrey;">' + item.productName + '</span>' + ' has ' + '<span style="color:red;">' + item.priceStatus + '</span>' + ' on ' + '<span style="color:green;">' + item.seller + '</span>' + ' by ' + '<span style="color:orange;"> CAD$' + item.currentPrice + '<span>'
+                            + '<a target="_blank"  style="text-align:right;" href="' + item.link + '" > <span class="glyphicon glyphicon-export"></span></a >' +
+                            '</li> <hr style="margin-bottom:2px;margin-top:3px;" />');
+                    });
+                }
+            },
+            error: function (response) {
+                alert(JSON.stringify(response));
+            }
+        });
+        });
+</script>
+
+<style>
+    #xello {
+        overflow: auto;
+        width: 330px;
+        max-height: 200px;
+    }
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+  
+</style>
