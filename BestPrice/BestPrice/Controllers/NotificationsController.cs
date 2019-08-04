@@ -30,6 +30,13 @@ namespace BestPrice.Controllers
 
         }
 
+        [HttpGet]
+        public JsonResult GetNotification(string text)
+        {
+            var notificationList = _context.Notifications.OrderByDescending(p => p.LastModified).Take(5);
+            return Json(notificationList);
+        }
+
         // GET: Notifications
         public async Task<IActionResult> Index(int? pageNumber)
         {           
@@ -218,6 +225,7 @@ namespace BestPrice.Controllers
 
         }
       
+
         // GET: Notifications/Details/5
         public async Task<IActionResult> Details(int? id)
         {
