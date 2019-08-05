@@ -24,7 +24,7 @@
                     </li>
              
                     <li style="padding-left:6px;padding-right:6px;text-align:center;">
-                        <a style="padding-top:8px; padding-bottom:8px; color:#0000FF; font-size:15px; font-family: Georgia, Times" asp-area="" asp-controller="Notifications" asp-action="Index">
+                        <a style="padding-top:12px; padding-bottom:10px; color:#0000FF; font-size:15px; font-family: Georgia, Times" asp-area="" asp-controller="Notifications" asp-action="Index">
                             View All Notifications
                         </a>
                     </li>
@@ -69,7 +69,6 @@ else
                         'There are no notifications!' + '</li> <hr style="margin-bottom:2px;margin-top:3px;" />');
                 } else {
                     $.each(result, function (index, item) {
-                        console.log(item.id + " " + item.seller);
                         $("#hello").append('<li style="background-color:transparent; letter-spacing: 0.08em;color:black;font-size:11px;font-family: Georgia, Times, " Times New Roman", serif;">' +
                             '<span style="color:darkslategrey;">' + item.productName + '</span>' + ' has ' + '<span style="color:red;">' + item.priceStatus + '</span>' + ' on ' + '<span style="color:green;">' + item.seller + '</span>' + ' by ' + '<span style="color:orange;"> CAD$' + item.currentPrice + '<span>'
                             + '<a target="_blank"  style="text-align:right;" href="' + item.link + '" > <span class="glyphicon glyphicon-export"></span></a >' +

@@ -49,7 +49,7 @@ namespace BestPrice.Controllers
             var user = await _userManager.GetUserAsync(User);
             var prj666_192a03Context = _context.Notifications.Include(n => n.User).Where(x => x.UserId == user.Id);
             List<Models.Notifications> items = new List<Models.Notifications>(await prj666_192a03Context.ToListAsync());
-
+           
             int pageSize = 10;
             return base.View(PaginatedList<Models.Notifications>.CreatePage(items.OrderByDescending(p => p.LastModified), pageNumber ?? 1, pageSize));
         }
@@ -112,7 +112,7 @@ namespace BestPrice.Controllers
 
                                 if (eItem.CurrentPrice != wish.Price)
                                 {
-                                        Models.Notifications list = new Models.Notifications();
+                                    Models.Notifications list = new Models.Notifications();
                                     list.ProductName = wish.ProductName;
                                     list.Link = wish.Link;
                                     list.Image = wish.Image;
@@ -301,26 +301,12 @@ namespace BestPrice.Controllers
             return base.View(notifications);
         }
 
-
-        
-
         // GET: Notifications/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var notifications = await _context.Notifications
-                .Include(n => n.User)
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (notifications == null)
-            {
-                return NotFound();
-            }
-
-            return View(notifications);
+            var user = await _userManager.GetUserAsync(User);
+            return View(user);
         }
 
         // POST: Notifications/Delete/5
@@ -328,10 +314,15 @@ namespace BestPrice.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var notifications = await _context.Notifications.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Notifications.Remove(notifications);
+
+            var user = await _userManager.GetUserAsync(User);
+            var prj666_192a03Context = _context.Notifications.Include(n => n.User).Where(x => x.UserId == user.Id);
+            List<Models.Notifications> list = new List<Models.Notifications>(await prj666_192a03Context.ToListAsync());
+
+            _context.Notifications.RemoveRange(list);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction("Index");
         }
 
         private bool NotificationsExists(int id)

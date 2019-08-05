@@ -70,7 +70,7 @@ namespace BestPrice.Controllers
                     if (!await _userManager.IsEmailConfirmedAsync(user))
                     {
                         ModelState.AddModelError(string.Empty,
-                        "You need to confirm your email before logging in.");
+                        "Invalid login attempt.");
                         return View(model);
                     }
                 }

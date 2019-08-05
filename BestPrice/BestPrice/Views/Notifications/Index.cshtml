@@ -80,7 +80,9 @@ else
         </ul>
     </nav>
     <div style="margin-top:-10px; margin-bottom: -15px" class="text-right">
-        <a asp-action="ClearNotifications"><span class="glyphicon glyphicon-trash"></span>&nbsp;Clear All</a>
+        @*<a asp-action="ClearNotifications"><span class="glyphicon glyphicon-trash"></span>&nbsp;Clear All</a>*@
+       <a asp-controller="Notifications" asp-action="Delete"><span class="glyphicon glyphicon-trash"></span>&nbsp;Clear All</a>
+
     </div>
 
     <br />
