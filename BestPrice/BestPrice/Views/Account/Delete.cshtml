@@ -8,8 +8,57 @@
 <h4>Are you sure you want to do this?</h4>
 <hr />
 
-<form asp-action="Delete">
-    <input type="hidden" asp-for="Id" />
-    <input type="submit" value="Delete Account" class="btn btn-danger" /> |
-    <a asp-controller="Manage" asp-action="Settings">Back to Settings</a>
-</form>
+<a class="btn btn-danger delete-btn">Delete Account</a> |
+<a asp-controller="Manage" asp-action="Settings">Back to Settings</a>
+
+<!--Creates the popup body-->
+<div class="popup-overlay">
+    <div class="popup-content">
+        <h2>This action is irreversible, continue?</h2>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Yes" class="btn btn-danger" /> |
+            <input type="button" value="No" class="btn btn-primary" />
+        </form>
+    </div>
+</div>
+
+<style>
+    .popup-overlay {
+        /*Hides pop-up when there is no "active" class*/
+        visibility: hidden;
+        position: absolute;
+        background: #ffffff;
+        border: 2px solid #666666;
+        width: 50%;
+        height: 20%;
+        left: 25%;
+    }
+
+        .popup-overlay.active {
+            /*displays pop-up when "active" class is present*/
+            visibility: visible;
+            text-align: center;
+        }
+
+    .popup-content {
+        /*Hides pop-up content when there is no "active" class */
+        visibility: hidden;
+    }
+
+        .popup-content.active {
+            /*Shows pop-up content when "active" class is present */
+            visibility: visible;
+        }
+</style>
+
+<script>
+    $(".delete-btn").on("click", function () {
+        $(".popup-overlay, .popup-content").addClass("active");
+    });
+
+    //removes the "active" class to .popup and .popup-content when the "Close" button is clicked
+    $(".close-popup, .popup-overlay").on("click", function () {
+        $(".popup-overlay, .popup-content").removeClass("active");
+    });
+</script>
