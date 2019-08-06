@@ -36,7 +36,20 @@ namespace BestPrice.Controllers
                 .Where(x => x.UserId == user.Id);
             List<Wishlists> items = new List<Wishlists>(await prj666_192a03Context.ToListAsync());
             int pageSize = 5;
-            HttpContext.Session.SetString("reviewFrom", "wishlist");
+
+            List<int> ratings = new List<int>();
+            List<string> ids = new List<string>();
+            foreach (var item in items)
+            {
+                var product =_context.Products.FirstOrDefault(p => p.Id.Equals(item.ProductId));
+                if (product != null )
+                {
+                    ratings.Add(product.AverageRating ?? 0);
+                    ids.Add(item.ProductId);                    
+                }
+            }
+            ViewBag.ratings = ratings;
+            ViewBag.ids = ids;
 
             return View(PaginatedList<Wishlists>.CreatePage(items.OrderBy(p => p.Price), pageNumber ?? 1, pageSize));
         }

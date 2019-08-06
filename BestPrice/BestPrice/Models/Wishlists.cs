@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace BestPrice.Models
 {
     public partial class Wishlists
-    {
+    {      
         public int Id { get; set; }
         public string UserId { get; set; }
         public string ProductId { get; set; }

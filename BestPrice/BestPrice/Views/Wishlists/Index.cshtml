@@ -12,16 +12,6 @@
 
 <h2 style="letter-spacing: 0.08em;color:black;font-size:30px;font-family: Georgia, Times, " Times New Roman", serif;">Wishlist</h2>
 
-@*<div class="dropdown" style="float:left; position:absolute; margin-top:10px">
-        <button class="dropdown-toggle btn" type="button" data-toggle="dropdown">Sort by</button>
-        <ul class="dropdown-menu">
-            <li>Price</li>
-            <li>Name</li>
-            <li>Reviews</li>
-            <li>Price range<input type="text" size="1" placeholder="$" /> - <input type="text" size="1" placeholder="$" /></li>
-            <li><input type="text" placeholder="Seller" /></li>
-        </ul>
-    </div>*@
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
@@ -100,6 +90,21 @@ else
             <tr>
                 <td class="col-md-2">
                     <img src="@Html.DisplayFor(modelItem => item.Image)" alt="Image not available" height="150" width="150" />
+                    <p>
+                        <span class="rating">
+                            @for (int i = 0; i < ViewBag.ids.Count; i++)
+                            {
+                                if (item.ProductId == ViewBag.ids[i])
+                                {
+                                    for (int j = 1; j <= ViewBag.ratings[i]; j++)
+                                    {
+                                        var starClass = "star";
+                                        <span class="@starClass active"></span>
+                                    }
+                                }
+                            }
+                        </span>
+                    </p>
                 </td>
                 <td class="col-md-10" colspan="3">
                     <p style="font-family: 'Trebuchet MS', Helvetica, sans-serif">
