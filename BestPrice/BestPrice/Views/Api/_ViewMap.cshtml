@@ -1,7 +1,7 @@
 ﻿@inject UserManager<ApplicationUser> UserManager
 @{
     var user = await UserManager.GetUserAsync(User);
-    var location = "70 The Pond Rd, North York";
+    var location = "Seneca York";
     var location_url = "";
 
     if (user != null)
@@ -9,16 +9,16 @@
         location = user.Location;
         if (location == null)
         {
-            location = "70 The Pond Rd, North York";
+            location = "Seneca York";
         }
-    } 
+    }
     location = Uri.EscapeDataString(location);
-    location_url = "https://maps.google.com/maps?q=" + location + "&t=&z=13&ie=UTF8&iwloc=&output=embed";
-    //location_url = "https://maps.google.com/maps/search/best+buy?api=AIzaSyDDMOEbR2wgqUGboxORBHE8zyW9wLXwFME";
-
+    location_url = "https://maps.google.com/maps?q=Best%20Buy%20near%20" + location + "&t=&z=13&ie=UTF8&iwloc=&output=embed";
 }
 
 <hr />
+<p><b>This map is focused on nearby Best Buy stores based on default location or location in account settings.</b></p>
+<p>Best Buy stores are bolded and marked by <font color="red">red</font>.</p>
 <div class="mapouter">
     <div class="gmap_canvas">
         <iframe id="gmap_canvas" src=@location_url frameborder="0" scrolling="no" 
