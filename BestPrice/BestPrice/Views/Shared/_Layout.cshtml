@@ -32,7 +32,7 @@
                 </button>
                 <a style="color:black; font-size:30px; font-family: HM Ampersand,ヒラギノ角ゴ Pro W3,Hiragino Kaku Gothic Pro,Osaka,メイリオ,Meiryo,ＭＳ Ｐゴシック,MS PGothic,sans-serif;" asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand"><b>TechPG</b></a>
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse collapse" id="topFixedNavBar">
                 <ul class="nav navbar-nav">
                     <li>
                         <a style="letter-spacing: 0.08em;color:black;font-size:15px;font-family: Georgia, Times, " Times New Roman", serif;" asp-area="" asp-controller="Home" asp-action="Index">
@@ -76,24 +76,41 @@
             </div>
         </nav>*@
 
-    <footer class="page-footer font-small mdb-color pt-4" style="background-color:black;border-bottom-color: transparent;">
+    <footer class="navbar-fixed-bottom" style="background-color:black;border-bottom-color: transparent; line-height: 40px">
 
-        <div class="container text-center text-md-left">
+        <div class="container" >
+            <div class="navbar-collapse collapse">
+                @*<div class="row text-center text-md-left mt-3 pb-3">
 
-            <div class="row text-center text-md-left mt-3 pb-3">
+                    <div class="col-md-2">
+                        <img src="~/images/linkedin_banner_image_1-black.png" width="100" height="45" />
+                    </div>
+                    <div class="col-md-8">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" style="color: whitesmoke; text-decoration:none; margin-top:25px">Home&nbsp;</a>
+                        <a asp-area="" asp-controller="Home" asp-action="ContactUs" style="color: white; text-decoration:none; margin-top:25px">Contact Us&nbsp;</a>
+                        <a asp-area="" asp-controller="Home" asp-action="About" style="color: white; text-decoration:none; margin-top:25px">About&nbsp;</a>
+                        <a asp-area="" asp-controller="Home" asp-action="ReportIssue" style="color: white; text-decoration:none; margin-top:25px">Report Issue&nbsp;</a>
+                        <a asp-area="" asp-controller="Home" asp-action="HelpCentre" style="color: white; text-decoration:none; margin-top:25px">Help Centre&nbsp;</a>
+                    </div>
+                    <div class="col-md-2">
+                        <a style="color: white; text-decoration:none; margin-top:25px">&copy; 2019 - TechPG</a>
+                    </div>
+                </div>*@
 
-                <div class="col-md-2">
-                    <img src="~/images/linkedin_banner_image_1-black.png" width="100" height="45" />
-                </div>
-                <div class="col-md-8">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" style="color: whitesmoke; text-decoration:none">Home&nbsp;</a>
-                    <a asp-area="" asp-controller="Home" asp-action="ContactUs" style="color: white; text-decoration:none">Contact Us&nbsp;</a>
-                    <a asp-area="" asp-controller="Home" asp-action="About" style="color: white; text-decoration:none">About&nbsp;</a>
-                    <a asp-area="" asp-controller="Home" asp-action="ReportIssue" style="color: white; text-decoration:none">Report Issue&nbsp;</a>
-                    <a asp-area="" asp-controller="Home" asp-action="HelpCentre" style="color: white; text-decoration:none">Help Centre&nbsp;</a>
-                </div>
-                <div class="col-md-2">
-                    <a style="color: white; text-decoration:none">&copy; 2019 - TechPG</a>
+                <div class="row text-center">
+                    <div class="col-md-2">
+                        <img src="~/images/linkedin_banner_image_1-black.png" width="100" height="45" />
+                    </div>
+                    <div class="col-md-8">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" style="color: whitesmoke; text-decoration:none; margin-top:25px">Home&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        <a asp-area="" asp-controller="Home" asp-action="ContactUs" style="color: white; text-decoration:none; margin-top:25px">Contact Us&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        <a asp-area="" asp-controller="Home" asp-action="About" style="color: white; text-decoration:none; margin-top:25px">About&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        <a asp-area="" asp-controller="Home" asp-action="ReportIssue" style="color: white; text-decoration:none; margin-top:25px">Report Issue&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        <a asp-area="" asp-controller="Home" asp-action="HelpCentre" style="color: white; text-decoration:none; margin-top:25px">Help Centre</a>
+                    </div>
+                    <div class="col-md-2">
+                        <a style="color: white; text-decoration:none; margin-top:25px">&copy; 2019 - TechPG</a>
+                    </div>
                 </div>
             </div>
         </div>

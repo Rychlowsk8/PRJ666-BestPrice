@@ -94,3 +94,8 @@
 #footer {
     border: solid;
 }
+
+#topFixedNavBar {
+    max-height: 50vh;
+    overflow-y: auto;
+}
