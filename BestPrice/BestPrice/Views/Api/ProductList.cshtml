@@ -14,6 +14,18 @@
 <h1 style="font-family:'Kreon';margin-top:5px; margin-bottom:8px;">Showing results for "@ViewBag.keyword"</h1>
 <br />
 <div class="row">
+
+    <div class="col-sm">
+        <div class="input-group" style="width:100%;max-width: 500px; margin: auto;">
+            <input type="text" class="form-control" id="textAutocomplete" value="@ViewBag.keyword" placeholder="Search For Products..." autofocus />
+            <span class="input-group-btn">
+                <button id="button" class="btn btn-default" type="submit">Search</button>
+            </span>
+        </div><!-- /input-group -->
+    </div>
+
+    <br />
+
     <div class="dropdown pull-left">
         <button id="view_map" class="btn btn-success" type="button">View Map</button>
     </div>
@@ -50,14 +62,7 @@
             <li><a asp-action="ProductList" asp-route-sortOrder="rating" asp-route-filter="@ViewBag.currentFilter"><b class="text-info">&nbsp; Average Review</b></a></li>
         </ul>
     </div>
-    <div class="col-sm">
-        <div class="input-group" style="width:100%;max-width: 500px; margin: auto;">
-            <input type="text" class="form-control" id="textAutocomplete" value="@ViewBag.keyword" placeholder="Search For Products..." autofocus/>
-            <span class="input-group-btn">
-                <button id="button" class="btn btn-default" type="submit">Search</button>
-            </span>
-        </div><!-- /input-group -->
-    </div>
+
 </div>
 
 <div id="map"></div>
@@ -67,7 +72,7 @@
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 <br />
-<hr style="margin-bottom:0px" />
+<hr style="margin-bottom:0px; margin-top: 0px" />
 
 @if (Model.Count() == 0 && ViewBag.currentSortOrder == null && ViewBag.currentFilter == null)
 {
@@ -291,7 +296,7 @@ else
 <style>
     .ui-autocomplete {
         max-height: 200px;
-        max-width: 570px;
+        max-width: 500px;
         overflow-y: auto;
         /* prevent horizontal scrollbar */
         overflow-x: hidden;

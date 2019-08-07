@@ -50,6 +50,7 @@ namespace BestPrice.Controllers
             }
             ViewBag.ratings = ratings;
             ViewBag.ids = ids;
+            HttpContext.Session.SetString("reviewFrom", "wishlist");
 
             return View(PaginatedList<Wishlists>.CreatePage(items.OrderBy(p => p.Price), pageNumber ?? 1, pageSize));
         }

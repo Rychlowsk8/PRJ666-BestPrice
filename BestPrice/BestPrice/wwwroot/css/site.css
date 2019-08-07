@@ -85,3 +85,12 @@
     height: 150px !important;
 
 }
+
+#main {
+    border: solid;
+    height: 100vh;
+}
+
+#footer {
+    border: solid;
+}
