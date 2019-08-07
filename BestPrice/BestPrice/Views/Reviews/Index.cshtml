@@ -87,7 +87,7 @@ else
         <ul class="pagination justify-content-center">
             <li class="page-item">
                 <a asp-action="Index" asp-route-productName="@ViewBag.productName" asp-route-sellerName="@ViewBag.sellerName" asp-route-picture="@ViewBag.picture" asp-route-link="@ViewBag.link" asp-route-productDescription="@ViewBag.productDescription" asp-route-price="@ViewBag.price"
-                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-productId="@ViewBag.productId" asp-route-pageNumber="@(Model.PageIndex - 1)"
                    class="btn btn-default @prevDisabled">
                     Previous
                 </a>
@@ -99,21 +99,21 @@ else
                 {
                     <li class="page-item active">
                         <a class="page-link" asp-action="Index" asp-route-productName="@ViewBag.productName" asp-route-sellerName="@ViewBag.sellerName" asp-route-picture="@ViewBag.picture" asp-route-link="@ViewBag.link" asp-route-productDescription="@ViewBag.productDescription" asp-route-price="@ViewBag.price"
-                           asp-route-pageNumber="@i">@i</a>
+                           asp-route-productId="@ViewBag.productId" asp-route-pageNumber="@i">@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
                         <a class="page-link" asp-action="Index" asp-route-productName="@ViewBag.productName" asp-route-sellerName="@ViewBag.sellerName" asp-route-picture="@ViewBag.picture" asp-route-link="@ViewBag.link" asp-route-productDescription="@ViewBag.productDescription" asp-route-price="@ViewBag.price"
-                           asp-route-pageNumber="@i">@i</a>
+                           asp-route-productId="@ViewBag.productId" asp-route-pageNumber="@i">@i</a>
                     </li>
                 }
             }
 
             <li class="page-item">
                 <a asp-action="Index" asp-route-productName="@ViewBag.productName" asp-route-sellerName="@ViewBag.sellerName" asp-route-picture="@ViewBag.picture" asp-route-link="@ViewBag.link" asp-route-productDescription="@ViewBag.productDescription" asp-route-price="@ViewBag.price"
-                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-productId="@ViewBag.productId" asp-route-pageNumber="@(Model.PageIndex + 1)"
                    class="btn btn-default @nextDisabled">
                     Next
                 </a>
